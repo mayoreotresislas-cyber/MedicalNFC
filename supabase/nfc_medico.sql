@@ -9,7 +9,7 @@ create table if not exists public.medical_profiles (
   id uuid primary key default gen_random_uuid(),
   company_id uuid,
   public_slug text not null unique,
-  default_language text not null default 'en' check (default_language in ('en', 'es', 'fr', 'pt', 'de', 'it')),
+  default_language text not null default 'en' check (default_language in ('en', 'es', 'fr', 'pt', 'de', 'it', 'ja', 'ko', 'zh')),
   full_name text not null,
   blood_type text,
   doctor text,
@@ -54,7 +54,7 @@ alter table public.medical_profiles
 
 alter table public.medical_profiles
   add constraint medical_profiles_default_language_check
-  check (default_language in ('en', 'es', 'fr', 'pt', 'de', 'it'));
+  check (default_language in ('en', 'es', 'fr', 'pt', 'de', 'it', 'ja', 'ko', 'zh'));
 
 create index if not exists medical_profiles_public_slug_idx
   on public.medical_profiles (public_slug);

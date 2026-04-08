@@ -7,7 +7,10 @@ const languageNames = {
   fr: "French",
   pt: "Portuguese",
   de: "German",
-  it: "Italian"
+  it: "Italian",
+  ja: "Japanese",
+  ko: "Korean",
+  zh: "Chinese"
 } as const;
 
 type SupportedLanguage = keyof typeof languageNames;

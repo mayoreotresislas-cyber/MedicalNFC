@@ -209,7 +209,10 @@ const languageOptions = {
   fr: { code: "FR", label: "Français", flag: "🇫🇷" },
   pt: { code: "PT", label: "Português", flag: "🇵🇹" },
   de: { code: "DE", label: "Deutsch", flag: "🇩🇪" },
-  it: { code: "IT", label: "Italiano", flag: "🇮🇹" }
+  it: { code: "IT", label: "Italiano", flag: "🇮🇹" },
+  ja: { code: "JA", label: "Japanese", flag: "🇯🇵" },
+  ko: { code: "KO", label: "Korean", flag: "🇰🇷" },
+  zh: { code: "ZH", label: "Chinese", flag: "🇨🇳" }
 };
 
 const countryCodes = [
@@ -388,7 +391,8 @@ function initFlagSelects() {
 }
 
 function normalizeUiLanguage(lang) {
-  return setupTranslations[lang] ? lang : "en";
+  const code = cleanText(lang).slice(0, 2).toLowerCase();
+  return languageOptions[code] ? code : "en";
 }
 
 function normalizeProfileLanguage(lang) {
