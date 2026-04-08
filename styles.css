@@ -143,6 +143,111 @@ button {
   color: var(--text);
 }
 
+.native-language-select {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 1px;
+  height: 1px;
+}
+
+.flag-select {
+  position: relative;
+}
+
+.flag-select-trigger {
+  width: 100%;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.96);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.flag-select-trigger:hover,
+.flag-select-trigger:focus-visible,
+.flag-select.is-open .flag-select-trigger {
+  border-color: rgba(197, 65, 45, 0.42);
+  box-shadow: 0 0 0 4px rgba(197, 65, 45, 0.08);
+  outline: none;
+}
+
+.flag-select-value {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.flag-select-emoji {
+  font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.flag-select-code {
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.flag-select-label {
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.flag-select-caret {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.flag-select-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 24px 45px rgba(24, 19, 16, 0.14);
+}
+
+.flag-select-menu[hidden] {
+  display: none;
+}
+
+.flag-select-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+}
+
+.flag-select-option:hover,
+.flag-select-option:focus-visible,
+.flag-select-option.is-active {
+  background: rgba(197, 65, 45, 0.08);
+  outline: none;
+}
+
 .runtime-status {
   display: grid;
   gap: 6px;

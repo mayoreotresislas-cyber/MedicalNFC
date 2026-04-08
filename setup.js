@@ -196,12 +196,12 @@ const setupTranslations = {
 };
 
 const languageOptions = {
-  en: "English",
-  es: "Espanol",
-  fr: "Francais",
-  pt: "Portugues",
-  de: "Deutsch",
-  it: "Italiano"
+  en: { code: "EN", label: "English", flag: "🇺🇸" },
+  es: { code: "ES", label: "Español", flag: "🇪🇸" },
+  fr: { code: "FR", label: "Français", flag: "🇫🇷" },
+  pt: { code: "PT", label: "Português", flag: "🇵🇹" },
+  de: { code: "DE", label: "Deutsch", flag: "🇩🇪" },
+  it: { code: "IT", label: "Italiano", flag: "🇮🇹" }
 };
 
 const countryCodes = [
@@ -268,6 +268,112 @@ function detectInitialLanguage() {
 
   const browserCode = navigator.language?.slice(0, 2).toLowerCase();
   return languageOptions[browserCode] ? browserCode : "en";
+}
+
+function buildLanguageMarkup(value) {
+  const option = languageOptions[value] || languageOptions.en;
+  return `
+    <span class="flag-select-emoji">${option.flag}</span>
+    <span class="flag-select-code">${option.code}</span>
+    <span class="flag-select-label">${option.label}</span>
+  `;
+}
+
+function syncFlagSelect(select) {
+  const wrapper = select?.nextElementSibling;
+  if (!wrapper?.classList.contains("flag-select")) {
+    return;
+  }
+
+  const valueNode = wrapper.querySelector("[data-flag-select-value]");
+  const optionButtons = wrapper.querySelectorAll("[data-flag-option]");
+  valueNode.innerHTML = buildLanguageMarkup(select.value);
+  optionButtons.forEach((button) => {
+    const active = button.dataset.value === select.value;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+}
+
+function closeFlagSelectMenus() {
+  document.querySelectorAll(".flag-select.is-open").forEach((wrapper) => {
+    wrapper.classList.remove("is-open");
+    const menu = wrapper.querySelector("[data-flag-select-menu]");
+    const trigger = wrapper.querySelector("[data-flag-select-trigger]");
+    if (menu) {
+      menu.hidden = true;
+    }
+    if (trigger) {
+      trigger.setAttribute("aria-expanded", "false");
+    }
+  });
+}
+
+function initFlagSelects() {
+  document.querySelectorAll("select[data-flag-menu]").forEach((select) => {
+    const wrapper = document.createElement("div");
+    wrapper.className = "flag-select";
+
+    const trigger = document.createElement("button");
+    trigger.type = "button";
+    trigger.className = "flag-select-trigger";
+    trigger.setAttribute("data-flag-select-trigger", "");
+    trigger.setAttribute("aria-haspopup", "true");
+    trigger.setAttribute("aria-expanded", "false");
+    trigger.innerHTML = `
+      <span class="flag-select-value" data-flag-select-value></span>
+      <span class="flag-select-caret">▾</span>
+    `;
+
+    const menu = document.createElement("div");
+    menu.className = "flag-select-menu";
+    menu.setAttribute("data-flag-select-menu", "");
+    menu.hidden = true;
+
+    Object.entries(languageOptions).forEach(([value]) => {
+      const optionButton = document.createElement("button");
+      optionButton.type = "button";
+      optionButton.className = "flag-select-option";
+      optionButton.dataset.flagOption = "";
+      optionButton.dataset.value = value;
+      optionButton.innerHTML = buildLanguageMarkup(value);
+      optionButton.addEventListener("click", () => {
+        select.value = value;
+        syncFlagSelect(select);
+        closeFlagSelectMenus();
+        select.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+      menu.appendChild(optionButton);
+    });
+
+    trigger.addEventListener("click", () => {
+      const isOpen = wrapper.classList.contains("is-open");
+      closeFlagSelectMenus();
+      if (!isOpen) {
+        wrapper.classList.add("is-open");
+        menu.hidden = false;
+        trigger.setAttribute("aria-expanded", "true");
+      }
+    });
+
+    wrapper.appendChild(trigger);
+    wrapper.appendChild(menu);
+    select.insertAdjacentElement("afterend", wrapper);
+    syncFlagSelect(select);
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest(".flag-select")) {
+      closeFlagSelectMenus();
+    }
+  });
+
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeFlagSelectMenus();
+      closeSuccessModal();
+    }
+  });
 }
 
 function normalizeUiLanguage(lang) {
@@ -340,6 +446,7 @@ function clearDraftFields(preserveContacts = false) {
   form.elements.full_record_url.value = "";
   form.elements.blood_type.value = "";
   form.elements.default_language.value = "en";
+  syncFlagSelect(form.elements.default_language);
   countryCodeSelects.forEach((select) => {
     select.value = "+1";
   });
@@ -662,6 +769,9 @@ function populateForm(values) {
   Object.entries(values).forEach(([key, value]) => {
     if (form.elements[key]) {
       form.elements[key].value = value || "";
+      if (form.elements[key].matches?.("select[data-flag-menu]")) {
+        syncFlagSelect(form.elements[key]);
+      }
     }
   });
 }
@@ -677,6 +787,7 @@ function setInterfaceLanguage(lang) {
   });
 
   interfaceSelect.value = state.uiLang;
+  syncFlagSelect(interfaceSelect);
   setBloodPlaceholder();
   renderStatus();
 }
@@ -935,11 +1046,13 @@ function bindEvents() {
 
 async function init() {
   populateCountryCodes();
+  initFlagSelects();
   setupHelperPlaceholders();
   clearDraftFields(Boolean(getFamilyTemplate()));
   bindEvents();
   setInterfaceLanguage(state.uiLang);
   previewSelect.value = "en";
+  syncFlagSelect(previewSelect);
   showStatus(hasSupabaseConfig() ? "success" : "warning", hasSupabaseConfig() ? "statusReadyTitle" : "statusConfigTitle", hasSupabaseConfig() ? "statusReadyMessage" : "statusConfigMessage");
   await loadExistingProfile();
   renderPreview();
