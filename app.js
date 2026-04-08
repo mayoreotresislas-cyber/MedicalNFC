@@ -23,6 +23,13 @@ const uiTranslations = {
     importantTitle: "The medical data is not written directly to the NFC chip",
     importantText:
       "The chip stores only a secure web address. That keeps the information easier to update and better organized for future changes.",
+    serviceKicker: "Future changes",
+    serviceTitle: "Remote profile updates can be requested later",
+    serviceText:
+      "If you want to reopen a saved profile to edit it online later, that service has an additional cost.",
+    serviceItem1: "The online medical profile can be updated remotely.",
+    serviceItem2: "The physical NFC information does not change until the administrator has the chip in hand.",
+    serviceItem3: "Ask for a reopen request whenever the medical information changes.",
     profileKicker: "Medical profile",
     profileSubtitle: "Emergency information shown from an NFC medical profile.",
     screen1Tag: "Emergency",
@@ -90,6 +97,13 @@ const uiTranslations = {
     importantTitle: "Los datos medicos no se escriben directamente en el chip NFC",
     importantText:
       "El chip guarda solo una direccion web segura. Eso hace que la informacion sea mas facil de actualizar y mejor organizada para cambios futuros.",
+    serviceKicker: "Cambios futuros",
+    serviceTitle: "Las actualizaciones remotas del perfil se pueden solicitar despues",
+    serviceText:
+      "Si mas adelante quieres reabrir un perfil guardado para editarlo en linea, ese servicio tiene un costo adicional.",
+    serviceItem1: "El perfil medico en linea se puede actualizar a distancia.",
+    serviceItem2: "La informacion fisica del NFC no cambia hasta que el administrador tenga el chip en la mano.",
+    serviceItem3: "Solicita la reapertura cuando cambie la informacion medica.",
     profileKicker: "Perfil medico",
     profileSubtitle: "Informacion de emergencia mostrada desde un perfil medico NFC.",
     screen1Tag: "Emergencia",

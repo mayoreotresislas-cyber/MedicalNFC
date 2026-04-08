@@ -50,6 +50,9 @@ const setupTranslations = {
     fieldContactPhone: "Phone",
     fieldRecordUrl: "Generated profile link",
     generatedUrlLabel: "When you generate the profile, the secure link is sent to the administrator email used for NFC recording.",
+    updatePolicyTitle: "Future profile changes",
+    updatePolicyText:
+      "If you need this profile reopened later for remote changes, that service has an additional cost. The online profile can be updated remotely, but the physical NFC information is only changed when the administrator has the chip in hand.",
     saveProfile: "Generate profile",
     saveFamily: "Generate another family member",
     previewKicker: "Live preview",
@@ -164,6 +167,9 @@ const setupTranslations = {
     fieldContactPhone: "Telefono",
     fieldRecordUrl: "Enlace generado del perfil",
     generatedUrlLabel: "Cuando generas el perfil, el enlace seguro se envia al correo del administrador que programa los NFC.",
+    updatePolicyTitle: "Cambios futuros del perfil",
+    updatePolicyText:
+      "Si mas adelante necesitas reabrir este perfil para hacer cambios a distancia, ese servicio tiene un costo adicional. El perfil en linea se puede actualizar remotamente, pero la informacion fisica del NFC solo cambia cuando el administrador tiene el chip en la mano.",
     saveProfile: "Generar perfil",
     saveFamily: "Generar otro familiar",
     previewKicker: "Preview en vivo",
