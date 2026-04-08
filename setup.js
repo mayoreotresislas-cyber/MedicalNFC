@@ -854,7 +854,7 @@ function setInterfaceLanguage(lang) {
 async function renderPreview() {
   const raw = getFormState();
   const { sourceLanguage, sourceFields } = syncSource(raw);
-  const targetLanguage = normalizeProfileLanguage(previewSelect.value);
+  const targetLanguage = normalizeProfileLanguage(form.elements.default_language.value || "en");
   let previewFields = sourceFields;
 
   if (targetLanguage !== sourceLanguage) {
@@ -1081,10 +1081,6 @@ function bindEvents() {
     setInterfaceLanguage(interfaceSelect.value);
   });
 
-  previewSelect.addEventListener("change", () => {
-    renderPreview();
-  });
-
   form.elements.full_name.addEventListener("input", () => {
     syncSlugFromName();
     renderPreview();
@@ -1100,6 +1096,10 @@ function bindEvents() {
     if (event.target.name !== "full_name" && event.target.name !== "public_slug") {
       renderPreview();
     }
+  });
+
+  form.elements.default_language.addEventListener("change", () => {
+    renderPreview();
   });
 
   form.addEventListener("submit", saveProfile);
@@ -1126,8 +1126,6 @@ async function init() {
   clearDraftFields(Boolean(getFamilyTemplate()));
   bindEvents();
   setInterfaceLanguage(state.uiLang);
-  previewSelect.value = "en";
-  syncFlagSelect(previewSelect);
   showStatus(hasSupabaseConfig() ? "success" : "warning", hasSupabaseConfig() ? "statusReadyTitle" : "statusConfigTitle", hasSupabaseConfig() ? "statusReadyMessage" : "statusConfigMessage");
   await loadExistingProfile();
   renderPreview();
