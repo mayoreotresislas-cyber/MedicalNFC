@@ -6,7 +6,7 @@
     <title>NFC Medico | Setup Portal</title>
     <meta
       name="description"
-      content="Portal de llenado para perfiles medicos NFC con formulario bilingue, vista previa en vivo y guardado a Supabase."
+      content="Portal de llenado para perfiles medicos NFC con formulario amigable, preview en vivo y guardado a Supabase."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -40,16 +40,16 @@
         <section class="hero">
           <div>
             <p class="eyebrow" data-i18n="heroKicker">Profile builder</p>
-            <h1 data-i18n="heroTitle">Llena un perfil medico claro, bilingue y listo para escanear.</h1>
+            <h1 data-i18n="heroTitle">Llena un perfil medico simple, profesional y listo para escanear.</h1>
             <p class="hero-copy" data-i18n="heroText">
-              Esta pagina sirve para capturar toda la informacion del usuario, generar la URL del NFC
-              y revisar en vivo como se vera el landing publico al escanear.
+              Captura toda la informacion una sola vez, revisa el preview en vivo y guarda el URL
+              publico que vas a usar despues en el NFC.
             </p>
 
             <div class="hero-points">
-              <span data-i18n="heroPoint1">Preview en vivo del landing medico</span>
-              <span data-i18n="heroPoint2">Campos separados para EN y ES</span>
-              <span data-i18n="heroPoint3">Guardado preparado para Supabase</span>
+              <span data-i18n="heroPoint1">Un solo formulario, sin duplicar idiomas</span>
+              <span data-i18n="heroPoint2">Preview publico en EN y ES</span>
+              <span data-i18n="heroPoint3">Guardado listo para Supabase</span>
             </div>
           </div>
 
@@ -57,8 +57,8 @@
             <p class="hero-card-label" data-i18n="heroCardLabel">Recommended flow</p>
             <ol>
               <li data-i18n="heroCard1">Fill the patient profile once.</li>
-              <li data-i18n="heroCard2">Review the bilingual preview before publishing.</li>
-              <li data-i18n="heroCard3">Save to Supabase and write the generated URL into the NFC tag.</li>
+              <li data-i18n="heroCard2">Review the live preview before publishing.</li>
+              <li data-i18n="heroCard3">Save and keep the generated public URL.</li>
             </ol>
           </div>
         </section>
@@ -81,46 +81,82 @@
               <section class="form-section">
                 <div class="section-heading">
                   <p class="section-kicker" data-i18n="identityKicker">Identity</p>
-                  <h2 data-i18n="identityTitle">Basic profile and NFC route</h2>
+                  <h2 data-i18n="identityTitle">Basic profile and public route</h2>
                 </div>
 
                 <div class="field-grid two-up">
                   <label class="field">
                     <span data-i18n="fieldFullName">Full name</span>
-                    <input name="full_name" type="text" placeholder="John Doe" />
+                    <input
+                      name="full_name"
+                      type="text"
+                      placeholder="John Doe"
+                      autocomplete="name"
+                      data-clear-helper
+                    />
                   </label>
                   <label class="field">
                     <span data-i18n="fieldSlug">Public slug</span>
-                    <input name="public_slug" type="text" placeholder="john-doe-001" />
-                  </label>
-                </div>
-
-                <div class="field-grid two-up">
-                  <label class="field">
-                    <span data-i18n="fieldDefaultLanguage">Default language</span>
-                    <select name="default_language">
-                      <option value="en">English</option>
-                      <option value="es">Español</option>
-                    </select>
-                  </label>
-                  <label class="field">
-                    <span data-i18n="fieldBloodType">Blood type</span>
-                    <input name="blood_type" type="text" placeholder="O+" />
+                    <input
+                      name="public_slug"
+                      type="text"
+                      placeholder="john-doe-001"
+                      data-clear-helper
+                    />
                   </label>
                 </div>
 
                 <div class="field-grid three-up">
                   <label class="field">
-                    <span data-i18n="fieldDoctor">Doctor</span>
-                    <input name="doctor" type="text" placeholder="Dr. Smith" />
+                    <span data-i18n="fieldProfileLanguage">Profile language</span>
+                    <select name="default_language">
+                      <option value="es">Espanol</option>
+                      <option value="en">English</option>
+                    </select>
                   </label>
                   <label class="field">
-                    <span data-i18n="fieldClinic">Clinic</span>
-                    <input name="clinic" type="text" placeholder="XYZ Medical Center" />
+                    <span data-i18n="fieldBloodType">Blood type</span>
+                    <select name="blood_type">
+                      <option value="">Select blood type</option>
+                      <option value="A+">A+</option>
+                      <option value="A-">A-</option>
+                      <option value="B+">B+</option>
+                      <option value="B-">B-</option>
+                      <option value="AB+">AB+</option>
+                      <option value="AB-">AB-</option>
+                      <option value="O+">O+</option>
+                      <option value="O-">O-</option>
+                    </select>
                   </label>
                   <label class="field">
                     <span data-i18n="fieldInsurance">Insurance</span>
-                    <input name="insurance" type="text" placeholder="BlueCross" />
+                    <input
+                      name="insurance"
+                      type="text"
+                      placeholder="BlueCross"
+                      data-clear-helper
+                    />
+                  </label>
+                </div>
+
+                <div class="field-grid two-up">
+                  <label class="field">
+                    <span data-i18n="fieldDoctor">Doctor</span>
+                    <input
+                      name="doctor"
+                      type="text"
+                      placeholder="Dr. Smith"
+                      data-clear-helper
+                    />
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldClinic">Clinic</span>
+                    <input
+                      name="clinic"
+                      type="text"
+                      placeholder="XYZ Medical Center"
+                      data-clear-helper
+                    />
                   </label>
                 </div>
               </section>
@@ -128,68 +164,53 @@
               <section class="form-section">
                 <div class="section-heading">
                   <p class="section-kicker" data-i18n="medicalKicker">Medical details</p>
-                  <h2 data-i18n="medicalTitle">Write the emergency profile in both languages</h2>
+                  <h2 data-i18n="medicalTitle">Write the medical details once</h2>
                 </div>
 
-                <div class="bilingual-field">
+                <div class="field-grid">
                   <label class="field">
-                    <span data-i18n="fieldConditionsEn">Conditions (EN)</span>
-                    <textarea name="conditions_en" rows="3" placeholder="Type 1 Diabetes"></textarea>
-                  </label>
-                  <label class="field">
-                    <span data-i18n="fieldConditionsEs">Condiciones (ES)</span>
-                    <textarea name="conditions_es" rows="3" placeholder="Diabetes Tipo 1"></textarea>
-                  </label>
-                </div>
-
-                <div class="bilingual-field">
-                  <label class="field">
-                    <span data-i18n="fieldAllergiesEn">Severe allergies (EN)</span>
-                    <textarea name="allergies_en" rows="3" placeholder="Penicillin"></textarea>
-                  </label>
-                  <label class="field">
-                    <span data-i18n="fieldAllergiesEs">Alergias graves (ES)</span>
-                    <textarea name="allergies_es" rows="3" placeholder="Penicilina"></textarea>
-                  </label>
-                </div>
-
-                <div class="bilingual-field">
-                  <label class="field">
-                    <span data-i18n="fieldMedicationsEn">Critical medications (EN)</span>
-                    <textarea name="medications_en" rows="3" placeholder="Insulin"></textarea>
-                  </label>
-                  <label class="field">
-                    <span data-i18n="fieldMedicationsEs">Medicamentos criticos (ES)</span>
-                    <textarea name="medications_es" rows="3" placeholder="Insulina"></textarea>
-                  </label>
-                </div>
-
-                <div class="bilingual-field">
-                  <label class="field">
-                    <span data-i18n="fieldDevicesEn">Medical devices (EN)</span>
-                    <textarea name="devices_en" rows="3" placeholder="Insulin Pump"></textarea>
-                  </label>
-                  <label class="field">
-                    <span data-i18n="fieldDevicesEs">Dispositivos medicos (ES)</span>
-                    <textarea name="devices_es" rows="3" placeholder="Bomba de insulina"></textarea>
-                  </label>
-                </div>
-
-                <div class="bilingual-field">
-                  <label class="field">
-                    <span data-i18n="fieldNotesEn">Important notes (EN)</span>
+                    <span data-i18n="fieldConditions">Conditions</span>
                     <textarea
-                      name="notes_en"
-                      rows="4"
-                      placeholder="Patient uses insulin&#10;Risk of hypoglycemia&#10;May require immediate glucose"
+                      name="conditions"
+                      rows="3"
+                      placeholder="Type 1 Diabetes"
+                      data-clear-helper
                     ></textarea>
                   </label>
                   <label class="field">
-                    <span data-i18n="fieldNotesEs">Notas importantes (ES)</span>
+                    <span data-i18n="fieldAllergies">Severe allergies</span>
                     <textarea
-                      name="notes_es"
+                      name="allergies"
+                      rows="3"
+                      placeholder="Penicillin"
+                      data-clear-helper
+                    ></textarea>
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldMedications">Critical medications</span>
+                    <textarea
+                      name="medications"
+                      rows="3"
+                      placeholder="Insulin"
+                      data-clear-helper
+                    ></textarea>
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldDevices">Medical devices</span>
+                    <textarea
+                      name="devices"
+                      rows="3"
+                      placeholder="Insulin Pump"
+                      data-clear-helper
+                    ></textarea>
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldNotes">Important notes</span>
+                    <textarea
+                      name="notes"
                       rows="4"
-                      placeholder="Usa insulina&#10;Riesgo de hipoglucemia&#10;Puede requerir glucosa inmediata"
+                      placeholder="Patient uses insulin&#10;Risk of hypoglycemia&#10;May require immediate glucose"
+                      data-clear-helper
                     ></textarea>
                   </label>
                 </div>
@@ -198,41 +219,63 @@
               <section class="form-section">
                 <div class="section-heading">
                   <p class="section-kicker" data-i18n="contactsKicker">Contacts</p>
-                  <h2 data-i18n="contactsTitle">Emergency contacts and extended access</h2>
+                  <h2 data-i18n="contactsTitle">Emergency contacts</h2>
                 </div>
 
                 <div class="contact-block">
                   <h3 data-i18n="contact1Title">Emergency contact 1</h3>
-                  <div class="field-grid three-up">
-                    <label class="field">
+                  <div class="field-grid contact-grid">
+                    <label class="field contact-name">
                       <span data-i18n="fieldContactName">Name</span>
-                      <input name="emergency_contact_1_name" type="text" placeholder="Jane Doe" />
+                      <input
+                        name="emergency_contact_1_name"
+                        type="text"
+                        placeholder="Jane Doe"
+                        data-clear-helper
+                      />
                     </label>
-                    <label class="field">
+                    <label class="field country-code">
+                      <span data-i18n="fieldCountryCode">Country code</span>
+                      <select name="emergency_contact_1_country_code" data-country-code></select>
+                    </label>
+                    <label class="field contact-phone">
                       <span data-i18n="fieldContactPhone">Phone</span>
-                      <input name="emergency_contact_1_phone" type="tel" placeholder="+1 (555) 123-4567" />
-                    </label>
-                    <label class="field">
-                      <span data-i18n="fieldWhatsapp">WhatsApp</span>
-                      <input name="emergency_contact_1_whatsapp" type="tel" placeholder="15551234567" />
+                      <input
+                        name="emergency_contact_1_phone_local"
+                        type="tel"
+                        placeholder="555 123 4567"
+                        inputmode="tel"
+                        data-clear-helper
+                      />
                     </label>
                   </div>
                 </div>
 
                 <div class="contact-block">
                   <h3 data-i18n="contact2Title">Emergency contact 2</h3>
-                  <div class="field-grid three-up">
-                    <label class="field">
+                  <div class="field-grid contact-grid">
+                    <label class="field contact-name">
                       <span data-i18n="fieldContactName">Name</span>
-                      <input name="emergency_contact_2_name" type="text" placeholder="Mike Doe" />
+                      <input
+                        name="emergency_contact_2_name"
+                        type="text"
+                        placeholder="Mike Doe"
+                        data-clear-helper
+                      />
                     </label>
-                    <label class="field">
+                    <label class="field country-code">
+                      <span data-i18n="fieldCountryCode">Country code</span>
+                      <select name="emergency_contact_2_country_code" data-country-code></select>
+                    </label>
+                    <label class="field contact-phone">
                       <span data-i18n="fieldContactPhone">Phone</span>
-                      <input name="emergency_contact_2_phone" type="tel" placeholder="+1 (555) 987-6543" />
-                    </label>
-                    <label class="field">
-                      <span data-i18n="fieldWhatsapp">WhatsApp</span>
-                      <input name="emergency_contact_2_whatsapp" type="tel" placeholder="15559876543" />
+                      <input
+                        name="emergency_contact_2_phone_local"
+                        type="tel"
+                        placeholder="555 987 6543"
+                        inputmode="tel"
+                        data-clear-helper
+                      />
                     </label>
                   </div>
                 </div>
@@ -241,13 +284,18 @@
               <section class="form-section">
                 <div class="section-heading">
                   <p class="section-kicker" data-i18n="publishKicker">Publish</p>
-                  <h2 data-i18n="publishTitle">Privacy, records and generated URL</h2>
+                  <h2 data-i18n="publishTitle">Privacy, record and generated URL</h2>
                 </div>
 
                 <div class="field-grid two-up">
                   <label class="field">
                     <span data-i18n="fieldRecordUrl">Full medical record URL</span>
-                    <input name="full_record_url" type="url" placeholder="https://tudominio.com/record/john-doe" />
+                    <input
+                      name="full_record_url"
+                      type="url"
+                      placeholder="https://tudominio.com/record/john-doe"
+                      data-clear-helper
+                    />
                   </label>
                   <div class="field toggle-field">
                     <span data-i18n="fieldIsPublic">Public emergency profile</span>
@@ -261,7 +309,7 @@
                 <div class="url-panel">
                   <div>
                     <span class="url-label" data-i18n="generatedUrlLabel">Generated public URL</span>
-                    <strong class="url-value" data-generated-url>https://tudominio.com/med/john-doe-001</strong>
+                    <strong class="url-value" data-generated-url>https://tudominio.com/med/new-profile</strong>
                   </div>
                   <div class="url-actions">
                     <button class="button button-secondary" type="button" data-action="copy-url" data-i18n="copyUrl">
@@ -300,7 +348,7 @@
               </div>
 
               <div class="preview-url-bar" data-generated-url-inline>
-                https://tudominio.com/med/john-doe-001
+                https://tudominio.com/med/new-profile
               </div>
 
               <article class="preview-card emergency">
@@ -312,27 +360,27 @@
                 <dl class="preview-list">
                   <div>
                     <dt data-preview-copy="labelName">Nombre</dt>
-                    <dd data-preview="full_name">John Doe</dd>
+                    <dd data-preview="full_name">-</dd>
                   </div>
                   <div>
                     <dt data-preview-copy="labelConditions">Condiciones</dt>
-                    <dd data-preview="conditions">Diabetes Tipo 1</dd>
+                    <dd data-preview="conditions">-</dd>
                   </div>
                   <div>
                     <dt data-preview-copy="labelAllergies">Alergias graves</dt>
-                    <dd data-preview="allergies">Penicilina</dd>
+                    <dd data-preview="allergies">-</dd>
                   </div>
                   <div>
                     <dt data-preview-copy="labelMedications">Medicamentos criticos</dt>
-                    <dd data-preview="medications">Insulina</dd>
+                    <dd data-preview="medications">-</dd>
                   </div>
                 </dl>
                 <div class="preview-notes">
                   <p data-preview-copy="importantNotes">Notas importantes</p>
                   <ul>
-                    <li data-preview-note="0">Usa insulina</li>
-                    <li data-preview-note="1">Riesgo de hipoglucemia</li>
-                    <li data-preview-note="2">Puede requerir glucosa inmediata</li>
+                    <li data-preview-note="0">-</li>
+                    <li data-preview-note="1"></li>
+                    <li data-preview-note="2"></li>
                   </ul>
                 </div>
               </article>
@@ -346,19 +394,19 @@
                 <dl class="preview-list">
                   <div>
                     <dt data-preview-copy="labelBloodType">Tipo de sangre</dt>
-                    <dd data-preview="blood_type">O+</dd>
+                    <dd data-preview="blood_type">-</dd>
                   </div>
                   <div>
                     <dt data-preview-copy="labelDoctor">Medico</dt>
-                    <dd data-preview="doctor">Dr. Smith</dd>
+                    <dd data-preview="doctor">-</dd>
                   </div>
                   <div>
                     <dt data-preview-copy="labelClinic">Clinica</dt>
-                    <dd data-preview="clinic">XYZ Medical Center</dd>
+                    <dd data-preview="clinic">-</dd>
                   </div>
                   <div>
                     <dt data-preview-copy="labelInsurance">Seguro</dt>
-                    <dd data-preview="insurance">BlueCross</dd>
+                    <dd data-preview="insurance">-</dd>
                   </div>
                 </dl>
               </article>
@@ -366,6 +414,47 @@
           </aside>
         </div>
       </main>
+    </div>
+
+    <div class="saving-overlay is-hidden" data-saving-overlay>
+      <div class="saving-card">
+        <div class="saving-spinner"></div>
+        <strong data-i18n="savingTitle">Saving profile...</strong>
+        <p data-i18n="savingText">Please wait while we store the information securely.</p>
+      </div>
+    </div>
+
+    <div class="success-modal is-hidden" data-success-modal>
+      <div class="success-backdrop" data-action="close-success"></div>
+      <div class="success-card" role="dialog" aria-modal="true" aria-labelledby="success-title">
+        <button class="success-close" type="button" data-action="close-success" aria-label="Close">
+          x
+        </button>
+        <p class="success-kicker" data-i18n="successKicker">Saved</p>
+        <h2 id="success-title" data-i18n="successTitle">Profile saved successfully</h2>
+        <p class="success-copy" data-i18n="successText">
+          The profile is ready. Keep this public URL for the NFC setup.
+        </p>
+        <div class="success-url-box" data-success-url>https://tudominio.com/med/new-profile</div>
+        <div class="success-actions">
+          <button class="button button-secondary" type="button" data-action="copy-success-url" data-i18n="copyUrl">
+            Copy URL
+          </button>
+          <a
+            class="button button-dark"
+            href="./index.html"
+            target="_blank"
+            rel="noreferrer"
+            data-action="open-success-url"
+            data-i18n="openPublic"
+          >
+            Open public preview
+          </a>
+          <button class="button button-primary" type="button" data-action="close-success" data-i18n="closeSuccess">
+            Done
+          </button>
+        </div>
+      </div>
     </div>
 
     <script src="./config.js"></script>
