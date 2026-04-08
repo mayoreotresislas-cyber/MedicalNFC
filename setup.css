@@ -555,6 +555,15 @@ button {
   word-break: break-word;
 }
 
+.readonly-link-box {
+  display: block;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(24, 19, 16, 0.1);
+  background: rgba(24, 19, 16, 0.04);
+  color: var(--text);
+}
+
 .url-actions {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }

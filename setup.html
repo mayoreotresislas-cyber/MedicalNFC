@@ -297,16 +297,13 @@
                   <h2 data-i18n="publishTitle">Generate the profile link</h2>
                 </div>
 
+                <input name="full_record_url" type="hidden" value="" />
+
                 <div class="field-grid">
-                  <label class="field">
-                    <span data-i18n="fieldRecordUrl">Full medical record URL</span>
-                    <input
-                      name="full_record_url"
-                      type="url"
-                      placeholder="https://tudominio.com/record/john-doe"
-                      data-clear-helper
-                    />
-                  </label>
+                  <div class="field">
+                    <span data-i18n="fieldRecordUrl">Generated profile link</span>
+                    <div class="readonly-link-box" data-generated-url-inline>https://tudominio.com/med/new-profile</div>
+                  </div>
                 </div>
 
                 <div class="action-panel">
