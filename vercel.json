@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    {
+      "source": "/setup",
+      "destination": "/setup.html"
+    },
+    {
+      "source": "/med/:slug",
+      "destination": "/index.html?slug=:slug"
+    }
+  ]
+}
