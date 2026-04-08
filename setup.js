@@ -19,7 +19,7 @@ const setupTranslations = {
     step3: "3. Contacts",
     step4: "4. Finish",
     identityKicker: "Identity",
-    identityTitle: "Person details and profile route",
+    identityTitle: "Person details",
     medicalKicker: "Medical details",
     medicalTitle: "Write the medical information once",
     contactsKicker: "Contacts",
@@ -27,7 +27,7 @@ const setupTranslations = {
     publishKicker: "Finish",
     publishTitle: "Generate the profile link",
     fieldFullName: "Full name",
-    fieldSlug: "Public slug",
+    fieldSlug: "Profile ID",
     fieldProfileLanguage: "Language used to fill the form",
     fieldBloodType: "Blood type",
     fieldInsurance: "Insurance",
@@ -80,7 +80,7 @@ const setupTranslations = {
     statusConfigTitle: "Supabase setup missing",
     statusConfigMessage: "Add the dedicated NFC Medico Supabase URL and anon key in config.js.",
     statusValidationTitle: "Missing required fields",
-    statusValidationMessage: "Add at least the full name and public slug before generating the profile.",
+    statusValidationMessage: "Add at least the full name before generating the profile.",
     statusSavingTitle: "Generation in progress",
     statusSavingMessage: "Generating the secure link and language versions.",
     statusSavedTitle: "Profile generated",
@@ -120,7 +120,7 @@ const setupTranslations = {
     step3: "3. Contactos",
     step4: "4. Finalizar",
     identityKicker: "Identidad",
-    identityTitle: "Datos de la persona y ruta del perfil",
+    identityTitle: "Datos de la persona",
     medicalKicker: "Informacion medica",
     medicalTitle: "Escribe la informacion medica una sola vez",
     contactsKicker: "Contactos",
@@ -128,7 +128,7 @@ const setupTranslations = {
     publishKicker: "Finalizar",
     publishTitle: "Generar el enlace del perfil",
     fieldFullName: "Nombre completo",
-    fieldSlug: "Slug publico",
+    fieldSlug: "ID del perfil",
     fieldProfileLanguage: "Idioma en el que llenas el formulario",
     fieldBloodType: "Tipo de sangre",
     fieldInsurance: "Seguro",
@@ -181,7 +181,7 @@ const setupTranslations = {
     statusConfigTitle: "Falta configurar Supabase",
     statusConfigMessage: "Agrega en config.js la URL y la anon key del proyecto de NFC Medico.",
     statusValidationTitle: "Faltan campos obligatorios",
-    statusValidationMessage: "Agrega al menos el nombre completo y el slug publico antes de generar el perfil.",
+    statusValidationMessage: "Agrega al menos el nombre completo antes de generar el perfil.",
     statusSavingTitle: "Generacion en proceso",
     statusSavingMessage: "Estamos generando el enlace seguro y las versiones de idioma.",
     statusSavedTitle: "Perfil generado",
@@ -256,6 +256,7 @@ const state = {
   previewLang: "en",
   client: null,
   slugTouched: false,
+  slugSeed: createSlugSeed(),
   baseStatus: null,
   statusTimer: null,
   lastSavedUrl: "",
@@ -399,6 +400,10 @@ function cleanText(value) {
   return value === null || value === undefined ? "" : String(value).trim();
 }
 
+function createSlugSeed() {
+  return Math.random().toString(36).slice(2, 8);
+}
+
 function slugify(value) {
   return cleanText(value)
     .toLowerCase()
@@ -406,6 +411,15 @@ function slugify(value) {
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
+}
+
+function buildAutoSlug(value) {
+  const base = slugify(value);
+  if (!base) {
+    return "";
+  }
+
+  return `${base}-${state.slugSeed}`;
 }
 
 function formatString(template, values = {}) {
@@ -448,12 +462,14 @@ function clearDraftFields(preserveContacts = false) {
   const contacts = preserveContacts ? getFamilyTemplate() : null;
 
   form.reset();
+  state.slugSeed = createSlugSeed();
   helperFields.forEach((field) => {
     field.value = "";
     field.setAttribute("placeholder", field.dataset.helperPlaceholder || field.getAttribute("placeholder") || "");
   });
 
   form.elements.full_record_url.value = "";
+  form.elements.public_slug.value = "";
   form.elements.blood_type.value = "";
   form.elements.default_language.value = "en";
   syncFlagSelect(form.elements.default_language);
@@ -735,6 +751,20 @@ async function translateFields(sourceLanguage, targetLanguage, fields) {
   return promise;
 }
 
+async function translateFieldsForSave(sourceLanguage, targetLanguage, fields) {
+  if (normalizeProfileLanguage(targetLanguage) === sourceLanguage) {
+    return { fields, degraded: false };
+  }
+
+  try {
+    const translated = await translateFields(sourceLanguage, targetLanguage, fields);
+    return { fields: translated, degraded: false };
+  } catch (error) {
+    console.warn(`Translation fallback used for ${targetLanguage}`, error);
+    return { fields, degraded: true };
+  }
+}
+
 async function notifyAdmin(profileName, slug, profileUrl) {
   if (!config.notificationFunctionName || !hasSupabaseConfig()) {
     return false;
@@ -829,7 +859,9 @@ async function renderPreview() {
       translateFields(sourceLanguage, targetLanguage, sourceFields)
         .then(() => renderPreview())
         .catch(() => {
+          state.translation.results[targetLanguage] = sourceFields;
           showStatus("warning", "statusTranslateErrorTitle", "statusTranslateErrorMessage");
+          renderPreview();
         });
     }
   }
@@ -862,7 +894,7 @@ async function renderPreview() {
 
 function syncSlugFromName() {
   if (!state.slugTouched) {
-    form.elements.public_slug.value = slugify(form.elements.full_name.value);
+    form.elements.public_slug.value = buildAutoSlug(form.elements.full_name.value);
   }
 }
 
@@ -913,10 +945,10 @@ async function saveProfile(event) {
   event.preventDefault();
 
   const raw = getFormState();
-  raw.public_slug = slugify(raw.public_slug || raw.full_name);
+  raw.public_slug = cleanText(raw.public_slug) || buildAutoSlug(raw.full_name);
   form.elements.public_slug.value = raw.public_slug;
 
-  if (!raw.full_name || !raw.public_slug) {
+  if (!raw.full_name) {
     flashStatus("warning", "statusValidationTitle", "statusValidationMessage");
     renderPreview();
     return;
@@ -932,10 +964,11 @@ async function saveProfile(event) {
 
   try {
     const { sourceLanguage, sourceFields } = syncSource(raw);
-    let englishFields = sourceLanguage === "en" ? sourceFields : await translateFields(sourceLanguage, "en", sourceFields);
-    let spanishFields = sourceLanguage === "es" ? sourceFields : await translateFields(sourceLanguage, "es", sourceFields);
+    const englishResult = await translateFieldsForSave(sourceLanguage, "en", sourceFields);
+    const spanishResult = await translateFieldsForSave(sourceLanguage, "es", sourceFields);
+    const translationDegraded = englishResult.degraded || spanishResult.degraded;
 
-    const payload = buildPayload(raw, sourceFields, englishFields, spanishFields);
+    const payload = buildPayload(raw, sourceFields, englishResult.fields, spanishResult.fields);
     const { error } = await getClient()
       .from(config.profilesWriteTable || "medical_profiles")
       .upsert(payload, { onConflict: "public_slug" });
@@ -949,7 +982,9 @@ async function saveProfile(event) {
     const emailOk = await notifyAdmin(raw.full_name, raw.public_slug, url);
 
     openSuccessModal(url, state.pendingMode);
-    if (emailOk) {
+    if (translationDegraded) {
+      showStatus("warning", "statusTranslateErrorTitle", "statusTranslateErrorMessage");
+    } else if (emailOk) {
       showStatus("success", "statusSavedTitle", "statusSavedMessage");
     } else {
       showStatus("warning", "statusEmailWarningTitle", "statusEmailWarningMessage");
@@ -957,13 +992,8 @@ async function saveProfile(event) {
   } catch (error) {
     console.warn("Save failed", error);
     const details = extractErrorDetails(error);
-    if (error?.status === 404) {
-      showStatus("error", "statusTranslateMissingTitle", "statusTranslateMissingMessage");
-      openErrorModal(details);
-    } else {
-      showStatus("error", "statusSaveErrorTitle", "statusSaveErrorMessage", { details });
-      openErrorModal(details);
-    }
+    showStatus("error", "statusSaveErrorTitle", "statusSaveErrorMessage", { details });
+    openErrorModal(details);
   } finally {
     state.pendingMode = "save";
     closeSavingOverlay();
