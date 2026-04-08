@@ -3,7 +3,11 @@ import { corsHeaders } from "../_shared/cors.ts";
 const medicalFieldKeys = ["conditions", "allergies", "medications", "devices", "notes"] as const;
 const languageNames = {
   en: "English",
-  es: "Spanish"
+  es: "Spanish",
+  fr: "French",
+  pt: "Portuguese",
+  de: "German",
+  it: "Italian"
 } as const;
 
 type SupportedLanguage = keyof typeof languageNames;
@@ -20,7 +24,8 @@ function json(body: unknown, status = 200) {
 }
 
 function normalizeLanguage(value: unknown): SupportedLanguage {
-  return value === "en" ? "en" : "es";
+  const normalized = String(value ?? "").trim().slice(0, 2).toLowerCase() as SupportedLanguage;
+  return languageNames[normalized] ? normalized : "en";
 }
 
 function normalizeFields(value: unknown): MedicalFields {

@@ -14,5 +14,6 @@ window.NFC_MEDICO_CONFIG = {
   scanEventsTable: "medical_scan_events",
   allowDirectProfileWrite: true,
   translationFunctionName: "translate-medical-copy",
-  siteBaseUrl: "https://medical-k63anqspk-mayoreotresislas-9044s-projects.vercel.app/med/{slug}"
+  notificationFunctionName: "notify-profile-created",
+  siteBaseUrl: "https://medical-nfc.vercel.app/med/{slug}"
 };

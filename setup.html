@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NFC Medico | Setup Portal</title>
+    <title>NFC Medico | Medical Form</title>
     <meta
       name="description"
-      content="Portal de llenado para perfiles medicos NFC con formulario amigable, preview en vivo y guardado a Supabase."
+      content="Medical form for NFC setup with multilingual preview and family-friendly profile creation."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,42 +23,48 @@
           <span class="brand-mark">+</span>
           <span>
             <strong>NFC Medico</strong>
-            <small data-i18n="brandTagline">Medical profile setup portal</small>
+            <small data-i18n="brandTagline">Medical form</small>
           </span>
         </a>
 
         <div class="topbar-actions">
-          <a class="nav-link" href="./index.html" data-i18n="publicLandingLink">Public landing</a>
-          <div class="language-switcher" role="group" aria-label="Language selector">
-            <button class="lang-btn is-active" type="button" data-lang="es">ES</button>
-            <button class="lang-btn" type="button" data-lang="en">EN</button>
-          </div>
+          <a class="nav-link nav-link-primary" href="./index.html" data-i18n="publicLandingLink">What is this?</a>
+          <label class="language-dropdown">
+            <span data-i18n="interfaceLanguage">Interface language</span>
+            <select data-lang-select>
+              <option value="en">🇺🇸 EN</option>
+              <option value="es">🇪🇸 ES</option>
+              <option value="fr">🇫🇷 FR</option>
+              <option value="pt">🇵🇹 PT</option>
+              <option value="de">🇩🇪 DE</option>
+              <option value="it">🇮🇹 IT</option>
+            </select>
+          </label>
         </div>
       </header>
 
       <main>
         <section class="hero">
           <div>
-            <p class="eyebrow" data-i18n="heroKicker">Profile builder</p>
-            <h1 data-i18n="heroTitle">Llena un perfil medico simple, profesional y listo para escanear.</h1>
+            <p class="eyebrow" data-i18n="heroKicker">Medical form</p>
+            <h1 data-i18n="heroTitle">Fill the medical form for one person.</h1>
             <p class="hero-copy" data-i18n="heroText">
-              Captura toda la informacion una sola vez, revisa el preview en vivo y guarda el URL
-              publico que vas a usar despues en el NFC.
+              Add the emergency information once, review the live preview, and generate the secure link that will be emailed to the administrator who records the NFC tags.
             </p>
 
             <div class="hero-points">
-              <span data-i18n="heroPoint1">Un solo formulario, sin duplicar idiomas</span>
-              <span data-i18n="heroPoint2">Preview publico en EN y ES</span>
-              <span data-i18n="heroPoint3">Guardado listo para Supabase</span>
+              <span data-i18n="heroPoint1">Clear step-by-step flow</span>
+              <span data-i18n="heroPoint2">Multilingual preview</span>
+              <span data-i18n="heroPoint3">Fast family workflow</span>
             </div>
           </div>
 
           <div class="hero-card">
-            <p class="hero-card-label" data-i18n="heroCardLabel">Recommended flow</p>
+            <p class="hero-card-label" data-i18n="heroCardLabel">What you will do</p>
             <ol>
-              <li data-i18n="heroCard1">Fill the patient profile once.</li>
-              <li data-i18n="heroCard2">Review the live preview before publishing.</li>
-              <li data-i18n="heroCard3">Save and keep the generated public URL.</li>
+              <li data-i18n="heroCard1">Fill the health profile for one person.</li>
+              <li data-i18n="heroCard2">Review the emergency preview before saving.</li>
+              <li data-i18n="heroCard3">The secure profile link is emailed to the NFC administrator.</li>
             </ol>
           </div>
         </section>
@@ -74,14 +80,14 @@
               <span class="step-pill" data-i18n="step1">1. Identity</span>
               <span class="step-pill" data-i18n="step2">2. Medical details</span>
               <span class="step-pill" data-i18n="step3">3. Contacts</span>
-              <span class="step-pill" data-i18n="step4">4. Publish</span>
+              <span class="step-pill" data-i18n="step4">4. Finish</span>
             </div>
 
             <form id="profile-form" class="profile-form" autocomplete="off">
               <section class="form-section">
                 <div class="section-heading">
                   <p class="section-kicker" data-i18n="identityKicker">Identity</p>
-                  <h2 data-i18n="identityTitle">Basic profile and public route</h2>
+                  <h2 data-i18n="identityTitle">Person details and profile route</h2>
                 </div>
 
                 <div class="field-grid two-up">
@@ -108,10 +114,14 @@
 
                 <div class="field-grid three-up">
                   <label class="field">
-                    <span data-i18n="fieldProfileLanguage">Profile language</span>
+                    <span data-i18n="fieldProfileLanguage">Language used to write the profile</span>
                     <select name="default_language">
-                      <option value="es">Espanol</option>
-                      <option value="en">English</option>
+                      <option value="en">🇺🇸 EN - English</option>
+                      <option value="es">🇪🇸 ES - Espanol</option>
+                      <option value="fr">🇫🇷 FR - Francais</option>
+                      <option value="pt">🇵🇹 PT - Portugues</option>
+                      <option value="de">🇩🇪 DE - Deutsch</option>
+                      <option value="it">🇮🇹 IT - Italiano</option>
                     </select>
                   </label>
                   <label class="field">
@@ -164,7 +174,7 @@
               <section class="form-section">
                 <div class="section-heading">
                   <p class="section-kicker" data-i18n="medicalKicker">Medical details</p>
-                  <h2 data-i18n="medicalTitle">Write the medical details once</h2>
+                  <h2 data-i18n="medicalTitle">Write the medical information once</h2>
                 </div>
 
                 <div class="field-grid">
@@ -219,7 +229,7 @@
               <section class="form-section">
                 <div class="section-heading">
                   <p class="section-kicker" data-i18n="contactsKicker">Contacts</p>
-                  <h2 data-i18n="contactsTitle">Emergency contacts</h2>
+                  <h2 data-i18n="contactsTitle">Family or caregiver contacts</h2>
                 </div>
 
                 <div class="contact-block">
@@ -283,11 +293,11 @@
 
               <section class="form-section">
                 <div class="section-heading">
-                  <p class="section-kicker" data-i18n="publishKicker">Publish</p>
-                  <h2 data-i18n="publishTitle">Privacy, record and generated URL</h2>
+                  <p class="section-kicker" data-i18n="publishKicker">Finish</p>
+                  <h2 data-i18n="publishTitle">Generate the profile link</h2>
                 </div>
 
-                <div class="field-grid two-up">
+                <div class="field-grid">
                   <label class="field">
                     <span data-i18n="fieldRecordUrl">Full medical record URL</span>
                     <input
@@ -297,36 +307,18 @@
                       data-clear-helper
                     />
                   </label>
-                  <div class="field toggle-field">
-                    <span data-i18n="fieldIsPublic">Public emergency profile</span>
-                    <label class="toggle">
-                      <input name="is_public" type="checkbox" checked />
-                      <span class="toggle-track"></span>
-                    </label>
-                  </div>
                 </div>
 
-                <div class="url-panel">
-                  <div>
-                    <span class="url-label" data-i18n="generatedUrlLabel">Generated public URL</span>
-                    <strong class="url-value" data-generated-url>https://tudominio.com/med/new-profile</strong>
-                  </div>
-                  <div class="url-actions">
-                    <button class="button button-secondary" type="button" data-action="copy-url" data-i18n="copyUrl">
-                      Copy URL
+                <div class="action-panel">
+                  <p class="action-copy" data-i18n="generatedUrlLabel">
+                    When you generate the profile, the secure link is sent to the administrator email used for NFC recording.
+                  </p>
+                  <div class="action-buttons">
+                    <button class="button button-secondary" type="button" data-action="save-family" data-i18n="saveFamily">
+                      Generate another family profile
                     </button>
-                    <a
-                      class="button button-dark"
-                      href="./index.html"
-                      target="_blank"
-                      rel="noreferrer"
-                      data-action="open-public"
-                      data-i18n="openPublic"
-                    >
-                      Open public preview
-                    </a>
                     <button class="button button-primary" type="submit" data-i18n="saveProfile">
-                      Save profile
+                      Generate profile
                     </button>
                   </div>
                 </div>
@@ -339,17 +331,22 @@
               <div class="preview-header">
                 <div>
                   <p class="section-kicker" data-i18n="previewKicker">Live preview</p>
-                  <h2 data-i18n="previewTitle">How the public scan page will look</h2>
+                  <h2 data-i18n="previewTitle">How the NFC page will look</h2>
                 </div>
-                <div class="preview-switcher" role="group" aria-label="Preview language">
-                  <button class="preview-lang is-active" type="button" data-preview-lang="es">ES</button>
-                  <button class="preview-lang" type="button" data-preview-lang="en">EN</button>
-                </div>
+                <label class="language-dropdown preview-language">
+                  <span data-i18n="previewLanguage">Preview language</span>
+                  <select data-preview-select>
+                    <option value="en">🇺🇸 EN</option>
+                    <option value="es">🇪🇸 ES</option>
+                    <option value="fr">🇫🇷 FR</option>
+                    <option value="pt">🇵🇹 PT</option>
+                    <option value="de">🇩🇪 DE</option>
+                    <option value="it">🇮🇹 IT</option>
+                  </select>
+                </label>
               </div>
 
-              <div class="preview-url-bar" data-generated-url-inline>
-                https://tudominio.com/med/new-profile
-              </div>
+              <div class="preview-url-bar" data-generated-url-inline>https://tudominio.com/med/new-profile</div>
 
               <article class="preview-card emergency">
                 <div class="preview-card-head">
@@ -419,7 +416,7 @@
     <div class="saving-overlay is-hidden" data-saving-overlay>
       <div class="saving-card">
         <div class="saving-spinner"></div>
-        <strong data-i18n="savingTitle">Saving profile...</strong>
+        <strong data-i18n="savingTitle">Generating profile...</strong>
         <p data-i18n="savingText">Please wait while we store the information securely.</p>
       </div>
     </div>
@@ -431,25 +428,15 @@
           x
         </button>
         <p class="success-kicker" data-i18n="successKicker">Saved</p>
-        <h2 id="success-title" data-i18n="successTitle">Profile saved successfully</h2>
+        <h2 id="success-title" data-i18n="successTitle">Profile generated successfully</h2>
         <p class="success-copy" data-i18n="successText">
-          The profile is ready. Keep this public URL for the NFC setup.
+          The profile was generated correctly and the secure link was sent to the administrator email for NFC recording.
         </p>
         <div class="success-url-box" data-success-url>https://tudominio.com/med/new-profile</div>
         <div class="success-actions">
-          <button class="button button-secondary" type="button" data-action="copy-success-url" data-i18n="copyUrl">
-            Copy URL
+          <button class="button button-secondary" type="button" data-action="success-family" data-i18n="saveFamily">
+            Generate another family profile
           </button>
-          <a
-            class="button button-dark"
-            href="./index.html"
-            target="_blank"
-            rel="noreferrer"
-            data-action="open-success-url"
-            data-i18n="openPublic"
-          >
-            Open public preview
-          </a>
           <button class="button button-primary" type="button" data-action="close-success" data-i18n="closeSuccess">
             Done
           </button>

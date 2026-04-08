@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NFC Medico | Landing Demo</title>
+    <title>NFC Medico | Medical Form</title>
     <meta
       name="description"
-      content="Landing bilingue para perfiles medicos NFC con vista de emergencia, informacion adicional, privacidad y estructura comercial."
+      content="Informational landing for the NFC medical form and multilingual emergency profile."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,89 +19,110 @@
   <body>
     <div class="site-shell">
       <header class="topbar">
-        <a class="brand" href="#top">
+        <a class="brand" href="./index.html">
           <span class="brand-mark">+</span>
           <span>
             <strong>NFC Medico</strong>
-            <small data-i18n="brandTagline">Emergency-ready medical landing</small>
+            <small data-i18n="brandTagline">Medical form and profile access</small>
           </span>
         </a>
 
         <div class="toolbar">
-          <a class="toolbar-link" href="./setup.html">Setup Portal</a>
-          <span class="toolbar-label" data-i18n="languageLabel">Language</span>
-          <div class="language-switcher" role="group" aria-label="Language selector">
-            <button class="lang-btn is-active" type="button" data-lang="en">EN</button>
-            <button class="lang-btn" type="button" data-lang="es">ES</button>
-          </div>
+          <a class="toolbar-link toolbar-link-primary" href="./setup.html" data-i18n="primaryBuilderAction">
+            Open Medical Form
+          </a>
+          <label class="language-select-wrap">
+              <span data-i18n="languageLabel">Language</span>
+            <select class="language-select" data-language-select aria-label="Language">
+              <option value="en">🇺🇸 EN</option>
+              <option value="es">🇪🇸 ES</option>
+              <option value="fr">🇫🇷 FR</option>
+              <option value="pt">🇵🇹 PT</option>
+              <option value="de">🇩🇪 DE</option>
+              <option value="it">🇮🇹 IT</option>
+            </select>
+          </label>
         </div>
       </header>
 
       <section class="runtime-status" data-runtime-status hidden>
-        <strong data-runtime-title>Demo mode</strong>
-        <p data-runtime-message>
-          Add your Supabase URL, anon key, and a profile slug to load a real medical record.
-        </p>
+        <strong data-runtime-title>Loading profile</strong>
+        <p data-runtime-message>Looking up the requested medical profile.</p>
       </section>
 
       <main id="top">
-        <section class="hero">
-          <div class="hero-copy">
-            <p class="eyebrow" data-i18n="eyebrow">Medical NFC landing page</p>
-            <h1 data-i18n="heroTitle">
-              Clear emergency information, fast actions, and a cleaner bilingual experience.
-            </h1>
-            <p class="hero-text" data-i18n="heroText">
-              Designed so first responders see the critical information first, while family members
-              and clinics can access deeper details without the page feeling crowded.
-            </p>
+        <section class="overview-view" data-view="overview">
+          <div class="hero">
+            <div class="hero-copy">
+              <p class="eyebrow" data-i18n="overviewKicker">Medical form</p>
+              <h1 data-i18n="overviewTitle">This page explains the medical form that will be linked to the NFC.</h1>
+              <p class="hero-text" data-i18n="overviewText">
+                This page is for the person who will complete the medical information before the NFC is programmed.
+                You will add one person's emergency details, extra medical information, family contacts, and the
+                language that should appear when the profile is scanned.
+              </p>
 
-            <div class="hero-actions">
-              <a class="button button-primary" href="#screens" data-i18n="heroPrimary">
-                View emergency screens
-              </a>
-              <a class="button button-secondary" href="./setup.html" data-i18n="heroSecondary">
-                Open setup portal
-              </a>
+              <div class="hero-actions">
+                <a class="button button-primary" href="./setup.html" data-i18n="overviewPrimary">
+                  Complete Medical Form
+                </a>
+              </div>
             </div>
 
-            <ul class="hero-points">
-              <li data-i18n="heroPoint1">High-contrast layout for urgent readability</li>
-              <li data-i18n="heroPoint2">Language selector instead of duplicated blocks</li>
-              <li data-i18n="heroPoint3">Ready for public + premium private views</li>
-            </ul>
-          </div>
-
-          <div class="hero-highlight">
-            <div class="highlight-card">
-              <p class="highlight-label" data-i18n="highlightLabel">Recommended structure</p>
-              <ul class="highlight-list">
-                <li data-i18n="highlight1">Screen 1: emergency-only, visible immediately</li>
-                <li data-i18n="highlight2">Screen 2: detailed profile and optional records</li>
-                <li data-i18n="highlight3">Direct call, WhatsApp, and location sharing</li>
+            <aside class="hero-panel">
+              <p class="panel-label" data-i18n="whatYouWillFill">What you will fill</p>
+              <ul class="feature-list">
+                <li data-i18n="fillItem1">Basic identity and blood type</li>
+                <li data-i18n="fillItem2">Conditions, allergies, medications, and devices</li>
+                <li data-i18n="fillItem3">Emergency contacts for family or caregivers</li>
+                <li data-i18n="fillItem4">Optional link to the complete medical record</li>
               </ul>
-            </div>
+            </aside>
           </div>
+
+          <section class="info-layout">
+            <article class="panel panel-light">
+              <p class="section-kicker" data-i18n="howItWorksKicker">How it works</p>
+              <h2 data-i18n="howItWorksTitle">A simple flow before the NFC is recorded</h2>
+              <ol class="flow-list">
+                <li data-i18n="howStep1">Complete the medical profile form.</li>
+                <li data-i18n="howStep2">Save the profile and generate the secure URL.</li>
+                <li data-i18n="howStep3">The administrator receives that URL by email.</li>
+                <li data-i18n="howStep4">That URL is the one recorded in the NFC tag.</li>
+              </ol>
+            </article>
+
+            <article class="panel panel-dark">
+              <p class="section-kicker" data-i18n="importantKicker">Important</p>
+              <h2 data-i18n="importantTitle">The medical data is not written directly to the NFC chip</h2>
+              <p data-i18n="importantText">
+                The chip stores only a secure web address. That keeps the information easier to update and better
+                organized for future changes.
+              </p>
+              <div class="url-box">https://medical-nfc.vercel.app/med/ABC123</div>
+            </article>
+          </section>
         </section>
 
-        <section class="section section-screens" id="screens">
-          <div class="section-heading">
-            <p class="section-kicker" data-i18n="screensKicker">Core layout</p>
-            <h2 data-i18n="screensTitle">Two focused screens instead of one crowded page</h2>
-            <p data-i18n="screensText">
-              The first card is optimized for urgency. The second card expands the profile with more
-              context and optional medical records.
-            </p>
+        <section class="profile-view is-hidden" data-view="profile">
+          <div class="profile-header">
+            <div>
+              <p class="eyebrow" data-i18n="profileKicker">Medical profile</p>
+              <h1 data-field="name">John Doe</h1>
+              <p class="profile-subtitle" data-i18n="profileSubtitle">
+                Emergency information shown from an NFC medical profile.
+              </p>
+            </div>
           </div>
 
-          <div class="screen-grid">
+          <div class="profile-grid">
             <article class="screen-card emergency-card">
               <div class="screen-header">
-                <span class="screen-tag critical" data-i18n="screen1Tag">Critical</span>
+                <span class="screen-tag critical" data-i18n="screen1Tag">Emergency</span>
                 <span class="screen-step" data-i18n="screen1Step">Screen 1</span>
               </div>
 
-              <h3 class="screen-title" data-i18n="emergencyTitle">Emergency Medical Info</h3>
+              <h2 class="screen-title" data-i18n="emergencyTitle">Emergency Medical Info</h2>
 
               <dl class="medical-list">
                 <div>
@@ -126,20 +147,6 @@
                 </div>
               </dl>
 
-              <div class="contacts">
-                <h4 data-i18n="contactsTitle">Emergency Contacts</h4>
-                <a class="contact-card" href="tel:+15551234567" data-contact-card="1">
-                  <span class="contact-index" data-i18n="contact1Label">Contact 1</span>
-                  <strong data-field="contact1Name">Jane Doe</strong>
-                  <span data-field="contact1Phone">+1 (555) 123-4567</span>
-                </a>
-                <a class="contact-card" href="tel:+15559876543" data-contact-card="2">
-                  <span class="contact-index" data-i18n="contact2Label">Contact 2</span>
-                  <strong data-field="contact2Name">Mike Doe</strong>
-                  <span data-field="contact2Phone">+1 (555) 987-6543</span>
-                </a>
-              </div>
-
               <div class="notice-box">
                 <p class="notice-title" data-i18n="importantNotes">Important Notes</p>
                 <ul class="notice-list">
@@ -150,17 +157,10 @@
               </div>
 
               <div class="action-row">
-                <a
-                  class="button button-danger"
-                  href="tel:+15551234567"
-                  data-action="call-primary"
-                  data-i18n="callButton"
-                >
-                  Call
-                </a>
+                <a class="button button-danger" href="#" data-action="call-primary" data-i18n="callButton">Call</a>
                 <a
                   class="button button-light"
-                  href="https://wa.me/15551234567"
+                  href="#"
                   target="_blank"
                   rel="noreferrer"
                   data-action="whatsapp-primary"
@@ -168,16 +168,19 @@
                 >
                   WhatsApp
                 </a>
+                <button class="button button-dark" type="button" data-action="share-location" data-i18n="shareLocation">
+                  Share current location
+                </button>
               </div>
             </article>
 
             <article class="screen-card detail-card">
               <div class="screen-header">
-                <span class="screen-tag info" data-i18n="screen2Tag">Detailed</span>
+                <span class="screen-tag info" data-i18n="screen2Tag">Details</span>
                 <span class="screen-step" data-i18n="screen2Step">Screen 2</span>
               </div>
 
-              <h3 class="screen-title" data-i18n="detailsTitle">Additional Medical Information</h3>
+              <h2 class="screen-title" data-i18n="detailsTitle">Additional Medical Information</h2>
 
               <dl class="medical-list detail-list">
                 <div>
@@ -198,180 +201,30 @@
                 </div>
               </dl>
 
+              <div class="contacts">
+                <h3 data-i18n="contactsTitle">Emergency Contacts</h3>
+                <a class="contact-card" href="#" data-contact-card="1">
+                  <span class="contact-index" data-i18n="contact1Label">Contact 1</span>
+                  <strong data-field="contact1Name">Jane Doe</strong>
+                  <span data-field="contact1Phone">+1 (555) 123-4567</span>
+                </a>
+                <a class="contact-card" href="#" data-contact-card="2">
+                  <span class="contact-index" data-i18n="contact2Label">Contact 2</span>
+                  <strong data-field="contact2Name">Mike Doe</strong>
+                  <span data-field="contact2Phone">+1 (555) 987-6543</span>
+                </a>
+              </div>
+
               <a
-                class="record-link"
+                class="record-link is-hidden"
                 href="#"
                 target="_blank"
                 rel="noreferrer"
                 data-action="record-link"
                 data-i18n="recordLink"
               >
-                Full Medical Record (optional)
+                Open full medical record
               </a>
-
-              <div class="privacy-panel">
-                <h4 data-i18n="privacyTitle">Privacy Model</h4>
-                <div class="privacy-grid">
-                  <div>
-                    <span class="privacy-mode" data-i18n="privacyOptionATitle">Option A</span>
-                    <p data-i18n="privacyOptionAText">Everything visible without login.</p>
-                  </div>
-                  <div>
-                    <span class="privacy-mode" data-i18n="privacyOptionBTitle">Option B</span>
-                    <p data-i18n="privacyOptionBText">
-                      Emergency card is public. Detailed information stays behind PIN or login.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="action-row stacked">
-                <button class="button button-dark" type="button" data-action="share-location" data-i18n="shareLocation">
-                  Share location
-                </button>
-                <span class="microcopy" data-i18n="premiumNote">
-                  Premium-ready structure for subscriptions and privacy tiers.
-                </span>
-              </div>
-            </article>
-          </div>
-        </section>
-
-        <section class="section info-grid" id="nfc">
-          <article class="panel panel-dark">
-            <p class="section-kicker" data-i18n="nfcKicker">NFC setup</p>
-            <h2 data-i18n="nfcTitle">What to write on the NFC tag</h2>
-            <p data-i18n="nfcText">
-              Always store a secure URL, not the medical data directly on the chip.
-            </p>
-            <div class="url-box">https://tudominio.com/med/ABC123</div>
-            <ul class="feature-list">
-              <li data-i18n="nfcBenefit1">Update information without reprogramming the chip</li>
-              <li data-i18n="nfcBenefit2">Protect privacy and control visibility levels</li>
-              <li data-i18n="nfcBenefit3">Enable subscriptions or premium features</li>
-            </ul>
-          </article>
-
-          <article class="panel">
-            <p class="section-kicker" data-i18n="actionsKicker">Revenue features</p>
-            <h2 data-i18n="actionsTitle">Functional actions that feel useful immediately</h2>
-            <div class="cta-stack">
-              <a class="cta-tile" href="tel:+15551234567" data-action="call-primary">
-                <span>📞</span>
-                <div>
-                  <strong data-i18n="ctaCallTitle">Call emergency contact</strong>
-                  <p data-i18n="ctaCallText">One tap to the primary contact.</p>
-                </div>
-              </a>
-              <a
-                class="cta-tile"
-                href="https://wa.me/15551234567"
-                target="_blank"
-                rel="noreferrer"
-                data-action="whatsapp-primary"
-              >
-                <span>💬</span>
-                <div>
-                  <strong data-i18n="ctaWhatsappTitle">Message with WhatsApp</strong>
-                  <p data-i18n="ctaWhatsappText">Fast follow-up for relatives or caregivers.</p>
-                </div>
-              </a>
-              <button class="cta-tile is-static" type="button" data-action="share-location">
-                <span>📍</span>
-                <div>
-                  <strong data-i18n="ctaLocationTitle">Share location</strong>
-                  <p data-i18n="ctaLocationText">Optional advanced feature for premium plans.</p>
-                </div>
-              </button>
-            </div>
-          </article>
-        </section>
-
-        <section class="section info-grid">
-          <article class="panel">
-            <p class="section-kicker" data-i18n="supabaseKicker">Supabase</p>
-            <h2 data-i18n="supabaseTitle">Suggested database structure</h2>
-            <p data-i18n="supabaseText">
-              Add a medical profile table and a new target type for medical NFC tags.
-            </p>
-            <pre class="code-block"><code>create table public.medical_profiles (
-  id uuid primary key default gen_random_uuid(),
-  company_id uuid,
-  full_name text,
-  conditions text,
-  allergies text,
-  medications text,
-  devices text,
-  blood_type text,
-  doctor text,
-  clinic text,
-  emergency_contact_1 text,
-  emergency_contact_2 text,
-  notes text,
-  is_public boolean default true,
-  created_at timestamptz default now()
-);</code></pre>
-            <div class="tag-row">
-              <span class="chip" data-i18n="targetTypeLabel">nfc_tags.target_type</span>
-              <span class="chip chip-accent">'medical'</span>
-            </div>
-          </article>
-
-          <article class="panel">
-            <p class="section-kicker" data-i18n="flowKicker">Operational flow</p>
-            <h2 data-i18n="flowTitle">Simple workflow from product to scan</h2>
-            <ol class="flow-list">
-              <li data-i18n="flow1">Print a medical bracelet, card, or keychain.</li>
-              <li data-i18n="flow2">Insert the NFC chip.</li>
-              <li data-i18n="flow3">Write the secure profile URL.</li>
-              <li data-i18n="flow4">User scans the tag with their phone.</li>
-              <li data-i18n="flow5">The web app reads Supabase and shows the profile.</li>
-              <li data-i18n="flow6">Log the event for analytics or traceability.</li>
-            </ol>
-          </article>
-        </section>
-
-        <section class="section commercial-section">
-          <div class="section-heading">
-            <p class="section-kicker" data-i18n="productKicker">Commercial model</p>
-            <h2 data-i18n="productTitle">A product that is practical, emotional, and easy to sell</h2>
-          </div>
-
-          <div class="commercial-grid">
-            <article class="panel accent-panel">
-              <h3 data-i18n="kitTitle">Medical NFC Kit</h3>
-              <ul class="feature-list">
-                <li data-i18n="kit1">3D bracelet or keychain</li>
-                <li data-i18n="kit2">NFC chip included</li>
-                <li data-i18n="kit3">Hosted medical landing page</li>
-                <li data-i18n="kit4">Profile setup and activation</li>
-              </ul>
-              <div class="price-grid">
-                <div>
-                  <span data-i18n="priceUnitLabel">Unit price</span>
-                  <strong>$25 - $60</strong>
-                </div>
-                <div>
-                  <span data-i18n="priceSetupLabel">Setup</span>
-                  <strong>$20 - $50</strong>
-                </div>
-                <div>
-                  <span data-i18n="priceMonthlyLabel">Monthly</span>
-                  <strong>$3 - $10</strong>
-                </div>
-              </div>
-            </article>
-
-            <article class="panel">
-              <h3 data-i18n="nicheTitle">Strong market niches</h3>
-              <div class="pill-grid">
-                <span class="pill" data-i18n="niche1">Diabetics</span>
-                <span class="pill" data-i18n="niche2">People with epilepsy</span>
-                <span class="pill" data-i18n="niche3">Older adults</span>
-                <span class="pill" data-i18n="niche4">Children</span>
-                <span class="pill" data-i18n="niche5">Extreme athletes</span>
-                <span class="pill" data-i18n="niche6">Severe allergy patients</span>
-              </div>
             </article>
           </div>
         </section>
@@ -379,13 +232,8 @@
 
       <footer class="footer">
         <div class="footer-note">
-          <p data-i18n="legalEn">
-            EN: This information is provided by the owner. In case of emergency, contact local
-            emergency services.
-          </p>
-          <p data-i18n="legalEs">
-            ES: Esta informacion es proporcionada por el usuario. En caso de emergencia, contacte
-            a servicios medicos.
+          <p data-i18n="legalText">
+            This information is provided by the profile owner. In case of emergency, contact local emergency services.
           </p>
         </div>
       </footer>

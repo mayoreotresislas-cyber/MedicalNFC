@@ -9,20 +9,25 @@ create table if not exists public.medical_profiles (
   id uuid primary key default gen_random_uuid(),
   company_id uuid,
   public_slug text not null unique,
-  default_language text not null default 'en' check (default_language in ('en', 'es')),
+  default_language text not null default 'en' check (default_language in ('en', 'es', 'fr', 'pt', 'de', 'it')),
   full_name text not null,
   blood_type text,
   doctor text,
   clinic text,
   insurance text,
+  conditions_source text,
   conditions_en text,
   conditions_es text,
+  allergies_source text,
   allergies_en text,
   allergies_es text,
+  medications_source text,
   medications_en text,
   medications_es text,
+  devices_source text,
   devices_en text,
   devices_es text,
+  notes_source text,
   notes_en text,
   notes_es text,
   emergency_contact_1_name text,
@@ -36,6 +41,20 @@ create table if not exists public.medical_profiles (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+alter table public.medical_profiles
+  add column if not exists conditions_source text,
+  add column if not exists allergies_source text,
+  add column if not exists medications_source text,
+  add column if not exists devices_source text,
+  add column if not exists notes_source text;
+
+alter table public.medical_profiles
+  drop constraint if exists medical_profiles_default_language_check;
+
+alter table public.medical_profiles
+  add constraint medical_profiles_default_language_check
+  check (default_language in ('en', 'es', 'fr', 'pt', 'de', 'it'));
 
 create index if not exists medical_profiles_public_slug_idx
   on public.medical_profiles (public_slug);
@@ -56,7 +75,9 @@ before update on public.medical_profiles
 for each row
 execute function public.set_current_timestamp_updated_at();
 
-create or replace view public.medical_profiles_public as
+drop view if exists public.medical_profiles_public;
+
+create view public.medical_profiles_public as
 select
   public_slug,
   default_language,
@@ -65,14 +86,19 @@ select
   doctor,
   clinic,
   insurance,
+  conditions_source,
   conditions_en,
   conditions_es,
+  allergies_source,
   allergies_en,
   allergies_es,
+  medications_source,
   medications_en,
   medications_es,
+  devices_source,
   devices_en,
   devices_es,
+  notes_source,
   notes_en,
   notes_es,
   emergency_contact_1_name,

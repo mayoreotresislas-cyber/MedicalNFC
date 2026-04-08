@@ -1,33 +1,34 @@
 const setupTranslations = {
   en: {
-    brandTagline: "Medical profile setup portal",
-    publicLandingLink: "Public landing",
-    heroKicker: "Profile builder",
-    heroTitle: "Fill out a medical profile that feels simple, polished, and ready to scan.",
+    brandTagline: "Medical form",
+    publicLandingLink: "What is this?",
+    interfaceLanguage: "Interface language",
+    heroKicker: "Medical form",
+    heroTitle: "Fill the medical form for one person.",
     heroText:
-      "Capture the information once, review the live preview, and keep the public URL you will later write to the NFC tag.",
-    heroPoint1: "One form, no duplicated languages",
-    heroPoint2: "Automatic EN and ES preview",
-    heroPoint3: "Supabase-ready publishing flow",
-    heroCardLabel: "Recommended flow",
-    heroCard1: "Fill the patient profile once.",
-    heroCard2: "Review the live preview before publishing.",
-    heroCard3: "Save and keep the generated public URL.",
+      "Add the emergency information once, review the live preview, and generate the secure link that will be emailed to the administrator who records the NFC tags.",
+    heroPoint1: "Clear step-by-step flow",
+    heroPoint2: "Multilingual preview",
+    heroPoint3: "Fast family workflow",
+    heroCardLabel: "What you will do",
+    heroCard1: "Fill the health profile for one person.",
+    heroCard2: "Review the emergency preview before saving.",
+    heroCard3: "The secure profile link is emailed to the NFC administrator.",
     step1: "1. Identity",
     step2: "2. Medical details",
     step3: "3. Contacts",
-    step4: "4. Publish",
+    step4: "4. Finish",
     identityKicker: "Identity",
-    identityTitle: "Basic profile and public route",
+    identityTitle: "Person details and profile route",
     medicalKicker: "Medical details",
-    medicalTitle: "Write the medical details once",
+    medicalTitle: "Write the medical information once",
     contactsKicker: "Contacts",
-    contactsTitle: "Emergency contacts",
-    publishKicker: "Publish",
-    publishTitle: "Privacy, record and generated URL",
+    contactsTitle: "Family or caregiver contacts",
+    publishKicker: "Finish",
+    publishTitle: "Generate the profile link",
     fieldFullName: "Full name",
     fieldSlug: "Public slug",
-    fieldProfileLanguage: "Profile language",
+    fieldProfileLanguage: "Language used to fill the form",
     fieldBloodType: "Blood type",
     fieldInsurance: "Insurance",
     fieldDoctor: "Doctor",
@@ -43,15 +44,14 @@ const setupTranslations = {
     fieldCountryCode: "Country code",
     fieldContactPhone: "Phone",
     fieldRecordUrl: "Full medical record URL",
-    fieldIsPublic: "Public emergency profile",
-    generatedUrlLabel: "Generated public URL",
-    copyUrl: "Copy URL",
-    openPublic: "Open public preview",
-    saveProfile: "Save profile",
+    generatedUrlLabel: "When you generate the profile, the secure link is sent to the administrator email used for NFC recording.",
+    saveProfile: "Generate profile",
+    saveFamily: "Generate another family profile",
     previewKicker: "Live preview",
-    previewTitle: "How the public scan page will look",
-    criticalBadge: "Critical",
-    detailBadge: "Detail",
+    previewTitle: "How the NFC page will look",
+    previewLanguage: "Preview language",
+    criticalBadge: "Emergency",
+    detailBadge: "Details",
     screenOne: "Screen 1",
     screenTwo: "Screen 2",
     emergencyTitle: "Emergency Medical Info",
@@ -65,68 +65,67 @@ const setupTranslations = {
     labelClinic: "Clinic",
     labelInsurance: "Insurance",
     importantNotes: "Important Notes",
-    savingTitle: "Saving profile...",
-    savingText: "Please wait while we store the information securely.",
+    savingTitle: "Generating profile...",
+    savingText: "Please wait while we store the profile and notify the NFC administrator.",
     successKicker: "Saved",
-    successTitle: "Profile saved successfully",
-    successText: "The profile is ready. Keep this public URL for the NFC setup.",
+    successTitle: "Profile generated successfully",
+    successText: "The profile was generated correctly and the secure link was sent to the administrator email for NFC recording.",
     closeSuccess: "Done",
-    statusReadyTitle: "Ready to save",
-    statusReadyMessage: "Complete the form, review the translated preview, and publish the profile.",
+    statusReadyTitle: "Ready to generate",
+    statusReadyMessage: "Complete the form, review the multilingual preview, and generate the profile link.",
     statusConfigTitle: "Supabase setup missing",
     statusConfigMessage: "Add the dedicated NFC Medico Supabase URL and anon key in config.js.",
-    statusCopiedTitle: "URL copied",
-    statusCopiedMessage: "The public URL is already in your clipboard.",
+    statusValidationTitle: "Missing required fields",
+    statusValidationMessage: "Add at least the full name and public slug before generating the profile.",
+    statusSavingTitle: "Generation in progress",
+    statusSavingMessage: "Generating the secure link and language versions.",
+    statusSavedTitle: "Profile generated",
+    statusSavedMessage: "The medical profile and secure link were created successfully.",
+    statusSaveErrorTitle: "Could not save the profile",
+    statusSaveErrorMessage: "Supabase returned an error while saving. Review the table and configuration.",
+    statusTranslateMissingTitle: "Translation function missing",
+    statusTranslateMissingMessage: "Deploy the translate-medical-copy Edge Function before using multilingual preview.",
+    statusTranslateErrorTitle: "Automatic translation failed",
+    statusTranslateErrorMessage: "We could not generate the selected language right now.",
+    statusEmailWarningTitle: "Profile generated, email warning",
+    statusEmailWarningMessage: "The profile was generated, but the email notification could not be sent.",
     statusLoadedTitle: "Profile loaded",
     statusLoadedMessage: "Existing data for {slug} is now in the form.",
     statusLoadErrorTitle: "Could not load the profile",
     statusLoadErrorMessage: "We could not find {slug}. You can still create a new profile.",
-    statusValidationTitle: "Missing required fields",
-    statusValidationMessage: "Add at least the full name and public slug before saving.",
-    statusSavingTitle: "Saving in progress",
-    statusSavingMessage: "Generating both language versions and publishing the profile.",
-    statusSavedTitle: "Profile saved",
-    statusSavedMessage: "The public URL was generated successfully.",
-    statusSaveErrorTitle: "Could not save the profile",
-    statusSaveErrorMessage: "Supabase returned an error while saving. Review config and try again.",
-    statusTranslateMissingTitle: "Translation function missing",
-    statusTranslateMissingMessage:
-      "Deploy the translate-medical-copy Edge Function and set the OpenAI secret before saving bilingual profiles.",
-    statusTranslateErrorTitle: "Automatic translation failed",
-    statusTranslateErrorMessage:
-      "We could not generate the second language version right now. Try again in a moment.",
     previewTranslating: "Translating automatically...",
     bloodPlaceholder: "Select blood type"
   },
   es: {
-    brandTagline: "Portal de llenado medico",
-    publicLandingLink: "Landing publica",
-    heroKicker: "Constructor de perfil",
-    heroTitle: "Llena un perfil medico simple, profesional y listo para escanear.",
+    brandTagline: "Formulario medico",
+    publicLandingLink: "Que es esto?",
+    interfaceLanguage: "Idioma de la interfaz",
+    heroKicker: "Formulario medico",
+    heroTitle: "Llena el formulario medico para una persona.",
     heroText:
-      "Captura toda la informacion una sola vez, revisa el preview en vivo y guarda el URL publico que vas a usar despues en el NFC.",
-    heroPoint1: "Un solo formulario, sin duplicar idiomas",
-    heroPoint2: "Preview automatico en EN y ES",
-    heroPoint3: "Flujo de publicacion listo para Supabase",
-    heroCardLabel: "Flujo recomendado",
-    heroCard1: "Llena el perfil del paciente una sola vez.",
-    heroCard2: "Revisa el preview en vivo antes de publicar.",
-    heroCard3: "Guarda y conserva el URL publico generado.",
+      "Agrega la informacion de emergencia una sola vez, revisa el preview en vivo y genera el enlace seguro que se enviara al administrador que graba los tags NFC.",
+    heroPoint1: "Flujo claro paso a paso",
+    heroPoint2: "Preview multilenguaje",
+    heroPoint3: "Flujo agil para familias",
+    heroCardLabel: "Lo que vas a hacer",
+    heroCard1: "Llena el perfil de salud de una persona.",
+    heroCard2: "Revisa el preview de emergencia antes de guardar.",
+    heroCard3: "El enlace seguro del perfil se envia al administrador del NFC.",
     step1: "1. Identidad",
     step2: "2. Informacion medica",
     step3: "3. Contactos",
-    step4: "4. Publicacion",
+    step4: "4. Finalizar",
     identityKicker: "Identidad",
-    identityTitle: "Perfil basico y ruta publica",
+    identityTitle: "Datos de la persona y ruta del perfil",
     medicalKicker: "Informacion medica",
-    medicalTitle: "Escribe los datos medicos una sola vez",
+    medicalTitle: "Escribe la informacion medica una sola vez",
     contactsKicker: "Contactos",
-    contactsTitle: "Contactos de emergencia",
-    publishKicker: "Publicacion",
-    publishTitle: "Privacidad, expediente y URL generado",
+    contactsTitle: "Contactos de familia o cuidadores",
+    publishKicker: "Finalizar",
+    publishTitle: "Generar el enlace del perfil",
     fieldFullName: "Nombre completo",
     fieldSlug: "Slug publico",
-    fieldProfileLanguage: "Idioma del perfil",
+    fieldProfileLanguage: "Idioma en el que llenas el formulario",
     fieldBloodType: "Tipo de sangre",
     fieldInsurance: "Seguro",
     fieldDoctor: "Medico",
@@ -141,15 +140,14 @@ const setupTranslations = {
     fieldContactName: "Nombre",
     fieldCountryCode: "Codigo de pais",
     fieldContactPhone: "Telefono",
-    fieldRecordUrl: "URL del expediente completo",
-    fieldIsPublic: "Perfil publico de emergencia",
-    generatedUrlLabel: "URL publico generado",
-    copyUrl: "Copiar URL",
-    openPublic: "Abrir preview publico",
-    saveProfile: "Guardar perfil",
+    fieldRecordUrl: "URL del expediente medico completo",
+    generatedUrlLabel: "Cuando generas el perfil, el enlace seguro se envia al correo del administrador que programa los NFC.",
+    saveProfile: "Generar perfil",
+    saveFamily: "Generar otro perfil familiar",
     previewKicker: "Preview en vivo",
-    previewTitle: "Asi se vera la pagina publica al escanear",
-    criticalBadge: "Critico",
+    previewTitle: "Asi se vera la pagina del NFC",
+    previewLanguage: "Idioma del preview",
+    criticalBadge: "Emergencia",
     detailBadge: "Detalle",
     screenOne: "Pantalla 1",
     screenTwo: "Pantalla 2",
@@ -164,39 +162,46 @@ const setupTranslations = {
     labelClinic: "Clinica",
     labelInsurance: "Seguro",
     importantNotes: "Notas importantes",
-    savingTitle: "Guardando perfil...",
-    savingText: "Espera un momento mientras almacenamos la informacion de forma segura.",
+    savingTitle: "Generando perfil...",
+    savingText: "Espera un momento mientras guardamos el perfil y notificamos al administrador del NFC.",
     successKicker: "Guardado",
-    successTitle: "Perfil guardado con exito",
-    successText: "El perfil ya esta listo. Conserva este URL publico para configurar el NFC.",
+    successTitle: "Perfil generado con exito",
+    successText: "El perfil se genero correctamente y el enlace seguro fue enviado al correo del administrador para grabar el NFC.",
     closeSuccess: "Listo",
-    statusReadyTitle: "Listo para guardar",
-    statusReadyMessage: "Completa el formulario, revisa el preview traducido y publica el perfil.",
+    statusReadyTitle: "Listo para generar",
+    statusReadyMessage: "Completa el formulario, revisa el preview multilenguaje y genera el enlace del perfil.",
     statusConfigTitle: "Falta configurar Supabase",
-    statusConfigMessage: "Agrega en config.js la URL y anon key del proyecto exclusivo de NFC Medico.",
-    statusCopiedTitle: "URL copiado",
-    statusCopiedMessage: "El URL publico ya esta en tu portapapeles.",
+    statusConfigMessage: "Agrega en config.js la URL y la anon key del proyecto de NFC Medico.",
+    statusValidationTitle: "Faltan campos obligatorios",
+    statusValidationMessage: "Agrega al menos el nombre completo y el slug publico antes de generar el perfil.",
+    statusSavingTitle: "Generacion en proceso",
+    statusSavingMessage: "Estamos generando el enlace seguro y las versiones de idioma.",
+    statusSavedTitle: "Perfil generado",
+    statusSavedMessage: "El perfil medico y el enlace seguro se crearon correctamente.",
+    statusSaveErrorTitle: "No se pudo guardar el perfil",
+    statusSaveErrorMessage: "Supabase devolvio un error al guardar. Revisa la tabla y la configuracion.",
+    statusTranslateMissingTitle: "Falta la funcion de traduccion",
+    statusTranslateMissingMessage: "Publica la Edge Function translate-medical-copy antes de usar preview multilenguaje.",
+    statusTranslateErrorTitle: "Fallo la traduccion automatica",
+    statusTranslateErrorMessage: "No pudimos generar el idioma seleccionado en este momento.",
+    statusEmailWarningTitle: "Perfil generado, aviso de correo",
+    statusEmailWarningMessage: "El perfil se genero, pero no se pudo enviar el correo de notificacion.",
     statusLoadedTitle: "Perfil cargado",
-    statusLoadedMessage: "Los datos existentes de {slug} ya estan dentro del formulario.",
+    statusLoadedMessage: "Los datos existentes de {slug} ya estan en el formulario.",
     statusLoadErrorTitle: "No se pudo cargar el perfil",
     statusLoadErrorMessage: "No encontramos {slug}. Aun puedes crear un perfil nuevo.",
-    statusValidationTitle: "Faltan campos obligatorios",
-    statusValidationMessage: "Agrega al menos el nombre completo y el slug publico antes de guardar.",
-    statusSavingTitle: "Guardado en proceso",
-    statusSavingMessage: "Estamos generando ambas versiones de idioma y publicando el perfil.",
-    statusSavedTitle: "Perfil guardado",
-    statusSavedMessage: "El URL publico se genero correctamente.",
-    statusSaveErrorTitle: "No se pudo guardar el perfil",
-    statusSaveErrorMessage: "Supabase devolvio un error al guardar. Revisa la configuracion e intenta de nuevo.",
-    statusTranslateMissingTitle: "Falta la funcion de traduccion",
-    statusTranslateMissingMessage:
-      "Publica la Edge Function translate-medical-copy y configura la llave de OpenAI antes de guardar perfiles bilingues.",
-    statusTranslateErrorTitle: "Fallo la traduccion automatica",
-    statusTranslateErrorMessage:
-      "No pudimos generar la segunda version del idioma en este momento. Intenta de nuevo en un instante.",
     previewTranslating: "Traduciendo automaticamente...",
     bloodPlaceholder: "Selecciona el tipo de sangre"
   }
+};
+
+const languageOptions = {
+  en: "English",
+  es: "Espanol",
+  fr: "Francais",
+  pt: "Portugues",
+  de: "Deutsch",
+  it: "Italiano"
 };
 
 const countryCodes = [
@@ -221,32 +226,34 @@ const medicalFieldKeys = ["conditions", "allergies", "medications", "devices", "
 const config = window.NFC_MEDICO_CONFIG || {};
 const root = document.documentElement;
 const form = document.querySelector("#profile-form");
-const uiLangButtons = document.querySelectorAll("[data-lang]");
-const previewLangButtons = document.querySelectorAll("[data-preview-lang]");
 const textNodes = document.querySelectorAll("[data-i18n]");
 const previewCopyNodes = document.querySelectorAll("[data-preview-copy]");
 const previewNoteNodes = document.querySelectorAll("[data-preview-note]");
+const generatedUrlNodes = document.querySelectorAll("[data-generated-url-inline]");
 const statusBanner = document.querySelector("[data-form-status]");
 const statusTitle = document.querySelector("[data-form-status-title]");
 const statusMessage = document.querySelector("[data-form-status-message]");
-const generatedUrlNodes = document.querySelectorAll("[data-generated-url], [data-generated-url-inline]");
+const savingOverlay = document.querySelector("[data-saving-overlay]");
+const successModal = document.querySelector("[data-success-modal]");
 const successUrlNode = document.querySelector("[data-success-url]");
-const openPublicLinks = document.querySelectorAll('[data-action="open-public"], [data-action="open-success-url"]');
+const interfaceSelect = document.querySelector("[data-lang-select]");
+const previewSelect = document.querySelector("[data-preview-select]");
 const helperFields = document.querySelectorAll("[data-clear-helper]");
 const countryCodeSelects = document.querySelectorAll("[data-country-code]");
 
 const state = {
   uiLang: detectInitialLanguage(),
-  previewLang: "es",
+  previewLang: "en",
   client: null,
   slugTouched: false,
   baseStatus: null,
   statusTimer: null,
   lastSavedUrl: "",
+  pendingMode: "save",
   translation: {
-    sourceLanguage: "es",
+    sourceLanguage: "en",
     signature: "",
-    results: { es: null, en: null },
+    results: {},
     pendingKey: "",
     pendingPromise: null,
     debounceTimer: null
@@ -254,20 +261,22 @@ const state = {
 };
 
 function detectInitialLanguage() {
-  const queryLang = new URLSearchParams(window.location.search).get("lang");
-  if (queryLang === "en" || queryLang === "es") {
-    return queryLang;
+  const requested = new URLSearchParams(window.location.search).get("lang");
+  if (requested && languageOptions[requested]) {
+    return requested;
   }
 
-  return navigator.language?.toLowerCase().startsWith("es") ? "es" : "en";
+  const browserCode = navigator.language?.slice(0, 2).toLowerCase();
+  return languageOptions[browserCode] ? browserCode : "en";
 }
 
-function normalizeLanguage(lang) {
-  return lang === "en" ? "en" : "es";
+function normalizeUiLanguage(lang) {
+  return setupTranslations[lang] ? lang : "en";
 }
 
-function otherLanguage(lang) {
-  return normalizeLanguage(lang) === "en" ? "es" : "en";
+function normalizeProfileLanguage(lang) {
+  const code = cleanText(lang).slice(0, 2).toLowerCase();
+  return languageOptions[code] ? code : "en";
 }
 
 function cleanText(value) {
@@ -295,15 +304,12 @@ function getClient() {
   if (!state.client) {
     state.client = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
   }
-
   return state.client;
 }
 
 function populateCountryCodes() {
   countryCodeSelects.forEach((select) => {
-    select.innerHTML = countryCodes
-      .map((option) => `<option value="${option.value}">${option.label}</option>`)
-      .join("");
+    select.innerHTML = countryCodes.map((option) => `<option value="${option.value}">${option.label}</option>`).join("");
     select.value = "+1";
   });
 }
@@ -311,18 +317,9 @@ function populateCountryCodes() {
 function setupHelperPlaceholders() {
   helperFields.forEach((field) => {
     field.dataset.helperPlaceholder = field.getAttribute("placeholder") || "";
-
     field.addEventListener("focus", () => {
-      const helperText = cleanText(field.dataset.helperPlaceholder);
-      const currentValue = cleanText(field.value);
-
-      if (currentValue && currentValue === helperText) {
-        field.value = "";
-      }
-
       field.setAttribute("placeholder", "");
     });
-
     field.addEventListener("blur", () => {
       if (!cleanText(field.value)) {
         field.setAttribute("placeholder", field.dataset.helperPlaceholder || "");
@@ -331,62 +328,103 @@ function setupHelperPlaceholders() {
   });
 }
 
-function clearDraftFields() {
-  if (new URLSearchParams(window.location.search).get("slug")) {
-    return;
-  }
+function clearDraftFields(preserveContacts = false) {
+  const contacts = preserveContacts ? getFamilyTemplate() : null;
 
   form.reset();
   helperFields.forEach((field) => {
     field.value = "";
     field.setAttribute("placeholder", field.dataset.helperPlaceholder || field.getAttribute("placeholder") || "");
   });
+
+  form.elements.full_record_url.value = "";
   form.elements.blood_type.value = "";
-  form.elements.default_language.value = state.uiLang;
-  form.elements.is_public.checked = true;
+  form.elements.default_language.value = "en";
   countryCodeSelects.forEach((select) => {
     select.value = "+1";
   });
+
+  if (contacts) {
+    applyFamilyTemplate(contacts);
+  }
+
+  state.slugTouched = false;
 }
 
 function setBloodPlaceholder() {
   const select = form.elements.blood_type;
-  if (!select?.options?.length) {
-    return;
+  if (select?.options?.length) {
+    select.options[0].textContent = (setupTranslations[state.uiLang] || setupTranslations.en).bloodPlaceholder;
   }
-
-  select.options[0].textContent = setupTranslations[state.uiLang].bloodPlaceholder;
 }
 
-function buildPhone(countryCode, localNumber) {
-  const code = cleanText(countryCode || "+1");
-  const local = cleanText(localNumber);
-  return local ? `${code} ${local}`.trim() : "";
+function buildPhone(code, local) {
+  const prefix = cleanText(code || "+1");
+  const number = cleanText(local);
+  return number ? `${prefix} ${number}`.trim() : "";
 }
 
-function buildWhatsappNumber(countryCode, localNumber) {
-  return buildPhone(countryCode, localNumber).replace(/\D/g, "");
+function buildWhatsappNumber(code, local) {
+  return buildPhone(code, local).replace(/\D/g, "");
 }
 
-function parsePhone(value) {
-  const phone = cleanText(value);
-  if (!phone) {
+function parsePhone(phone) {
+  const normalized = cleanText(phone).replace(/\s+/g, " ").trim();
+  if (!normalized) {
     return { countryCode: "+1", localNumber: "" };
   }
 
-  const normalized = phone.replace(/\s+/g, " ").trim();
   const match = [...countryCodes]
     .sort((left, right) => right.value.length - left.value.length)
     .find((option) => normalized.startsWith(option.value));
 
   if (!match) {
-    return { countryCode: "+1", localNumber: phone };
+    return { countryCode: "+1", localNumber: normalized };
   }
 
   return {
     countryCode: match.value,
     localNumber: normalized.slice(match.value.length).trim()
   };
+}
+
+function getFamilyTemplate() {
+  const raw = window.localStorage.getItem("nfc-medico-family-template");
+  if (!raw) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(raw);
+  } catch (error) {
+    console.warn("Family template parse failed", error);
+    return null;
+  }
+}
+
+function saveFamilyTemplate(raw) {
+  const template = {
+    default_language: raw.default_language,
+    insurance: raw.insurance,
+    doctor: raw.doctor,
+    clinic: raw.clinic,
+    emergency_contact_1_name: raw.emergency_contact_1_name,
+    emergency_contact_1_country_code: raw.emergency_contact_1_country_code,
+    emergency_contact_1_phone_local: raw.emergency_contact_1_phone_local,
+    emergency_contact_2_name: raw.emergency_contact_2_name,
+    emergency_contact_2_country_code: raw.emergency_contact_2_country_code,
+    emergency_contact_2_phone_local: raw.emergency_contact_2_phone_local
+  };
+
+  window.localStorage.setItem("nfc-medico-family-template", JSON.stringify(template));
+}
+
+function applyFamilyTemplate(template) {
+  Object.entries(template).forEach(([key, value]) => {
+    if (form.elements[key]) {
+      form.elements[key].value = value || "";
+    }
+  });
 }
 
 function splitNotes(value) {
@@ -400,7 +438,7 @@ function getFormState() {
   return {
     full_name: cleanText(form.elements.full_name.value),
     public_slug: slugify(form.elements.public_slug.value),
-    default_language: normalizeLanguage(form.elements.default_language.value),
+    default_language: normalizeProfileLanguage(form.elements.default_language.value),
     blood_type: cleanText(form.elements.blood_type.value),
     insurance: cleanText(form.elements.insurance.value),
     doctor: cleanText(form.elements.doctor.value),
@@ -416,83 +454,51 @@ function getFormState() {
     emergency_contact_2_name: cleanText(form.elements.emergency_contact_2_name.value),
     emergency_contact_2_country_code: cleanText(form.elements.emergency_contact_2_country_code.value || "+1"),
     emergency_contact_2_phone_local: cleanText(form.elements.emergency_contact_2_phone_local.value),
-    full_record_url: cleanText(form.elements.full_record_url.value),
-    is_public: Boolean(form.elements.is_public.checked)
+    full_record_url: cleanText(form.elements.full_record_url.value)
   };
 }
 
-function emptyMedicalFields() {
+function sourceFieldsFromRecord(record) {
+  const sourceLanguage = normalizeProfileLanguage(record.default_language || "en");
   return {
-    conditions: "",
-    allergies: "",
-    medications: "",
-    devices: "",
-    notes: ""
+    conditions: cleanText(record.conditions_source || record[`conditions_${sourceLanguage}`] || record.conditions_en || record.conditions_es),
+    allergies: cleanText(record.allergies_source || record[`allergies_${sourceLanguage}`] || record.allergies_en || record.allergies_es),
+    medications: cleanText(record.medications_source || record[`medications_${sourceLanguage}`] || record.medications_en || record.medications_es),
+    devices: cleanText(record.devices_source || record[`devices_${sourceLanguage}`] || record.devices_en || record.devices_es),
+    notes: cleanText(record.notes_source || record[`notes_${sourceLanguage}`] || record.notes_en || record.notes_es)
   };
 }
 
-function medicalFieldsFromForm(raw) {
-  return {
+function buildSourceSignature(language, fields) {
+  return JSON.stringify({ language, ...fields });
+}
+
+function syncSource(raw) {
+  const sourceLanguage = normalizeProfileLanguage(raw.default_language);
+  const sourceFields = {
     conditions: cleanText(raw.conditions),
     allergies: cleanText(raw.allergies),
     medications: cleanText(raw.medications),
     devices: cleanText(raw.devices),
     notes: cleanText(raw.notes)
   };
-}
+  const signature = buildSourceSignature(sourceLanguage, sourceFields);
 
-function medicalFieldsFromRecord(record, lang) {
-  const fallbackLang = otherLanguage(lang);
-
-  return {
-    conditions: cleanText(record[`conditions_${lang}`] ?? record[`conditions_${fallbackLang}`]),
-    allergies: cleanText(record[`allergies_${lang}`] ?? record[`allergies_${fallbackLang}`]),
-    medications: cleanText(record[`medications_${lang}`] ?? record[`medications_${fallbackLang}`]),
-    devices: cleanText(record[`devices_${lang}`] ?? record[`devices_${fallbackLang}`]),
-    notes: cleanText(record[`notes_${lang}`] ?? record[`notes_${fallbackLang}`])
-  };
-}
-
-function hasMedicalContent(fields) {
-  return medicalFieldKeys.some((key) => cleanText(fields[key]));
-}
-
-function buildTranslationSignature(sourceLanguage, fields) {
-  return JSON.stringify({
-    sourceLanguage,
-    conditions: cleanText(fields.conditions),
-    allergies: cleanText(fields.allergies),
-    medications: cleanText(fields.medications),
-    devices: cleanText(fields.devices),
-    notes: cleanText(fields.notes)
-  });
-}
-
-function syncTranslationSource(raw) {
-  const sourceLanguage = normalizeLanguage(raw.default_language);
-  const sourceFields = medicalFieldsFromForm(raw);
-  const signature = buildTranslationSignature(sourceLanguage, sourceFields);
-
-  if (state.translation.signature === signature) {
-    return sourceFields;
+  if (signature === state.translation.signature) {
+    return { sourceLanguage, sourceFields };
   }
 
-  window.clearTimeout(state.translation.debounceTimer);
   state.translation.sourceLanguage = sourceLanguage;
   state.translation.signature = signature;
-  state.translation.results = {
-    es: sourceLanguage === "es" ? sourceFields : null,
-    en: sourceLanguage === "en" ? sourceFields : null
-  };
+  state.translation.results = { [sourceLanguage]: sourceFields };
   state.translation.pendingKey = "";
   state.translation.pendingPromise = null;
 
-  return sourceFields;
+  return { sourceLanguage, sourceFields };
 }
 
-function createLoadingMedicalFields() {
-  const label = setupTranslations[state.previewLang].previewTranslating;
-
+function createLoadingFields() {
+  const label = (setupTranslations[state.uiLang] || setupTranslations.en).previewTranslating;
   return {
     conditions: label,
     allergies: label,
@@ -502,15 +508,10 @@ function createLoadingMedicalFields() {
   };
 }
 
-function buildDisplayUrl(slugValue = "") {
-  const slug = slugify(slugValue) || "new-profile";
+function buildDisplayUrl(slug) {
+  const safeSlug = slugify(slug) || "new-profile";
   const configured = cleanText(config.siteBaseUrl);
-
-  if (configured.includes("{slug}")) {
-    return configured.replace("{slug}", slug);
-  }
-
-  return `${window.location.origin}/med/${slug}`;
+  return configured.includes("{slug}") ? configured.replace("{slug}", safeSlug) : `${window.location.origin}/med/${safeSlug}`;
 }
 
 function renderStatus(status = state.baseStatus) {
@@ -519,7 +520,7 @@ function renderStatus(status = state.baseStatus) {
     return;
   }
 
-  const copy = setupTranslations[state.uiLang];
+  const copy = setupTranslations[state.uiLang] || setupTranslations.en;
   statusBanner.hidden = false;
   statusBanner.dataset.state = status.type;
   statusTitle.textContent = formatString(copy[status.titleKey], status.values);
@@ -549,7 +550,6 @@ async function invokeFunction(functionName, body) {
   });
 
   const payload = await response.json().catch(() => null);
-
   if (!response.ok) {
     const error = new Error(payload?.error || payload?.message || "Function request failed");
     error.status = response.status;
@@ -559,65 +559,35 @@ async function invokeFunction(functionName, body) {
   return payload;
 }
 
-function normalizeTranslatedFields(payload) {
-  const source = payload?.fields || payload || {};
+async function translateFields(sourceLanguage, targetLanguage, fields) {
+  const normalizedTarget = normalizeProfileLanguage(targetLanguage);
+  if (normalizedTarget === sourceLanguage) {
+    return fields;
+  }
 
-  return {
-    conditions: cleanText(source.conditions),
-    allergies: cleanText(source.allergies),
-    medications: cleanText(source.medications),
-    devices: cleanText(source.devices),
-    notes: cleanText(source.notes)
-  };
-}
-
-async function requestTranslation({ sourceLanguage, targetLanguage, fields }) {
   if (!config.translationFunctionName || !hasSupabaseConfig()) {
-    const error = new Error("Translation function is not configured");
+    const error = new Error("Translation function missing");
     error.status = 404;
     throw error;
   }
 
-  const payload = await invokeFunction(config.translationFunctionName, {
-    sourceLanguage,
-    targetLanguage,
-    fields
-  });
-
-  return normalizeTranslatedFields(payload);
-}
-
-async function ensureTranslation(raw, targetLanguage, options = {}) {
-  const sourceFields = syncTranslationSource(raw);
-  const sourceLanguage = state.translation.sourceLanguage;
-  const target = normalizeLanguage(targetLanguage);
-
-  if (target === sourceLanguage) {
-    return sourceFields;
+  const cacheKey = `${state.translation.signature}:${normalizedTarget}`;
+  if (state.translation.results[normalizedTarget]) {
+    return state.translation.results[normalizedTarget];
   }
 
-  if (!hasMedicalContent(sourceFields)) {
-    const empty = emptyMedicalFields();
-    state.translation.results[target] = empty;
-    return empty;
-  }
-
-  if (state.translation.results[target]) {
-    return state.translation.results[target];
-  }
-
-  const pendingKey = `${state.translation.signature}:${target}`;
-  if (state.translation.pendingKey === pendingKey && state.translation.pendingPromise) {
+  if (state.translation.pendingKey === cacheKey && state.translation.pendingPromise) {
     return state.translation.pendingPromise;
   }
 
-  const promise = requestTranslation({
+  const promise = invokeFunction(config.translationFunctionName, {
     sourceLanguage,
-    targetLanguage: target,
-    fields: sourceFields
+    targetLanguage: normalizedTarget,
+    fields
   })
-    .then((translated) => {
-      state.translation.results[target] = translated;
+    .then((payload) => {
+      const translated = payload?.fields || fields;
+      state.translation.results[normalizedTarget] = translated;
       state.translation.pendingKey = "";
       state.translation.pendingPromise = null;
       return translated;
@@ -628,176 +598,110 @@ async function ensureTranslation(raw, targetLanguage, options = {}) {
       throw error;
     });
 
-  state.translation.pendingKey = pendingKey;
+  state.translation.pendingKey = cacheKey;
   state.translation.pendingPromise = promise;
+  return promise;
+}
 
-  if (options.immediate) {
-    return promise;
+async function notifyAdmin(profileName, slug, profileUrl) {
+  if (!config.notificationFunctionName || !hasSupabaseConfig()) {
+    return false;
   }
 
-  return promise.catch(() => null);
+  try {
+    await invokeFunction(config.notificationFunctionName, {
+      profileName,
+      slug,
+      profileUrl
+    });
+    return true;
+  } catch (error) {
+    console.warn("Notification failed", error);
+    return false;
+  }
 }
 
-function scheduleTranslation(raw, targetLanguage) {
-  window.clearTimeout(state.translation.debounceTimer);
-  state.translation.debounceTimer = window.setTimeout(() => {
-    ensureTranslation(raw, targetLanguage)
-      .then(() => renderPreview())
-      .catch((error) => {
-        console.warn("Preview translation failed", error);
-      });
-  }, 240);
-}
-
-function buildPayload(raw, sourceFields, translatedFields) {
-  const sourceLanguage = normalizeLanguage(raw.default_language);
-
+function buildPayload(raw, sourceFields, englishFields, spanishFields) {
   return {
     public_slug: raw.public_slug,
-    default_language: sourceLanguage,
+    default_language: raw.default_language,
     full_name: raw.full_name,
     blood_type: raw.blood_type || null,
     insurance: raw.insurance || null,
     doctor: raw.doctor || null,
     clinic: raw.clinic || null,
-    conditions_en: sourceLanguage === "en" ? sourceFields.conditions : translatedFields.conditions,
-    conditions_es: sourceLanguage === "es" ? sourceFields.conditions : translatedFields.conditions,
-    allergies_en: sourceLanguage === "en" ? sourceFields.allergies : translatedFields.allergies,
-    allergies_es: sourceLanguage === "es" ? sourceFields.allergies : translatedFields.allergies,
-    medications_en: sourceLanguage === "en" ? sourceFields.medications : translatedFields.medications,
-    medications_es: sourceLanguage === "es" ? sourceFields.medications : translatedFields.medications,
-    devices_en: sourceLanguage === "en" ? sourceFields.devices : translatedFields.devices,
-    devices_es: sourceLanguage === "es" ? sourceFields.devices : translatedFields.devices,
-    notes_en: sourceLanguage === "en" ? sourceFields.notes : translatedFields.notes,
-    notes_es: sourceLanguage === "es" ? sourceFields.notes : translatedFields.notes,
+    conditions_source: sourceFields.conditions,
+    allergies_source: sourceFields.allergies,
+    medications_source: sourceFields.medications,
+    devices_source: sourceFields.devices,
+    notes_source: sourceFields.notes,
+    conditions_en: englishFields.conditions,
+    allergies_en: englishFields.allergies,
+    medications_en: englishFields.medications,
+    devices_en: englishFields.devices,
+    notes_en: englishFields.notes,
+    conditions_es: spanishFields.conditions,
+    allergies_es: spanishFields.allergies,
+    medications_es: spanishFields.medications,
+    devices_es: spanishFields.devices,
+    notes_es: spanishFields.notes,
     emergency_contact_1_name: raw.emergency_contact_1_name || null,
-    emergency_contact_1_phone: buildPhone(
-      raw.emergency_contact_1_country_code,
-      raw.emergency_contact_1_phone_local
-    ) || null,
+    emergency_contact_1_phone: buildPhone(raw.emergency_contact_1_country_code, raw.emergency_contact_1_phone_local) || null,
     emergency_contact_1_whatsapp:
       buildWhatsappNumber(raw.emergency_contact_1_country_code, raw.emergency_contact_1_phone_local) || null,
     emergency_contact_2_name: raw.emergency_contact_2_name || null,
-    emergency_contact_2_phone: buildPhone(
-      raw.emergency_contact_2_country_code,
-      raw.emergency_contact_2_phone_local
-    ) || null,
+    emergency_contact_2_phone: buildPhone(raw.emergency_contact_2_country_code, raw.emergency_contact_2_phone_local) || null,
     emergency_contact_2_whatsapp:
       buildWhatsappNumber(raw.emergency_contact_2_country_code, raw.emergency_contact_2_phone_local) || null,
     full_record_url: raw.full_record_url || null,
-    is_public: raw.is_public
-  };
-}
-
-function recordToFormValues(record) {
-  const sourceLanguage = normalizeLanguage(record.default_language || "es");
-  const targetLanguage = otherLanguage(sourceLanguage);
-  const sourceFields = medicalFieldsFromRecord(record, sourceLanguage);
-  const hasTargetData = medicalFieldKeys.some((key) => cleanText(record[`${key}_${targetLanguage}`]));
-  const translatedFields = hasTargetData ? medicalFieldsFromRecord(record, targetLanguage) : null;
-  const phone1 = parsePhone(record.emergency_contact_1_phone);
-  const phone2 = parsePhone(record.emergency_contact_2_phone);
-
-  state.translation.sourceLanguage = sourceLanguage;
-  state.translation.signature = buildTranslationSignature(sourceLanguage, sourceFields);
-  state.translation.results = {
-    es: sourceLanguage === "es" ? sourceFields : translatedFields,
-    en: sourceLanguage === "en" ? sourceFields : translatedFields
-  };
-
-  return {
-    full_name: cleanText(record.full_name),
-    public_slug: cleanText(record.public_slug),
-    default_language: sourceLanguage,
-    blood_type: cleanText(record.blood_type),
-    insurance: cleanText(record.insurance),
-    doctor: cleanText(record.doctor),
-    clinic: cleanText(record.clinic),
-    conditions: sourceFields.conditions,
-    allergies: sourceFields.allergies,
-    medications: sourceFields.medications,
-    devices: sourceFields.devices,
-    notes: sourceFields.notes,
-    emergency_contact_1_name: cleanText(record.emergency_contact_1_name),
-    emergency_contact_1_country_code: phone1.countryCode,
-    emergency_contact_1_phone_local: phone1.localNumber,
-    emergency_contact_2_name: cleanText(record.emergency_contact_2_name),
-    emergency_contact_2_country_code: phone2.countryCode,
-    emergency_contact_2_phone_local: phone2.localNumber,
-    full_record_url: cleanText(record.full_record_url),
-    is_public: Boolean(record.is_public ?? true)
+    is_public: true
   };
 }
 
 function populateForm(values) {
   Object.entries(values).forEach(([key, value]) => {
-    const field = form.elements[key];
-    if (!field) {
-      return;
+    if (form.elements[key]) {
+      form.elements[key].value = value || "";
     }
-
-    if (field.type === "checkbox") {
-      field.checked = Boolean(value);
-      return;
-    }
-
-    field.value = value ?? "";
   });
 }
 
-function setUILanguage(lang) {
-  state.uiLang = normalizeLanguage(lang);
+function setInterfaceLanguage(lang) {
+  state.uiLang = normalizeUiLanguage(lang);
   root.lang = state.uiLang;
+  const copy = setupTranslations[state.uiLang] || setupTranslations.en;
 
   textNodes.forEach((node) => {
     const key = node.dataset.i18n;
-    if (setupTranslations[state.uiLang][key]) {
-      node.textContent = setupTranslations[state.uiLang][key];
-    }
+    node.textContent = copy[key] || setupTranslations.en[key] || "";
   });
 
-  uiLangButtons.forEach((button) => {
-    const active = button.dataset.lang === state.uiLang;
-    button.classList.toggle("is-active", active);
-    button.setAttribute("aria-pressed", String(active));
-  });
-
+  interfaceSelect.value = state.uiLang;
   setBloodPlaceholder();
   renderStatus();
-  renderPreview();
 }
 
-function setPreviewLanguage(lang) {
-  state.previewLang = normalizeLanguage(lang);
-
-  previewLangButtons.forEach((button) => {
-    const active = button.dataset.previewLang === state.previewLang;
-    button.classList.toggle("is-active", active);
-    button.setAttribute("aria-pressed", String(active));
-  });
-
-  renderPreview();
-}
-
-function renderPreview() {
+async function renderPreview() {
   const raw = getFormState();
-  const displayUrl = buildDisplayUrl(raw.public_slug);
-  const sourceFields = syncTranslationSource(raw);
-  const previewCopy = setupTranslations[state.previewLang];
-  const previewFields =
-    state.previewLang === raw.default_language
-      ? sourceFields
-      : state.translation.results[state.previewLang] || createLoadingMedicalFields();
+  const { sourceLanguage, sourceFields } = syncSource(raw);
+  const targetLanguage = normalizeProfileLanguage(previewSelect.value);
+  let previewFields = sourceFields;
 
-  if (state.previewLang !== raw.default_language && !state.translation.results[state.previewLang]) {
-    scheduleTranslation(raw, state.previewLang);
+  if (targetLanguage !== sourceLanguage) {
+    previewFields = state.translation.results[targetLanguage] || createLoadingFields();
+    if (!state.translation.results[targetLanguage]) {
+      translateFields(sourceLanguage, targetLanguage, sourceFields)
+        .then(() => renderPreview())
+        .catch(() => {
+          showStatus("warning", "statusTranslateErrorTitle", "statusTranslateErrorMessage");
+        });
+    }
   }
 
+  const copy = setupTranslations[normalizeUiLanguage(targetLanguage)] || setupTranslations.en;
   previewCopyNodes.forEach((node) => {
     const key = node.dataset.previewCopy;
-    if (previewCopy[key]) {
-      node.textContent = previewCopy[key];
-    }
+    node.textContent = copy[key] || setupTranslations.en[key] || "";
   });
 
   document.querySelector('[data-preview="full_name"]').textContent = raw.full_name || "-";
@@ -814,63 +718,56 @@ function renderPreview() {
     node.textContent = notes[index] || (index === 0 ? "-" : "");
   });
 
+  const url = buildDisplayUrl(raw.public_slug);
   generatedUrlNodes.forEach((node) => {
-    node.textContent = displayUrl;
-  });
-
-  openPublicLinks.forEach((link) => {
-    link.href = displayUrl;
+    node.textContent = url;
   });
 }
 
 function syncSlugFromName() {
-  if (state.slugTouched) {
-    return;
+  if (!state.slugTouched) {
+    form.elements.public_slug.value = slugify(form.elements.full_name.value);
   }
-
-  form.elements.public_slug.value = slugify(form.elements.full_name.value);
 }
 
-async function copyText(value) {
-  if (!navigator.clipboard?.writeText) {
-    window.prompt("Copy this URL", value);
-    return false;
-  }
-
-  await navigator.clipboard.writeText(value);
-  return true;
-}
-
-async function copyGeneratedUrl() {
-  const copied = await copyText(buildDisplayUrl(form.elements.public_slug.value)).catch(() => false);
-  if (copied) {
-    flashStatus("success", "statusCopiedTitle", "statusCopiedMessage");
-  }
+function startFamilyProfile() {
+  const template = getFamilyTemplate() || getFormState();
+  clearDraftFields(true);
+  applyFamilyTemplate(template);
+  showStatus("success", "statusReadyTitle", "statusReadyMessage");
+  form.elements.full_name.focus();
+  closeSuccessModal();
+  renderPreview();
 }
 
 function openSavingOverlay() {
-  document.querySelector("[data-saving-overlay]").classList.remove("is-hidden");
+  savingOverlay.classList.remove("is-hidden");
 }
 
 function closeSavingOverlay() {
-  document.querySelector("[data-saving-overlay]").classList.add("is-hidden");
+  savingOverlay.classList.add("is-hidden");
 }
 
-function openSuccessModal(url) {
+function openSuccessModal(url, intent = "save") {
   state.lastSavedUrl = url;
   successUrlNode.textContent = url;
-  document.querySelector("[data-success-modal]").classList.remove("is-hidden");
+  successModal.classList.remove("is-hidden");
+  const preferredButton =
+    intent === "family"
+      ? document.querySelector('[data-action="success-family"]')
+      : document.querySelector('[data-action="close-success"]');
+  preferredButton?.focus();
 }
 
 function closeSuccessModal() {
-  document.querySelector("[data-success-modal]").classList.add("is-hidden");
+  successModal.classList.add("is-hidden");
 }
 
 async function saveProfile(event) {
   event.preventDefault();
 
   const raw = getFormState();
-  const sourceFields = syncTranslationSource(raw);
+  raw.public_slug = slugify(raw.public_slug || raw.full_name);
   form.elements.public_slug.value = raw.public_slug;
 
   if (!raw.full_name || !raw.public_slug) {
@@ -879,7 +776,7 @@ async function saveProfile(event) {
     return;
   }
 
-  if (!hasSupabaseConfig() || !config.allowDirectProfileWrite) {
+  if (!hasSupabaseConfig()) {
     showStatus("warning", "statusConfigTitle", "statusConfigMessage");
     return;
   }
@@ -888,23 +785,11 @@ async function saveProfile(event) {
   showStatus("loading", "statusSavingTitle", "statusSavingMessage");
 
   try {
-    let translatedFields = emptyMedicalFields();
+    const { sourceLanguage, sourceFields } = syncSource(raw);
+    let englishFields = sourceLanguage === "en" ? sourceFields : await translateFields(sourceLanguage, "en", sourceFields);
+    let spanishFields = sourceLanguage === "es" ? sourceFields : await translateFields(sourceLanguage, "es", sourceFields);
 
-    if (hasMedicalContent(sourceFields)) {
-      try {
-        translatedFields = await ensureTranslation(raw, otherLanguage(raw.default_language), { immediate: true });
-      } catch (error) {
-        closeSavingOverlay();
-        if (error.status === 404) {
-          showStatus("error", "statusTranslateMissingTitle", "statusTranslateMissingMessage");
-        } else {
-          showStatus("error", "statusTranslateErrorTitle", "statusTranslateErrorMessage");
-        }
-        return;
-      }
-    }
-
-    const payload = buildPayload(raw, sourceFields, translatedFields);
+    const payload = buildPayload(raw, sourceFields, englishFields, spanishFields);
     const { error } = await getClient()
       .from(config.profilesWriteTable || "medical_profiles")
       .upsert(payload, { onConflict: "public_slug" });
@@ -913,21 +798,31 @@ async function saveProfile(event) {
       throw error;
     }
 
+    saveFamilyTemplate(raw);
     const url = buildDisplayUrl(raw.public_slug);
-    showStatus("success", "statusSavedTitle", "statusSavedMessage");
-    openSuccessModal(url);
-    renderPreview();
+    const emailOk = await notifyAdmin(raw.full_name, raw.public_slug, url);
+
+    openSuccessModal(url, state.pendingMode);
+    if (emailOk) {
+      showStatus("success", "statusSavedTitle", "statusSavedMessage");
+    } else {
+      showStatus("warning", "statusEmailWarningTitle", "statusEmailWarningMessage");
+    }
   } catch (error) {
     console.warn("Save failed", error);
-    showStatus("error", "statusSaveErrorTitle", "statusSaveErrorMessage");
+    if (error?.status === 404) {
+      showStatus("error", "statusTranslateMissingTitle", "statusTranslateMissingMessage");
+    } else {
+      showStatus("error", "statusSaveErrorTitle", "statusSaveErrorMessage");
+    }
   } finally {
+    state.pendingMode = "save";
     closeSavingOverlay();
   }
 }
 
 async function loadExistingProfile() {
   const slug = cleanText(new URLSearchParams(window.location.search).get("slug"));
-
   if (!slug || !hasSupabaseConfig()) {
     return;
   }
@@ -943,24 +838,68 @@ async function loadExistingProfile() {
       throw error || new Error("Profile not found");
     }
 
-    populateForm(recordToFormValues(data));
+    const phone1 = parsePhone(data.emergency_contact_1_phone);
+    const phone2 = parsePhone(data.emergency_contact_2_phone);
+    const sourceFields = sourceFieldsFromRecord(data);
+    state.translation.signature = buildSourceSignature(normalizeProfileLanguage(data.default_language || "en"), sourceFields);
+    state.translation.results = {
+      [normalizeProfileLanguage(data.default_language || "en")]: sourceFields,
+      en: {
+        conditions: cleanText(data.conditions_en),
+        allergies: cleanText(data.allergies_en),
+        medications: cleanText(data.medications_en),
+        devices: cleanText(data.devices_en),
+        notes: cleanText(data.notes_en)
+      },
+      es: {
+        conditions: cleanText(data.conditions_es),
+        allergies: cleanText(data.allergies_es),
+        medications: cleanText(data.medications_es),
+        devices: cleanText(data.devices_es),
+        notes: cleanText(data.notes_es)
+      }
+    };
+
+    populateForm({
+      full_name: cleanText(data.full_name),
+      public_slug: cleanText(data.public_slug),
+      default_language: normalizeProfileLanguage(data.default_language || "en"),
+      blood_type: cleanText(data.blood_type),
+      insurance: cleanText(data.insurance),
+      doctor: cleanText(data.doctor),
+      clinic: cleanText(data.clinic),
+      conditions: sourceFields.conditions,
+      allergies: sourceFields.allergies,
+      medications: sourceFields.medications,
+      devices: sourceFields.devices,
+      notes: sourceFields.notes,
+      emergency_contact_1_name: cleanText(data.emergency_contact_1_name),
+      emergency_contact_1_country_code: phone1.countryCode,
+      emergency_contact_1_phone_local: phone1.localNumber,
+      emergency_contact_2_name: cleanText(data.emergency_contact_2_name),
+      emergency_contact_2_country_code: phone2.countryCode,
+      emergency_contact_2_phone_local: phone2.localNumber,
+      full_record_url: cleanText(data.full_record_url)
+    });
+
     state.slugTouched = true;
-    state.lastSavedUrl = buildDisplayUrl(data.public_slug);
-    setPreviewLanguage(data.default_language || "es");
     flashStatus("success", "statusLoadedTitle", "statusLoadedMessage", { slug });
   } catch (error) {
-    console.warn("Profile load failed", error);
+    console.warn("Load existing profile failed", error);
     flashStatus("warning", "statusLoadErrorTitle", "statusLoadErrorMessage", { slug });
   }
 }
 
 function bindEvents() {
-  uiLangButtons.forEach((button) => {
-    button.addEventListener("click", () => setUILanguage(button.dataset.lang));
+  const saveProfileButton = form.querySelector('button[type="submit"]');
+  const saveFamilyButton = document.querySelector('[data-action="save-family"]');
+
+  interfaceSelect.addEventListener("change", () => {
+    setInterfaceLanguage(interfaceSelect.value);
   });
 
-  previewLangButtons.forEach((button) => {
-    button.addEventListener("click", () => setPreviewLanguage(button.dataset.previewLang));
+  previewSelect.addEventListener("change", () => {
+    renderPreview();
   });
 
   form.elements.full_name.addEventListener("input", () => {
@@ -980,48 +919,28 @@ function bindEvents() {
     }
   });
 
-  form.addEventListener("change", (event) => {
-    if (event.target.name === "default_language") {
-      setPreviewLanguage(event.target.value);
-      return;
-    }
-
-    renderPreview();
-  });
-
   form.addEventListener("submit", saveProfile);
-
-  document.querySelector('[data-action="copy-url"]').addEventListener("click", copyGeneratedUrl);
-  document.querySelector('[data-action="copy-success-url"]').addEventListener("click", async () => {
-    const copied = await copyText(state.lastSavedUrl).catch(() => false);
-    if (copied) {
-      flashStatus("success", "statusCopiedTitle", "statusCopiedMessage");
-    }
+  saveProfileButton.addEventListener("click", () => {
+    state.pendingMode = "save";
   });
-
+  saveFamilyButton.addEventListener("click", () => {
+    state.pendingMode = "family";
+    form.requestSubmit();
+  });
+  document.querySelector('[data-action="success-family"]').addEventListener("click", startFamilyProfile);
   document.querySelectorAll('[data-action="close-success"]').forEach((button) => {
     button.addEventListener("click", closeSuccessModal);
-  });
-
-  window.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      closeSuccessModal();
-    }
   });
 }
 
 async function init() {
   populateCountryCodes();
   setupHelperPlaceholders();
-  clearDraftFields();
+  clearDraftFields(Boolean(getFamilyTemplate()));
   bindEvents();
-  showStatus(
-    hasSupabaseConfig() ? "success" : "warning",
-    hasSupabaseConfig() ? "statusReadyTitle" : "statusConfigTitle",
-    hasSupabaseConfig() ? "statusReadyMessage" : "statusConfigMessage"
-  );
-  setUILanguage(state.uiLang);
-  setPreviewLanguage(form.elements.default_language.value || state.uiLang);
+  setInterfaceLanguage(state.uiLang);
+  previewSelect.value = "en";
+  showStatus(hasSupabaseConfig() ? "success" : "warning", hasSupabaseConfig() ? "statusReadyTitle" : "statusConfigTitle", hasSupabaseConfig() ? "statusReadyMessage" : "statusConfigMessage");
   await loadExistingProfile();
   renderPreview();
 }

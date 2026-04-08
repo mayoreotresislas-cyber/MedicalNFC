@@ -1,240 +1,133 @@
-const translations = {
+const uiTranslations = {
   en: {
-    brandTagline: "Emergency-ready medical landing",
+    brandTagline: "Medical form and profile access",
+    primaryBuilderAction: "Open Medical Form",
     languageLabel: "Language",
-    eyebrow: "Medical NFC landing page",
-    heroTitle: "Clear emergency information, fast actions, and a cleaner bilingual experience.",
-    heroText:
-      "Designed so first responders see the critical information first, while family members and clinics can access deeper details without the page feeling crowded.",
-    heroPrimary: "View emergency screens",
-    heroSecondary: "Open setup portal",
-    heroPoint1: "High-contrast layout for urgent readability",
-    heroPoint2: "Language selector instead of duplicated blocks",
-    heroPoint3: "Ready for public + premium private views",
-    highlightLabel: "Recommended structure",
-    highlight1: "Screen 1: emergency-only, visible immediately",
-    highlight2: "Screen 2: detailed profile and optional records",
-    highlight3: "Direct call, WhatsApp, and location sharing",
-    screensKicker: "Core layout",
-    screensTitle: "Two focused screens instead of one crowded page",
-    screensText:
-      "The first card is optimized for urgency. The second card expands the profile with more context and optional medical records.",
-    screen1Tag: "Critical",
+    overviewKicker: "Medical form",
+    overviewTitle: "This page explains the medical form that will be linked to the NFC.",
+    overviewText:
+      "This page is for the person who will complete the medical information before the NFC is programmed. You will add one person's emergency details, extra medical information, family contacts, and the language that should appear when the profile is scanned.",
+    overviewPrimary: "Complete Medical Form",
+    whatYouWillFill: "What you will fill",
+    fillItem1: "Basic identity and blood type",
+    fillItem2: "Conditions, allergies, medications, and devices",
+    fillItem3: "Emergency contacts for family or caregivers",
+    fillItem4: "Optional link to the complete medical record",
+    howItWorksKicker: "How it works",
+    howItWorksTitle: "What happens after the form is completed",
+    howStep1: "Complete the medical profile form.",
+    howStep2: "Save the profile and generate the secure URL.",
+    howStep3: "The administrator receives that URL by email.",
+    howStep4: "That URL is the one recorded in the NFC tag.",
+    importantKicker: "Important",
+    importantTitle: "The medical data is not written directly to the NFC chip",
+    importantText:
+      "The chip stores only a secure web address. That keeps the information easier to update and better organized for future changes.",
+    profileKicker: "Medical profile",
+    profileSubtitle: "Emergency information shown from an NFC medical profile.",
+    screen1Tag: "Emergency",
     screen1Step: "Screen 1",
     emergencyTitle: "Emergency Medical Info",
+    screen2Tag: "Details",
+    screen2Step: "Screen 2",
+    detailsTitle: "Additional Medical Information",
     labelName: "Name",
     labelConditions: "Condition(s)",
     labelAllergies: "Severe Allergies",
     labelMedications: "Critical Medications",
     labelDevices: "Medical Devices",
-    contactsTitle: "Emergency Contacts",
-    contact1Label: "Contact 1",
-    contact2Label: "Contact 2",
-    importantNotes: "Important Notes",
-    callButton: "📞 Call",
-    whatsappButton: "💬 WhatsApp",
-    screen2Tag: "Detailed",
-    screen2Step: "Screen 2",
-    detailsTitle: "Additional Medical Information",
     labelBloodType: "Blood Type",
     labelDoctor: "Doctor",
     labelClinic: "Clinic",
     labelInsurance: "Insurance",
-    recordLink: "Full Medical Record (optional)",
-    privacyTitle: "Privacy Model",
-    privacyOptionATitle: "Option A",
-    privacyOptionAText: "Everything visible without login.",
-    privacyOptionBTitle: "Option B",
-    privacyOptionBText:
-      "Emergency card is public. Detailed information stays behind PIN or login.",
-    shareLocation: "📍 Share location",
-    premiumNote: "Premium-ready structure for subscriptions and privacy tiers.",
-    nfcKicker: "NFC setup",
-    nfcTitle: "What to write on the NFC tag",
-    nfcText: "Always store a secure URL, not the medical data directly on the chip.",
-    nfcBenefit1: "Update information without reprogramming the chip",
-    nfcBenefit2: "Protect privacy and control visibility levels",
-    nfcBenefit3: "Enable subscriptions or premium features",
-    actionsKicker: "Revenue features",
-    actionsTitle: "Functional actions that feel useful immediately",
-    ctaCallTitle: "Call emergency contact",
-    ctaCallText: "One tap to the primary contact.",
-    ctaWhatsappTitle: "Message with WhatsApp",
-    ctaWhatsappText: "Fast follow-up for relatives or caregivers.",
-    ctaLocationTitle: "Share location",
-    ctaLocationText: "Optional advanced feature for premium plans.",
-    supabaseKicker: "Supabase",
-    supabaseTitle: "Suggested database structure",
-    supabaseText: "Add a medical profile table and a new target type for medical NFC tags.",
-    targetTypeLabel: "nfc_tags.target_type",
-    flowKicker: "Operational flow",
-    flowTitle: "Simple workflow from product to scan",
-    flow1: "Print a medical bracelet, card, or keychain.",
-    flow2: "Insert the NFC chip.",
-    flow3: "Write the secure profile URL.",
-    flow4: "User scans the tag with their phone.",
-    flow5: "The web app reads Supabase and shows the profile.",
-    flow6: "Log the event for analytics or traceability.",
-    productKicker: "Commercial model",
-    productTitle: "A product that is practical, emotional, and easy to sell",
-    kitTitle: "Medical NFC Kit",
-    kit1: "3D bracelet or keychain",
-    kit2: "NFC chip included",
-    kit3: "Hosted medical landing page",
-    kit4: "Profile setup and activation",
-    priceUnitLabel: "Unit price",
-    priceSetupLabel: "Setup",
-    priceMonthlyLabel: "Monthly",
-    nicheTitle: "Strong market niches",
-    niche1: "Diabetics",
-    niche2: "People with epilepsy",
-    niche3: "Older adults",
-    niche4: "Children",
-    niche5: "Extreme athletes",
-    niche6: "Severe allergy patients",
-    legalEn:
-      "EN: This information is provided by the owner. In case of emergency, contact local emergency services.",
-    legalEs:
-      "ES: Esta informacion es proporcionada por el usuario. En caso de emergencia, contacte a servicios medicos.",
-    statusDemoTitle: "Demo mode active",
-    statusDemoMessage:
-      "Add the URL and anon key of a dedicated NFC Medico Supabase project in config.js, then open this page with a slug like ?slug=ABC123 or /med/ABC123.",
-    statusMissingSlugTitle: "Waiting for a profile slug",
-    statusMissingSlugMessage:
-      "Supabase is configured, but this page did not receive a slug. Try ?slug=ABC123 or set defaultSlug in config.js.",
-    statusLoadingTitle: "Loading medical profile",
-    statusLoadingMessage: "Looking up profile {slug} in Supabase.",
-    statusLiveTitle: "Live profile loaded",
-    statusLiveMessage: "Showing real data for slug {slug}.",
-    statusErrorTitle: "Could not load profile",
-    statusErrorMessage:
-      "The page stayed in demo mode because slug {slug} was not found or Supabase returned an error.",
-    statusScanLoggedTitle: "Scan event logged",
-    statusScanLoggedMessage: "The access event was recorded successfully.",
-    statusLocationCopiedTitle: "Location ready to share",
-    statusLocationCopiedMessage: "Your current location link was copied to the clipboard.",
+    importantNotes: "Important Notes",
+    contactsTitle: "Emergency Contacts",
+    contact1Label: "Primary contact",
+    contact2Label: "Secondary contact",
+    callButton: "Call",
+    whatsappButton: "WhatsApp",
+    shareLocation: "Share current location",
+    recordLink: "Open full medical record",
+    legalText:
+      "This information is provided by the profile owner. In case of emergency, contact local emergency services.",
+    statusLoadingTitle: "Loading profile",
+    statusLoadingMessage: "Looking up the requested medical profile.",
+    statusErrorTitle: "Profile unavailable",
+    statusErrorMessage: "We could not load this medical profile right now.",
+    statusLocationCopiedTitle: "Location ready",
+    statusLocationCopiedMessage: "A link with your current location is ready to share.",
     statusLocationErrorTitle: "Location unavailable",
-    statusLocationErrorMessage:
-      "The browser could not access your location. Check browser permissions and try again."
+    statusLocationErrorMessage: "The browser could not access your current location."
   },
   es: {
-    brandTagline: "Landing medica lista para emergencias",
+    brandTagline: "Formulario medico y acceso al perfil",
+    primaryBuilderAction: "Abrir Formulario Medico",
     languageLabel: "Idioma",
-    eyebrow: "Landing medica NFC",
-    heroTitle: "Informacion de emergencia clara, acciones rapidas y una experiencia bilingue mas limpia.",
-    heroText:
-      "Pensada para que el rescatista vea lo critico primero, mientras familiares y clinicas acceden al detalle sin que la pagina se vea saturada.",
-    heroPrimary: "Ver pantallas de emergencia",
-    heroSecondary: "Abrir portal de llenado",
-    heroPoint1: "Diseno de alto contraste para lectura urgente",
-    heroPoint2: "Selector de idioma en lugar de bloques duplicados",
-    heroPoint3: "Lista para vista publica y version premium privada",
-    highlightLabel: "Estructura recomendada",
-    highlight1: "Pantalla 1: solo emergencia, visible al instante",
-    highlight2: "Pantalla 2: detalle medico y expediente opcional",
-    highlight3: "Llamada directa, WhatsApp y compartir ubicacion",
-    screensKicker: "Estructura base",
-    screensTitle: "Dos pantallas enfocadas en lugar de una pagina amontonada",
-    screensText:
-      "La primera tarjeta esta optimizada para urgencia. La segunda amplia el perfil con mas contexto y expediente medico opcional.",
-    screen1Tag: "Critico",
+    overviewKicker: "Formulario medico",
+    overviewTitle: "Esta pagina explica el formulario medico que estara ligado al NFC.",
+    overviewText:
+      "Esta pagina es para la persona que va a completar la informacion medica antes de grabar el NFC. Aqui vas a capturar la informacion de emergencia de una persona, datos medicos adicionales, contactos familiares y el idioma en que se vera el perfil al escanearlo.",
+    overviewPrimary: "Completar Formulario Medico",
+    whatYouWillFill: "Lo que vas a llenar",
+    fillItem1: "Identidad basica y tipo de sangre",
+    fillItem2: "Condiciones, alergias, medicamentos y dispositivos",
+    fillItem3: "Contactos de emergencia para familia o cuidadores",
+    fillItem4: "Enlace opcional al expediente medico completo",
+    howItWorksKicker: "Como funciona",
+    howItWorksTitle: "Que sucede despues de completar el formulario",
+    howStep1: "Completa el formulario del perfil medico.",
+    howStep2: "Guarda el perfil y genera el URL seguro.",
+    howStep3: "El administrador recibe ese URL por correo.",
+    howStep4: "Ese URL es el que se graba en el chip NFC.",
+    importantKicker: "Importante",
+    importantTitle: "Los datos medicos no se escriben directamente en el chip NFC",
+    importantText:
+      "El chip guarda solo una direccion web segura. Eso hace que la informacion sea mas facil de actualizar y mejor organizada para cambios futuros.",
+    profileKicker: "Perfil medico",
+    profileSubtitle: "Informacion de emergencia mostrada desde un perfil medico NFC.",
+    screen1Tag: "Emergencia",
     screen1Step: "Pantalla 1",
     emergencyTitle: "Informacion Medica de Emergencia",
+    screen2Tag: "Detalle",
+    screen2Step: "Pantalla 2",
+    detailsTitle: "Informacion Medica Adicional",
     labelName: "Nombre",
     labelConditions: "Condiciones",
     labelAllergies: "Alergias graves",
     labelMedications: "Medicamentos criticos",
     labelDevices: "Dispositivos medicos",
-    contactsTitle: "Contactos de emergencia",
-    contact1Label: "Contacto 1",
-    contact2Label: "Contacto 2",
-    importantNotes: "Notas importantes",
-    callButton: "📞 Llamar",
-    whatsappButton: "💬 WhatsApp",
-    screen2Tag: "Detalle",
-    screen2Step: "Pantalla 2",
-    detailsTitle: "Informacion Medica Adicional",
     labelBloodType: "Tipo de sangre",
     labelDoctor: "Medico",
     labelClinic: "Clinica",
     labelInsurance: "Seguro",
-    recordLink: "Expediente completo (opcional)",
-    privacyTitle: "Modelo de privacidad",
-    privacyOptionATitle: "Opcion A",
-    privacyOptionAText: "Todo visible sin login.",
-    privacyOptionBTitle: "Opcion B",
-    privacyOptionBText:
-      "La tarjeta de emergencia es publica. La informacion detallada queda protegida con PIN o login.",
-    shareLocation: "📍 Compartir ubicacion",
-    premiumNote: "Estructura ideal para suscripciones y niveles de privacidad.",
-    nfcKicker: "Configuracion NFC",
-    nfcTitle: "Que grabar en el chip NFC",
-    nfcText: "Guarda siempre una URL segura, no los datos medicos directos en el chip.",
-    nfcBenefit1: "Actualizar informacion sin reprogramar el chip",
-    nfcBenefit2: "Cuidar privacidad y controlar niveles de acceso",
-    nfcBenefit3: "Vender suscripciones o funciones premium",
-    actionsKicker: "Funciones rentables",
-    actionsTitle: "Acciones utiles que se sienten funcionales desde el primer toque",
-    ctaCallTitle: "Llamar al contacto de emergencia",
-    ctaCallText: "Un toque al contacto principal.",
-    ctaWhatsappTitle: "Enviar mensaje por WhatsApp",
-    ctaWhatsappText: "Seguimiento rapido para familiares o cuidadores.",
-    ctaLocationTitle: "Compartir ubicacion",
-    ctaLocationText: "Funcion avanzada opcional para planes premium.",
-    supabaseKicker: "Supabase",
-    supabaseTitle: "Estructura sugerida de base de datos",
-    supabaseText: "Agrega una tabla para perfiles medicos y un nuevo tipo de destino para tags medicos NFC.",
-    targetTypeLabel: "nfc_tags.target_type",
-    flowKicker: "Flujo operativo",
-    flowTitle: "Proceso simple desde el producto hasta el escaneo",
-    flow1: "Imprime una pulsera, tarjeta o llavero medico.",
-    flow2: "Inserta el chip NFC.",
-    flow3: "Graba la URL segura del perfil.",
-    flow4: "El usuario toca el tag con su telefono.",
-    flow5: "La web consulta Supabase y muestra el perfil.",
-    flow6: "Registra el evento para analitica o trazabilidad.",
-    productKicker: "Modelo comercial",
-    productTitle: "Un producto practico, emocional y facil de vender",
-    kitTitle: "Medical NFC Kit",
-    kit1: "Pulsera o llavero 3D",
-    kit2: "Chip NFC incluido",
-    kit3: "Landing medica hospedada",
-    kit4: "Configuracion y activacion del perfil",
-    priceUnitLabel: "Precio por pieza",
-    priceSetupLabel: "Setup",
-    priceMonthlyLabel: "Mensualidad",
-    nicheTitle: "Nichos fuertes",
-    niche1: "Diabeticos",
-    niche2: "Personas con epilepsia",
-    niche3: "Adultos mayores",
-    niche4: "Ninos",
-    niche5: "Deportistas extremos",
-    niche6: "Pacientes con alergias graves",
-    legalEn:
-      "EN: This information is provided by the owner. In case of emergency, contact local emergency services.",
-    legalEs:
-      "ES: Esta informacion es proporcionada por el usuario. En caso de emergencia, contacte a servicios medicos.",
-    statusDemoTitle: "Modo demo activo",
-    statusDemoMessage:
-      "Agrega en config.js la URL y anon key de un proyecto Supabase exclusivo para NFC Medico y abre la pagina con un slug como ?slug=ABC123 o /med/ABC123.",
-    statusMissingSlugTitle: "Falta el slug del perfil",
-    statusMissingSlugMessage:
-      "Supabase ya esta configurado, pero esta pagina no recibio un slug. Prueba con ?slug=ABC123 o define defaultSlug en config.js.",
-    statusLoadingTitle: "Cargando perfil medico",
-    statusLoadingMessage: "Buscando el perfil {slug} en Supabase.",
-    statusLiveTitle: "Perfil real cargado",
-    statusLiveMessage: "Mostrando datos reales para el slug {slug}.",
-    statusErrorTitle: "No se pudo cargar el perfil",
-    statusErrorMessage:
-      "La pagina se quedo en modo demo porque el slug {slug} no existe o Supabase devolvio un error.",
-    statusScanLoggedTitle: "Escaneo registrado",
-    statusScanLoggedMessage: "El evento de acceso se guardo correctamente.",
-    statusLocationCopiedTitle: "Ubicacion lista para compartir",
-    statusLocationCopiedMessage: "Se copio al portapapeles un enlace con tu ubicacion actual.",
-    statusLocationErrorTitle: "No se pudo obtener la ubicacion",
-    statusLocationErrorMessage:
-      "El navegador no pudo acceder a tu ubicacion. Revisa los permisos e intenta de nuevo."
+    importantNotes: "Notas importantes",
+    contactsTitle: "Contactos de emergencia",
+    contact1Label: "Contacto principal",
+    contact2Label: "Contacto secundario",
+    callButton: "Llamar",
+    whatsappButton: "WhatsApp",
+    shareLocation: "Compartir ubicacion actual",
+    recordLink: "Abrir expediente completo",
+    legalText:
+      "Esta informacion es proporcionada por el propietario del perfil. En caso de emergencia, contacte a los servicios medicos locales.",
+    statusLoadingTitle: "Cargando perfil",
+    statusLoadingMessage: "Buscando el perfil medico solicitado.",
+    statusErrorTitle: "Perfil no disponible",
+    statusErrorMessage: "No pudimos cargar este perfil medico en este momento.",
+    statusLocationCopiedTitle: "Ubicacion lista",
+    statusLocationCopiedMessage: "Se preparo un enlace con tu ubicacion actual para compartirlo.",
+    statusLocationErrorTitle: "Ubicacion no disponible",
+    statusLocationErrorMessage: "El navegador no pudo acceder a tu ubicacion actual."
   }
+};
+
+const languageOptions = {
+  en: "English",
+  es: "Spanish",
+  fr: "French",
+  pt: "Portuguese",
+  de: "German",
+  it: "Italian"
 };
 
 const demoProfile = {
@@ -264,45 +157,42 @@ const demoProfile = {
 
 const config = window.NFC_MEDICO_CONFIG || {};
 const root = document.documentElement;
-const langButtons = document.querySelectorAll("[data-lang]");
+const languageSelect = document.querySelector("[data-language-select]");
 const textNodes = document.querySelectorAll("[data-i18n]");
 const fieldNodes = document.querySelectorAll("[data-field]");
 const noteNodes = document.querySelectorAll("[data-note]");
 const runtimeStatus = document.querySelector("[data-runtime-status]");
 const runtimeTitle = document.querySelector("[data-runtime-title]");
 const runtimeMessage = document.querySelector("[data-runtime-message]");
-const contactCard1 = document.querySelector('[data-contact-card="1"]');
-const contactCard2 = document.querySelector('[data-contact-card="2"]');
-const callLinks = document.querySelectorAll('[data-action="call-primary"]');
-const whatsappLinks = document.querySelectorAll('[data-action="whatsapp-primary"]');
-const shareLocationButtons = document.querySelectorAll('[data-action="share-location"]');
 const recordLink = document.querySelector('[data-action="record-link"]');
+const callLink = document.querySelector('[data-action="call-primary"]');
+const whatsappLink = document.querySelector('[data-action="whatsapp-primary"]');
+const shareLocationButton = document.querySelector('[data-action="share-location"]');
+const overviewView = document.querySelector('[data-view="overview"]');
+const profileView = document.querySelector('[data-view="profile"]');
 
 const state = {
   lang: detectInitialLanguage(),
-  profile: demoProfile,
   identifier: "",
   client: null,
+  profile: demoProfile,
+  translationCache: {},
   baseStatus: null,
   statusTimer: null
 };
 
 function detectInitialLanguage() {
-  const params = new URLSearchParams(window.location.search);
-  const requested = params.get("lang");
-  if (requested === "es" || requested === "en") {
+  const requested = new URLSearchParams(window.location.search).get("lang");
+  if (requested && languageOptions[requested]) {
     return requested;
   }
 
-  return navigator.language && navigator.language.toLowerCase().startsWith("es") ? "es" : "en";
+  const browserCode = navigator.language?.slice(0, 2).toLowerCase();
+  return languageOptions[browserCode] ? browserCode : "en";
 }
 
-function normalizeLanguage(lang) {
-  return lang === "es" ? "es" : "en";
-}
-
-function formatString(template, values = {}) {
-  return String(template || "").replace(/\{(\w+)\}/g, (_, key) => values[key] ?? "");
+function getCopy() {
+  return uiTranslations[state.lang] || uiTranslations.en;
 }
 
 function cleanText(value) {
@@ -310,29 +200,22 @@ function cleanText(value) {
     return "";
   }
 
-  if (Array.isArray(value)) {
-    return value.filter(Boolean).join(", ");
-  }
-
   return String(value).trim();
 }
 
-function resolveField(record, field, lang) {
-  const fallbackLang = lang === "en" ? "es" : "en";
-  return cleanText(record[`${field}_${lang}`] ?? record[field] ?? record[`${field}_${fallbackLang}`]);
+function resolveField(record, field) {
+  const sourceLanguage = cleanText(record.default_language || "en").slice(0, 2).toLowerCase();
+  if (sourceLanguage === "es") {
+    return cleanText(record[`${field}_source`] || record[`${field}_es`] || record[`${field}_en`]);
+  }
+  return cleanText(record[`${field}_source`] || record[`${field}_en`] || record[`${field}_es`]);
 }
 
-function resolveNotes(record, lang) {
-  const fallbackLang = lang === "en" ? "es" : "en";
-  const source = record[`notes_${lang}`] ?? record.notes ?? record[`notes_${fallbackLang}`] ?? [];
-
-  if (Array.isArray(source)) {
-    return source.map(cleanText).filter(Boolean);
-  }
-
-  return cleanText(source)
-    .split(/\r?\n|;/)
-    .map((item) => item.replace(/^[-*•]\s*/, "").trim())
+function resolveNotes(record) {
+  const raw = resolveField(record, "notes");
+  return raw
+    .split(/\r?\n+/)
+    .map((item) => item.replace(/^[-*]\s*/, "").trim())
     .filter(Boolean);
 }
 
@@ -344,192 +227,6 @@ function sanitizeWhatsapp(phone) {
   return cleanText(phone).replace(/\D/g, "");
 }
 
-function getProfileData(lang) {
-  const record = state.profile || demoProfile;
-
-  return {
-    name: resolveField(record, "full_name", lang) || "N/A",
-    conditions: resolveField(record, "conditions", lang) || "N/A",
-    allergies: resolveField(record, "allergies", lang) || "N/A",
-    medications: resolveField(record, "medications", lang) || "N/A",
-    devices: resolveField(record, "devices", lang) || "N/A",
-    bloodType: resolveField(record, "blood_type", lang) || "N/A",
-    doctor: resolveField(record, "doctor", lang) || "N/A",
-    clinic: resolveField(record, "clinic", lang) || "N/A",
-    insurance: resolveField(record, "insurance", lang) || "N/A",
-    contact1Name: resolveField(record, "emergency_contact_1_name", lang) || "N/A",
-    contact1Phone: cleanText(record.emergency_contact_1_phone),
-    contact1Whatsapp: cleanText(record.emergency_contact_1_whatsapp),
-    contact2Name: resolveField(record, "emergency_contact_2_name", lang) || "",
-    contact2Phone: cleanText(record.emergency_contact_2_phone),
-    contact2Whatsapp: cleanText(record.emergency_contact_2_whatsapp),
-    notes: resolveNotes(record, lang),
-    fullRecordUrl: cleanText(record.full_record_url)
-  };
-}
-
-function setTextLanguage(lang) {
-  const copy = translations[lang];
-
-  textNodes.forEach((node) => {
-    const key = node.dataset.i18n;
-    if (copy[key]) {
-      node.textContent = copy[key];
-    }
-  });
-}
-
-function setFieldText(field, value) {
-  fieldNodes.forEach((node) => {
-    if (node.dataset.field === field) {
-      node.textContent = value;
-    }
-  });
-}
-
-function setInteractiveState(node, enabled, href = "#") {
-  node.classList.toggle("is-disabled", !enabled);
-  node.setAttribute("aria-disabled", String(!enabled));
-
-  if (node.tagName === "A") {
-    node.href = enabled ? href : "#";
-    if (enabled) {
-      node.removeAttribute("tabindex");
-    } else {
-      node.setAttribute("tabindex", "-1");
-    }
-  }
-}
-
-function updateContactCard(card, name, phone) {
-  if (!card) {
-    return;
-  }
-
-  const isVisible = Boolean(name || phone);
-  card.classList.toggle("is-hidden", !isVisible);
-
-  if (!isVisible) {
-    return;
-  }
-
-  setInteractiveState(card, Boolean(phone), `tel:${sanitizeTel(phone)}`);
-}
-
-function applyProfile(lang) {
-  const profile = getProfileData(lang);
-
-  setFieldText("name", profile.name);
-  setFieldText("conditions", profile.conditions);
-  setFieldText("allergies", profile.allergies);
-  setFieldText("medications", profile.medications);
-  setFieldText("devices", profile.devices);
-  setFieldText("bloodType", profile.bloodType);
-  setFieldText("doctor", profile.doctor);
-  setFieldText("clinic", profile.clinic);
-  setFieldText("insurance", profile.insurance);
-  setFieldText("contact1Name", profile.contact1Name);
-  setFieldText("contact1Phone", profile.contact1Phone || "N/A");
-  setFieldText("contact2Name", profile.contact2Name || "");
-  setFieldText("contact2Phone", profile.contact2Phone || "");
-
-  noteNodes.forEach((node) => {
-    node.textContent = profile.notes[Number(node.dataset.note)] || "";
-  });
-
-  updateContactCard(contactCard1, profile.contact1Name, profile.contact1Phone);
-  updateContactCard(contactCard2, profile.contact2Name, profile.contact2Phone);
-
-  const canCall = Boolean(profile.contact1Phone);
-  const callHref = `tel:${sanitizeTel(profile.contact1Phone)}`;
-  callLinks.forEach((link) => setInteractiveState(link, canCall, callHref));
-
-  const whatsappSource = profile.contact1Whatsapp || profile.contact1Phone;
-  const canWhatsapp = Boolean(whatsappSource);
-  const whatsappHref = `https://wa.me/${sanitizeWhatsapp(whatsappSource)}`;
-  whatsappLinks.forEach((link) => {
-    link.hidden = !canWhatsapp;
-    setInteractiveState(link, canWhatsapp, whatsappHref);
-  });
-
-  const hasRecord = Boolean(profile.fullRecordUrl);
-  recordLink.classList.toggle("is-hidden", !hasRecord);
-  if (hasRecord) {
-    recordLink.href = profile.fullRecordUrl;
-  }
-
-  document.title = `${profile.name} | NFC Medico`;
-}
-
-function renderStatus(status = state.baseStatus) {
-  if (!status) {
-    runtimeStatus.hidden = true;
-    return;
-  }
-
-  const copy = translations[state.lang];
-  runtimeStatus.hidden = false;
-  runtimeStatus.dataset.state = status.type;
-  runtimeTitle.textContent = formatString(copy[status.titleKey], status.values);
-  runtimeMessage.textContent = formatString(copy[status.messageKey], status.values);
-}
-
-function showStatus(type, titleKey, messageKey, values = {}) {
-  state.baseStatus = { type, titleKey, messageKey, values };
-  renderStatus();
-}
-
-function flashStatus(type, titleKey, messageKey, values = {}) {
-  window.clearTimeout(state.statusTimer);
-  renderStatus({ type, titleKey, messageKey, values });
-  state.statusTimer = window.setTimeout(() => renderStatus(), 4200);
-}
-
-function setLanguage(lang, syncUrl = true) {
-  state.lang = normalizeLanguage(lang);
-  root.lang = state.lang;
-
-  setTextLanguage(state.lang);
-  applyProfile(state.lang);
-  renderStatus();
-
-  langButtons.forEach((button) => {
-    const isActive = button.dataset.lang === state.lang;
-    button.classList.toggle("is-active", isActive);
-    button.setAttribute("aria-pressed", String(isActive));
-  });
-
-  if (!syncUrl) {
-    return;
-  }
-
-  const url = new URL(window.location.href);
-  url.searchParams.set("lang", state.lang);
-  window.history.replaceState({}, "", url);
-}
-
-function detectIdentifier() {
-  const url = new URL(window.location.href);
-  const searchValue =
-    url.searchParams.get("slug") ||
-    url.searchParams.get("profile") ||
-    url.searchParams.get("id") ||
-    url.searchParams.get("tag");
-
-  if (searchValue) {
-    return decodeURIComponent(searchValue);
-  }
-
-  const segments = url.pathname.split("/").filter(Boolean);
-  const medIndex = segments.findIndex((segment) => segment.toLowerCase() === "med");
-
-  if (medIndex >= 0 && segments[medIndex + 1]) {
-    return decodeURIComponent(segments[medIndex + 1]);
-  }
-
-  return cleanText(config.defaultSlug);
-}
-
 function hasSupabaseConfig() {
   return Boolean(config.supabaseUrl && config.supabaseAnonKey && window.supabase?.createClient);
 }
@@ -538,51 +235,185 @@ function getClient() {
   if (!state.client) {
     state.client = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
   }
-
   return state.client;
 }
 
-async function logScan(identifier) {
-  if (!config.enableScanLogging || !config.scanEventsTable) {
+function detectIdentifier() {
+  const url = new URL(window.location.href);
+  const querySlug = url.searchParams.get("slug");
+  if (querySlug) {
+    return decodeURIComponent(querySlug);
+  }
+
+  const segments = url.pathname.split("/").filter(Boolean);
+  const medIndex = segments.findIndex((segment) => segment.toLowerCase() === "med");
+  if (medIndex >= 0 && segments[medIndex + 1]) {
+    return decodeURIComponent(segments[medIndex + 1]);
+  }
+
+  return cleanText(config.defaultSlug);
+}
+
+function renderStatus(status = state.baseStatus) {
+  if (!status) {
+    runtimeStatus.hidden = true;
     return;
+  }
+
+  const copy = getCopy();
+  runtimeStatus.hidden = false;
+  runtimeStatus.dataset.state = status.type;
+  runtimeTitle.textContent = copy[status.titleKey] || uiTranslations.en[status.titleKey];
+  runtimeMessage.textContent = copy[status.messageKey] || uiTranslations.en[status.messageKey];
+}
+
+function showStatus(type, titleKey, messageKey) {
+  state.baseStatus = { type, titleKey, messageKey };
+  renderStatus();
+}
+
+function flashStatus(type, titleKey, messageKey) {
+  window.clearTimeout(state.statusTimer);
+  renderStatus({ type, titleKey, messageKey });
+  state.statusTimer = window.setTimeout(() => renderStatus(), 4200);
+}
+
+function applyCopy() {
+  const copy = getCopy();
+  textNodes.forEach((node) => {
+    const key = node.dataset.i18n;
+    node.textContent = copy[key] || uiTranslations.en[key] || "";
+  });
+  languageSelect.value = state.lang;
+  renderStatus();
+}
+
+async function translateFields(record, targetLanguage) {
+  const sourceLanguage = cleanText(record.default_language || "en").slice(0, 2).toLowerCase();
+  if (targetLanguage === sourceLanguage) {
+    return {
+      conditions: resolveField(record, "conditions"),
+      allergies: resolveField(record, "allergies"),
+      medications: resolveField(record, "medications"),
+      devices: resolveField(record, "devices"),
+      notes: resolveField(record, "notes")
+    };
+  }
+
+  const cacheKey = `${sourceLanguage}:${targetLanguage}:${record.public_slug || "demo"}`;
+  if (state.translationCache[cacheKey]) {
+    return state.translationCache[cacheKey];
+  }
+
+  const sourceFields = {
+    conditions: resolveField(record, "conditions"),
+    allergies: resolveField(record, "allergies"),
+    medications: resolveField(record, "medications"),
+    devices: resolveField(record, "devices"),
+    notes: resolveField(record, "notes")
+  };
+
+  if (!config.translationFunctionName || !hasSupabaseConfig()) {
+    return sourceFields;
   }
 
   try {
-    await getClient()
-      .from(config.scanEventsTable)
-      .insert([
-        {
-          public_slug: identifier,
-          language: state.lang,
-          page_url: window.location.href,
-          referrer: document.referrer || null,
-          user_agent: navigator.userAgent
-        }
-      ]);
+    const response = await fetch(`${config.supabaseUrl}/functions/v1/${config.translationFunctionName}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: config.supabaseAnonKey,
+        Authorization: `Bearer ${config.supabaseAnonKey}`
+      },
+      body: JSON.stringify({
+        sourceLanguage,
+        targetLanguage,
+        fields: sourceFields
+      })
+    });
 
-    flashStatus("live", "statusScanLoggedTitle", "statusScanLoggedMessage");
+    const payload = await response.json().catch(() => null);
+    if (!response.ok) {
+      throw new Error(payload?.error || "Translation failed");
+    }
+
+    const translated = payload?.fields || sourceFields;
+    state.translationCache[cacheKey] = translated;
+    return translated;
   } catch (error) {
-    console.warn("Scan log failed", error);
+    console.warn("Public translation failed", error);
+    return sourceFields;
   }
 }
 
-async function loadLiveProfile() {
+async function renderProfile() {
+  const record = state.profile || demoProfile;
+  const translated = await translateFields(record, state.lang);
+
+  const values = {
+    name: cleanText(record.full_name) || "N/A",
+    conditions: cleanText(translated.conditions) || "N/A",
+    allergies: cleanText(translated.allergies) || "N/A",
+    medications: cleanText(translated.medications) || "N/A",
+    devices: cleanText(translated.devices) || "N/A",
+    bloodType: cleanText(record.blood_type) || "N/A",
+    doctor: cleanText(record.doctor) || "N/A",
+    clinic: cleanText(record.clinic) || "N/A",
+    insurance: cleanText(record.insurance) || "N/A",
+    contact1Name: cleanText(record.emergency_contact_1_name),
+    contact1Phone: cleanText(record.emergency_contact_1_phone),
+    contact2Name: cleanText(record.emergency_contact_2_name),
+    contact2Phone: cleanText(record.emergency_contact_2_phone)
+  };
+
+  fieldNodes.forEach((node) => {
+    const mapped = values[node.dataset.field];
+    node.textContent = mapped || "-";
+  });
+
+  const notes = cleanText(translated.notes)
+    .split(/\r?\n+/)
+    .map((item) => item.replace(/^[-*]\s*/, "").trim())
+    .filter(Boolean);
+  noteNodes.forEach((node) => {
+    node.textContent = notes[Number(node.dataset.note)] || "";
+  });
+
+  callLink.href = values.contact1Phone ? `tel:${sanitizeTel(values.contact1Phone)}` : "#";
+  whatsappLink.hidden = !record.emergency_contact_1_whatsapp;
+  whatsappLink.href = record.emergency_contact_1_whatsapp
+    ? `https://wa.me/${sanitizeWhatsapp(record.emergency_contact_1_whatsapp)}`
+    : "#";
+
+  const hasRecord = Boolean(cleanText(record.full_record_url));
+  recordLink.classList.toggle("is-hidden", !hasRecord);
+  if (hasRecord) {
+    recordLink.href = record.full_record_url;
+  }
+
+  document.title = `${values.name} | NFC Medico`;
+}
+
+async function loadProfile() {
   state.identifier = detectIdentifier();
+  if (!state.identifier) {
+    overviewView.classList.remove("is-hidden");
+    profileView.classList.add("is-hidden");
+    state.baseStatus = null;
+    renderStatus();
+    return;
+  }
+
+  overviewView.classList.add("is-hidden");
+  profileView.classList.remove("is-hidden");
 
   if (!hasSupabaseConfig()) {
-    showStatus("demo", "statusDemoTitle", "statusDemoMessage");
-    setLanguage(state.lang, false);
+    state.profile = demoProfile;
+    await renderProfile();
     return;
   }
 
-  if (!state.identifier) {
-    showStatus("demo", "statusMissingSlugTitle", "statusMissingSlugMessage");
-    setLanguage(state.lang, false);
-    return;
-  }
-
-  showStatus("loading", "statusLoadingTitle", "statusLoadingMessage", { slug: state.identifier });
-  setLanguage(state.lang, false);
+  showStatus("loading", "statusLoadingTitle", "statusLoadingMessage");
 
   try {
     const { data, error } = await getClient()
@@ -596,19 +427,14 @@ async function loadLiveProfile() {
     }
 
     state.profile = data;
-
-    const preferredLanguage = normalizeLanguage(
-      cleanText(data.default_language || data.preferred_language || state.lang)
-    );
-
-    showStatus("live", "statusLiveTitle", "statusLiveMessage", { slug: state.identifier });
-    setLanguage(preferredLanguage, false);
-    await logScan(state.identifier);
+    state.baseStatus = null;
+    renderStatus();
+    await renderProfile();
   } catch (error) {
     console.warn("Profile load failed", error);
+    showStatus("error", "statusErrorTitle", "statusErrorMessage");
     state.profile = demoProfile;
-    showStatus("error", "statusErrorTitle", "statusErrorMessage", { slug: state.identifier || "N/A" });
-    setLanguage(state.lang, false);
+    await renderProfile();
   }
 }
 
@@ -623,44 +449,40 @@ function getCurrentPosition() {
 }
 
 async function handleShareLocation() {
-  if (!navigator.geolocation) {
-    flashStatus("error", "statusLocationErrorTitle", "statusLocationErrorMessage");
-    return;
-  }
-
   try {
     const position = await getCurrentPosition();
     const latitude = position.coords.latitude.toFixed(6);
     const longitude = position.coords.longitude.toFixed(6);
     const mapUrl = `https://maps.google.com/?q=${latitude},${longitude}`;
-    const copy = `${mapUrl}`;
 
     if (navigator.share) {
-      await navigator.share({
-        title: "Location",
-        text: mapUrl,
-        url: mapUrl
-      });
+      await navigator.share({ title: "Location", text: mapUrl, url: mapUrl });
     } else if (navigator.clipboard?.writeText) {
-      await navigator.clipboard.writeText(copy);
+      await navigator.clipboard.writeText(mapUrl);
     } else {
       window.open(mapUrl, "_blank", "noopener");
     }
 
-    flashStatus("live", "statusLocationCopiedTitle", "statusLocationCopiedMessage");
+    flashStatus("success", "statusLocationCopiedTitle", "statusLocationCopiedMessage");
   } catch (error) {
-    if (error?.name !== "AbortError") {
-      flashStatus("error", "statusLocationErrorTitle", "statusLocationErrorMessage");
-    }
+    flashStatus("error", "statusLocationErrorTitle", "statusLocationErrorMessage");
   }
 }
 
-langButtons.forEach((button) => {
-  button.addEventListener("click", () => setLanguage(button.dataset.lang));
+languageSelect.addEventListener("change", async (event) => {
+  state.lang = event.target.value;
+  root.lang = state.lang;
+  applyCopy();
+  if (!profileView.classList.contains("is-hidden")) {
+    await renderProfile();
+  }
+
+  const url = new URL(window.location.href);
+  url.searchParams.set("lang", state.lang);
+  window.history.replaceState({}, "", url);
 });
 
-shareLocationButtons.forEach((button) => {
-  button.addEventListener("click", handleShareLocation);
-});
+shareLocationButton.addEventListener("click", handleShareLocation);
 
-loadLiveProfile();
+applyCopy();
+loadProfile();
