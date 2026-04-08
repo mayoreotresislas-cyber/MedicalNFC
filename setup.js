@@ -28,7 +28,7 @@ const setupTranslations = {
     publishTitle: "Generate the profile link",
     fieldFullName: "Full name",
     fieldSlug: "Profile ID",
-    fieldProfileLanguage: "Language used to fill the form",
+    fieldProfileLanguage: "Original language of the medical information",
     fieldBloodType: "Blood type",
     fieldInsurance: "Insurance",
     fieldDoctor: "Doctor",
@@ -129,7 +129,7 @@ const setupTranslations = {
     publishTitle: "Generar el enlace del perfil",
     fieldFullName: "Nombre completo",
     fieldSlug: "ID del perfil",
-    fieldProfileLanguage: "Idioma en el que llenas el formulario",
+    fieldProfileLanguage: "Idioma original de la informacion medica",
     fieldBloodType: "Tipo de sangre",
     fieldInsurance: "Seguro",
     fieldDoctor: "Medico",
@@ -215,6 +215,20 @@ const languageOptions = {
   zh: { code: "ZH", label: "Chinese", flag: "🇨🇳" }
 };
 
+const languageVisuals = {
+  en: { label: "English", flagClass: "flag-us" },
+  es: { label: "Espanol", flagClass: "flag-es" },
+  fr: { label: "Francais", flagClass: "flag-fr" },
+  pt: { label: "Portugues", flagClass: "flag-pt" },
+  de: { label: "Deutsch", flagClass: "flag-de" },
+  it: { label: "Italiano", flagClass: "flag-it" },
+  ja: { label: "Japanese", flagClass: "flag-ja" },
+  ko: { label: "Korean", flagClass: "flag-ko" },
+  zh: { label: "Chinese", flagClass: "flag-zh" }
+};
+
+const staticUiLanguages = new Set(["en", "es"]);
+
 const countryCodes = [
   { value: "+1", label: "+1 USA / Canada" },
   { value: "+34", label: "+34 Espana" },
@@ -258,6 +272,11 @@ const state = {
   uiLang: detectInitialLanguage(),
   previewLang: "en",
   client: null,
+  uiCopyCache: {
+    en: setupTranslations.en,
+    es: setupTranslations.es
+  },
+  uiCopyPending: {},
   slugTouched: false,
   slugSeed: createSlugSeed(),
   baseStatus: null,
@@ -286,10 +305,11 @@ function detectInitialLanguage() {
 
 function buildLanguageMarkup(value) {
   const option = languageOptions[value] || languageOptions.en;
+  const visual = languageVisuals[value] || languageVisuals.en;
   return `
-    <span class="flag-select-emoji">${option.flag}</span>
+    <span class="flag-select-swatch ${visual.flagClass}" aria-hidden="true"></span>
     <span class="flag-select-code">${option.code}</span>
-    <span class="flag-select-label">${option.label}</span>
+    <span class="flag-select-label">${visual.label}</span>
   `;
 }
 
@@ -325,6 +345,15 @@ function closeFlagSelectMenus() {
 
 function initFlagSelects() {
   document.querySelectorAll("select[data-flag-menu]").forEach((select) => {
+    Array.from(select.options).forEach((option) => {
+      const value = option.value;
+      const language = languageOptions[value];
+      const visual = languageVisuals[value] || languageVisuals.en;
+      if (language) {
+        option.textContent = `${language.code} - ${visual.label}`;
+      }
+    });
+
     const wrapper = document.createElement("div");
     wrapper.className = "flag-select";
 
@@ -398,6 +427,15 @@ function normalizeUiLanguage(lang) {
 function normalizeProfileLanguage(lang) {
   const code = cleanText(lang).slice(0, 2).toLowerCase();
   return languageOptions[code] ? code : "en";
+}
+
+function getSetupCopy(lang = state.uiLang) {
+  const normalized = normalizeUiLanguage(lang);
+  if (staticUiLanguages.has(normalized)) {
+    return setupTranslations[normalized] || setupTranslations.en;
+  }
+
+  return state.uiCopyCache[normalized] || setupTranslations.en;
 }
 
 function cleanText(value) {
@@ -488,10 +526,10 @@ function clearDraftFields(preserveContacts = false) {
   state.slugTouched = false;
 }
 
-function setBloodPlaceholder() {
+function setBloodPlaceholder(copy = getSetupCopy()) {
   const select = form.elements.blood_type;
   if (select?.options?.length) {
-    select.options[0].textContent = (setupTranslations[state.uiLang] || setupTranslations.en).bloodPlaceholder;
+    select.options[0].textContent = copy.bloodPlaceholder || setupTranslations.en.bloodPlaceholder;
   }
 }
 
@@ -635,7 +673,7 @@ function syncSource(raw) {
 }
 
 function createLoadingFields() {
-  const label = (setupTranslations[state.uiLang] || setupTranslations.en).previewTranslating;
+  const label = getSetupCopy(state.uiLang).previewTranslating || setupTranslations.en.previewTranslating;
   return {
     conditions: label,
     allergies: label,
@@ -657,7 +695,7 @@ function renderStatus(status = state.baseStatus) {
     return;
   }
 
-  const copy = setupTranslations[state.uiLang] || setupTranslations.en;
+  const copy = getSetupCopy(state.uiLang);
   statusBanner.hidden = false;
   statusBanner.dataset.state = status.type;
   statusTitle.textContent = formatString(copy[status.titleKey], status.values);
@@ -709,6 +747,63 @@ async function invokeFunction(functionName, body) {
   }
 
   return payload;
+}
+
+function applyInterfaceCopy(copy) {
+  textNodes.forEach((node) => {
+    const key = node.dataset.i18n;
+    node.textContent = copy[key] || setupTranslations.en[key] || "";
+  });
+  setBloodPlaceholder(copy);
+  renderStatus();
+}
+
+async function ensureSetupCopy(lang) {
+  const normalized = normalizeUiLanguage(lang);
+  if (staticUiLanguages.has(normalized)) {
+    return setupTranslations[normalized] || setupTranslations.en;
+  }
+
+  if (state.uiCopyCache[normalized]) {
+    return state.uiCopyCache[normalized];
+  }
+
+  if (state.uiCopyPending[normalized]) {
+    return state.uiCopyPending[normalized];
+  }
+
+  if (!config.translationFunctionName || !hasSupabaseConfig()) {
+    state.uiCopyCache[normalized] = setupTranslations.en;
+    return state.uiCopyCache[normalized];
+  }
+
+  const sourceFields = Object.fromEntries(
+    Object.entries(setupTranslations.en).map(([key, value]) => [key, cleanText(value)])
+  );
+
+  const request = invokeFunction(config.translationFunctionName, {
+    sourceLanguage: "en",
+    targetLanguage: normalized,
+    fields: sourceFields
+  })
+    .then((payload) => {
+      const translated = {
+        ...setupTranslations.en,
+        ...(payload?.fields || {})
+      };
+      state.uiCopyCache[normalized] = translated;
+      delete state.uiCopyPending[normalized];
+      return translated;
+    })
+    .catch((error) => {
+      console.warn(`Setup interface translation failed for ${normalized}`, error);
+      delete state.uiCopyPending[normalized];
+      state.uiCopyCache[normalized] = setupTranslations.en;
+      return state.uiCopyCache[normalized];
+    });
+
+  state.uiCopyPending[normalized] = request;
+  return request;
 }
 
 async function translateFields(sourceLanguage, targetLanguage, fields) {
@@ -836,19 +931,21 @@ function populateForm(values) {
 }
 
 function setInterfaceLanguage(lang) {
-  state.uiLang = normalizeUiLanguage(lang);
+  const normalized = normalizeUiLanguage(lang);
+  state.uiLang = normalized;
   root.lang = state.uiLang;
-  const copy = setupTranslations[state.uiLang] || setupTranslations.en;
-
-  textNodes.forEach((node) => {
-    const key = node.dataset.i18n;
-    node.textContent = copy[key] || setupTranslations.en[key] || "";
-  });
-
+  applyInterfaceCopy(getSetupCopy(state.uiLang));
   interfaceSelect.value = state.uiLang;
   syncFlagSelect(interfaceSelect);
-  setBloodPlaceholder();
-  renderStatus();
+
+  ensureSetupCopy(normalized).then((copy) => {
+    if (state.uiLang !== normalized) {
+      return;
+    }
+
+    applyInterfaceCopy(copy);
+    renderPreview();
+  });
 }
 
 async function renderPreview() {
@@ -870,11 +967,19 @@ async function renderPreview() {
     }
   }
 
-  const copy = setupTranslations[normalizeUiLanguage(targetLanguage)] || setupTranslations.en;
+  const copy = getSetupCopy(targetLanguage);
   previewCopyNodes.forEach((node) => {
     const key = node.dataset.previewCopy;
     node.textContent = copy[key] || setupTranslations.en[key] || "";
   });
+
+  if (!staticUiLanguages.has(targetLanguage) && !state.uiCopyCache[targetLanguage]) {
+    ensureSetupCopy(targetLanguage).then(() => {
+      if (normalizeProfileLanguage(form.elements.default_language.value || "en") === targetLanguage) {
+        renderPreview();
+      }
+    });
+  }
 
   document.querySelector('[data-preview="full_name"]').textContent = raw.full_name || "-";
   document.querySelector('[data-preview="conditions"]').textContent = previewFields.conditions || "-";

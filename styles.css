@@ -192,6 +192,32 @@ button {
   line-height: 1;
 }
 
+.flag-select-swatch {
+  display: inline-block;
+  width: 22px;
+  height: 16px;
+  border-radius: 4px;
+  flex: 0 0 22px;
+  border: 1px solid rgba(28, 23, 20, 0.12);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.flag-native-field > [data-language-swatch] {
+  display: none;
+}
+
+.flag-us { background-image: linear-gradient(180deg, #b22234 0 14.28%, #fff 14.28% 28.56%, #b22234 28.56% 42.84%, #fff 42.84% 57.12%, #b22234 57.12% 71.4%, #fff 71.4% 85.68%, #b22234 85.68% 100%), linear-gradient(90deg, #3c3b6e 0 45%, transparent 45%); }
+.flag-es { background-image: linear-gradient(180deg, #aa151b 0 25%, #f1bf00 25% 75%, #aa151b 75% 100%); }
+.flag-fr { background-image: linear-gradient(90deg, #0055a4 0 33.33%, #fff 33.33% 66.66%, #ef4135 66.66% 100%); }
+.flag-pt { background-image: radial-gradient(circle at 45% 50%, #f7d117 0 18%, transparent 19%), linear-gradient(90deg, #046a38 0 40%, #da291c 40% 100%); }
+.flag-de { background-image: linear-gradient(180deg, #000 0 33.33%, #dd0000 33.33% 66.66%, #ffce00 66.66% 100%); }
+.flag-it { background-image: linear-gradient(90deg, #009246 0 33.33%, #fff 33.33% 66.66%, #ce2b37 66.66% 100%); }
+.flag-ja { background-image: radial-gradient(circle at 50% 50%, #bc002d 0 28%, transparent 29%), linear-gradient(180deg, #fff 0 100%); }
+.flag-ko { background-image: radial-gradient(circle at 50% 42%, #cd2e3a 0 18%, transparent 19%), radial-gradient(circle at 50% 58%, #0047a0 0 18%, transparent 19%), linear-gradient(180deg, #fff 0 100%); }
+.flag-zh { background-image: radial-gradient(circle at 28% 28%, #ffde00 0 12%, transparent 13%), linear-gradient(180deg, #de2910 0 100%); }
+
 .flag-select-code {
   font-weight: 900;
   letter-spacing: 0.08em;

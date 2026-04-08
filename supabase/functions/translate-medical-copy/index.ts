@@ -14,7 +14,7 @@ const languageNames = {
 } as const;
 
 type SupportedLanguage = keyof typeof languageNames;
-type MedicalFields = Record<(typeof medicalFieldKeys)[number], string>;
+type StringFields = Record<string, string>;
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -31,15 +31,22 @@ function normalizeLanguage(value: unknown): SupportedLanguage {
   return languageNames[normalized] ? normalized : "en";
 }
 
-function normalizeFields(value: unknown): MedicalFields {
+function normalizeFieldMap(value: unknown, fallbackKeys: readonly string[] = medicalFieldKeys): StringFields {
   const source = typeof value === "object" && value ? (value as Record<string, unknown>) : {};
+  const keys = Object.keys(source).length ? Object.keys(source) : [...fallbackKeys];
 
+  return keys.reduce<StringFields>((result, key) => {
+    result[key] = String(source[key] ?? "").trim();
+    return result;
+  }, {});
+}
+
+function buildSchema(keys: string[]) {
   return {
-    conditions: String(source.conditions ?? "").trim(),
-    allergies: String(source.allergies ?? "").trim(),
-    medications: String(source.medications ?? "").trim(),
-    devices: String(source.devices ?? "").trim(),
-    notes: String(source.notes ?? "").trim()
+    type: "object",
+    additionalProperties: false,
+    required: keys,
+    properties: Object.fromEntries(keys.map((key) => [key, { type: "string" }]))
   };
 }
 
@@ -84,33 +91,21 @@ Deno.serve(async (request) => {
     const body = await request.json();
     const sourceLanguage = normalizeLanguage(body?.sourceLanguage);
     const targetLanguage = normalizeLanguage(body?.targetLanguage);
-    const fields = normalizeFields(body?.fields);
+    const fields = normalizeFieldMap(body?.fields);
+    const fieldKeys = Object.keys(fields);
 
-    if (sourceLanguage === targetLanguage || !medicalFieldKeys.some((key) => fields[key])) {
+    if (sourceLanguage === targetLanguage || !fieldKeys.some((key) => fields[key])) {
       return json({ sourceLanguage, targetLanguage, fields });
     }
 
     const prompt = [
-      `Translate the medical profile fields from ${languageNames[sourceLanguage]} to ${languageNames[targetLanguage]}.`,
-      "Preserve exact medical meaning.",
-      "Keep medication, device, and brand names unchanged when they should remain the same.",
+      `Translate the provided text fields from ${languageNames[sourceLanguage]} to ${languageNames[targetLanguage]}.`,
+      "Preserve the exact meaning of the source text.",
+      "For medical content, keep medication, device, and brand names unchanged when they should remain the same.",
       "Do not add warnings, explanations, or new information.",
       "Return empty strings for empty fields.",
-      "Keep notes concise and preserve line breaks as newline-separated lines without bullets."
+      "Preserve line breaks inside each field."
     ].join(" ");
-
-    const schema = {
-      type: "object",
-      additionalProperties: false,
-      required: [...medicalFieldKeys],
-      properties: {
-        conditions: { type: "string" },
-        allergies: { type: "string" },
-        medications: { type: "string" },
-        devices: { type: "string" },
-        notes: { type: "string" }
-      }
-    };
 
     const response = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
@@ -120,7 +115,7 @@ Deno.serve(async (request) => {
       },
       body: JSON.stringify({
         model,
-        max_output_tokens: 500,
+        max_output_tokens: Math.max(500, fieldKeys.length * 120),
         input: [
           {
             role: "system",
@@ -134,9 +129,9 @@ Deno.serve(async (request) => {
         text: {
           format: {
             type: "json_schema",
-            name: "medical_translation",
+            name: "translated_fields",
             strict: true,
-            schema
+            schema: buildSchema(fieldKeys)
           }
         }
       })
@@ -149,7 +144,7 @@ Deno.serve(async (request) => {
 
     const payload = (await response.json()) as Record<string, unknown>;
     const textPayload = extractTextPayload(payload);
-    const translated = normalizeFields(textPayload ? JSON.parse(textPayload) : {});
+    const translated = normalizeFieldMap(textPayload ? JSON.parse(textPayload) : {}, fieldKeys);
 
     return json({
       sourceLanguage,
