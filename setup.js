@@ -46,7 +46,7 @@ const setupTranslations = {
     fieldRecordUrl: "Full medical record URL",
     generatedUrlLabel: "When you generate the profile, the secure link is sent to the administrator email used for NFC recording.",
     saveProfile: "Generate profile",
-    saveFamily: "Generate another family profile",
+    saveFamily: "Generate another family member",
     previewKicker: "Live preview",
     previewTitle: "How the NFC page will look",
     previewLanguage: "Preview language",
@@ -70,6 +70,10 @@ const setupTranslations = {
     successKicker: "Saved",
     successTitle: "Profile generated successfully",
     successText: "The profile was generated correctly and the secure link was sent to the administrator email for NFC recording.",
+    errorKicker: "Error",
+    errorTitle: "We could not generate the profile",
+    errorText: "The profile could not be saved. Review the technical message below and try again.",
+    closeError: "Close",
     closeSuccess: "Done",
     statusReadyTitle: "Ready to generate",
     statusReadyMessage: "Complete the form, review the multilingual preview, and generate the profile link.",
@@ -82,7 +86,7 @@ const setupTranslations = {
     statusSavedTitle: "Profile generated",
     statusSavedMessage: "The medical profile and secure link were created successfully.",
     statusSaveErrorTitle: "Could not save the profile",
-    statusSaveErrorMessage: "Supabase returned an error while saving. Review the table and configuration.",
+    statusSaveErrorMessage: "Supabase returned an error while saving: {details}",
     statusTranslateMissingTitle: "Translation function missing",
     statusTranslateMissingMessage: "Deploy the translate-medical-copy Edge Function before using multilingual preview.",
     statusTranslateErrorTitle: "Automatic translation failed",
@@ -143,7 +147,7 @@ const setupTranslations = {
     fieldRecordUrl: "URL del expediente medico completo",
     generatedUrlLabel: "Cuando generas el perfil, el enlace seguro se envia al correo del administrador que programa los NFC.",
     saveProfile: "Generar perfil",
-    saveFamily: "Generar otro perfil familiar",
+    saveFamily: "Generar otro familiar",
     previewKicker: "Preview en vivo",
     previewTitle: "Asi se vera la pagina del NFC",
     previewLanguage: "Idioma del preview",
@@ -167,6 +171,10 @@ const setupTranslations = {
     successKicker: "Guardado",
     successTitle: "Perfil generado con exito",
     successText: "El perfil se genero correctamente y el enlace seguro fue enviado al correo del administrador para grabar el NFC.",
+    errorKicker: "Error",
+    errorTitle: "No pudimos generar el perfil",
+    errorText: "No se pudo guardar el perfil. Revisa el mensaje tecnico de abajo e intenta de nuevo.",
+    closeError: "Cerrar",
     closeSuccess: "Listo",
     statusReadyTitle: "Listo para generar",
     statusReadyMessage: "Completa el formulario, revisa el preview multilenguaje y genera el enlace del perfil.",
@@ -179,7 +187,7 @@ const setupTranslations = {
     statusSavedTitle: "Perfil generado",
     statusSavedMessage: "El perfil medico y el enlace seguro se crearon correctamente.",
     statusSaveErrorTitle: "No se pudo guardar el perfil",
-    statusSaveErrorMessage: "Supabase devolvio un error al guardar. Revisa la tabla y la configuracion.",
+    statusSaveErrorMessage: "Supabase devolvio un error al guardar: {details}",
     statusTranslateMissingTitle: "Falta la funcion de traduccion",
     statusTranslateMissingMessage: "Publica la Edge Function translate-medical-copy antes de usar preview multilenguaje.",
     statusTranslateErrorTitle: "Fallo la traduccion automatica",
@@ -236,6 +244,8 @@ const statusMessage = document.querySelector("[data-form-status-message]");
 const savingOverlay = document.querySelector("[data-saving-overlay]");
 const successModal = document.querySelector("[data-success-modal]");
 const successUrlNode = document.querySelector("[data-success-url]");
+const errorModal = document.querySelector("[data-error-modal]");
+const errorDetailNode = document.querySelector("[data-error-detail]");
 const interfaceSelect = document.querySelector("[data-lang-select]");
 const previewSelect = document.querySelector("[data-preview-select]");
 const helperFields = document.querySelectorAll("[data-clear-helper]");
@@ -634,6 +644,21 @@ function renderStatus(status = state.baseStatus) {
   statusMessage.textContent = formatString(copy[status.messageKey], status.values);
 }
 
+function extractErrorDetails(error) {
+  if (!error) {
+    return "Unknown error";
+  }
+
+  const parts = [
+    cleanText(error.message),
+    cleanText(error.details),
+    cleanText(error.hint),
+    cleanText(error.code)
+  ].filter(Boolean);
+
+  return parts[0] || "Unknown error";
+}
+
 function showStatus(type, titleKey, messageKey, values = {}) {
   state.baseStatus = { type, titleKey, messageKey, values };
   renderStatus();
@@ -852,6 +877,7 @@ function startFamilyProfile() {
 }
 
 function openSavingOverlay() {
+  closeErrorModal();
   savingOverlay.classList.remove("is-hidden");
 }
 
@@ -872,6 +898,15 @@ function openSuccessModal(url, intent = "save") {
 
 function closeSuccessModal() {
   successModal.classList.add("is-hidden");
+}
+
+function openErrorModal(detail) {
+  errorDetailNode.textContent = detail || "Unknown error";
+  errorModal.classList.remove("is-hidden");
+}
+
+function closeErrorModal() {
+  errorModal.classList.add("is-hidden");
 }
 
 async function saveProfile(event) {
@@ -921,10 +956,13 @@ async function saveProfile(event) {
     }
   } catch (error) {
     console.warn("Save failed", error);
+    const details = extractErrorDetails(error);
     if (error?.status === 404) {
       showStatus("error", "statusTranslateMissingTitle", "statusTranslateMissingMessage");
+      openErrorModal(details);
     } else {
-      showStatus("error", "statusSaveErrorTitle", "statusSaveErrorMessage");
+      showStatus("error", "statusSaveErrorTitle", "statusSaveErrorMessage", { details });
+      openErrorModal(details);
     }
   } finally {
     state.pendingMode = "save";
@@ -1041,6 +1079,9 @@ function bindEvents() {
   document.querySelector('[data-action="success-family"]').addEventListener("click", startFamilyProfile);
   document.querySelectorAll('[data-action="close-success"]').forEach((button) => {
     button.addEventListener("click", closeSuccessModal);
+  });
+  document.querySelectorAll('[data-action="close-error"]').forEach((button) => {
+    button.addEventListener("click", closeErrorModal);
   });
 }
 

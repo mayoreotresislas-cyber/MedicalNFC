@@ -314,11 +314,11 @@
                     When you generate the profile, the secure link is sent to the administrator email used for NFC recording.
                   </p>
                   <div class="action-buttons">
-                    <button class="button button-secondary" type="button" data-action="save-family" data-i18n="saveFamily">
-                      Generate another family profile
-                    </button>
                     <button class="button button-primary" type="submit" data-i18n="saveProfile">
                       Generate profile
+                    </button>
+                    <button class="button button-secondary" type="button" data-action="save-family" data-i18n="saveFamily">
+                      Generate another family member
                     </button>
                   </div>
                 </div>
@@ -439,6 +439,26 @@
           </button>
           <button class="button button-primary" type="button" data-action="close-success" data-i18n="closeSuccess">
             Done
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="success-modal error-modal is-hidden" data-error-modal>
+      <div class="success-backdrop" data-action="close-error"></div>
+      <div class="success-card error-card" role="dialog" aria-modal="true" aria-labelledby="error-title">
+        <button class="success-close" type="button" data-action="close-error" aria-label="Close">
+          x
+        </button>
+        <p class="success-kicker" data-i18n="errorKicker">Error</p>
+        <h2 id="error-title" data-i18n="errorTitle">We could not generate the profile</h2>
+        <p class="success-copy" data-i18n="errorText">
+          The profile could not be saved. Review the technical message below and try again.
+        </p>
+        <div class="success-url-box error-detail-box" data-error-detail>Unknown error</div>
+        <div class="success-actions error-actions">
+          <button class="button button-primary" type="button" data-action="close-error" data-i18n="closeError">
+            Close
           </button>
         </div>
       </div>
