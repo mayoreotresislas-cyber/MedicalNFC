@@ -13,5 +13,5 @@ window.NFC_MEDICO_CONFIG = {
   enableScanLogging: false,
   scanEventsTable: "medical_scan_events",
   allowDirectProfileWrite: true,
-  siteBaseUrl: "medical-k63anqspk-mayoreotresislas-9044s-projects.vercel.app"
+  siteBaseUrl: "https://medical-k63anqspk-mayoreotresislas-9044s-projects.vercel.app/med/{slug}"
 };

@@ -359,10 +359,10 @@ function getProfileData(lang) {
     insurance: resolveField(record, "insurance", lang) || "N/A",
     contact1Name: resolveField(record, "emergency_contact_1_name", lang) || "N/A",
     contact1Phone: cleanText(record.emergency_contact_1_phone),
-    contact1Whatsapp: cleanText(record.emergency_contact_1_whatsapp || record.emergency_contact_1_phone),
+    contact1Whatsapp: cleanText(record.emergency_contact_1_whatsapp),
     contact2Name: resolveField(record, "emergency_contact_2_name", lang) || "",
     contact2Phone: cleanText(record.emergency_contact_2_phone),
-    contact2Whatsapp: cleanText(record.emergency_contact_2_whatsapp || record.emergency_contact_2_phone),
+    contact2Whatsapp: cleanText(record.emergency_contact_2_whatsapp),
     notes: resolveNotes(record, lang),
     fullRecordUrl: cleanText(record.full_record_url)
   };
@@ -447,7 +447,10 @@ function applyProfile(lang) {
   const whatsappSource = profile.contact1Whatsapp || profile.contact1Phone;
   const canWhatsapp = Boolean(whatsappSource);
   const whatsappHref = `https://wa.me/${sanitizeWhatsapp(whatsappSource)}`;
-  whatsappLinks.forEach((link) => setInteractiveState(link, canWhatsapp, whatsappHref));
+  whatsappLinks.forEach((link) => {
+    link.hidden = !canWhatsapp;
+    setInteractiveState(link, canWhatsapp, whatsappHref);
+  });
 
   const hasRecord = Boolean(profile.fullRecordUrl);
   recordLink.classList.toggle("is-hidden", !hasRecord);
