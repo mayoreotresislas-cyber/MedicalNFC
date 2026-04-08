@@ -30,12 +30,17 @@ const setupTranslations = {
     fieldSlug: "Profile ID",
     fieldProfileLanguage: "Original language of the medical information",
     fieldBloodType: "Blood type",
+    fieldAge: "Age",
+    fieldWeight: "Weight",
+    fieldHeight: "Height",
+    fieldOrganDonor: "Organ donor",
     fieldInsurance: "Insurance",
     fieldDoctor: "Doctor",
     fieldClinic: "Clinic",
     fieldConditions: "Conditions",
-    fieldAllergies: "Severe allergies",
-    fieldMedications: "Critical medications",
+    fieldAllergies: "Medical allergies",
+    fieldFoodAllergies: "Food allergies",
+    fieldMedications: "Medications and doses",
     fieldDevices: "Medical devices",
     fieldNotes: "Important notes",
     contact1Title: "Emergency contact 1",
@@ -58,13 +63,21 @@ const setupTranslations = {
     additionalTitle: "Additional Medical Information",
     labelName: "Name",
     labelConditions: "Condition(s)",
-    labelAllergies: "Severe Allergies",
-    labelMedications: "Critical Medications",
+    labelAllergies: "Medical Allergies",
+    labelFoodAllergies: "Food Allergies",
+    labelMedications: "Medications / Doses",
     labelBloodType: "Blood Type",
+    labelAge: "Age",
+    labelWeight: "Weight",
+    labelHeight: "Height",
+    labelOrganDonor: "Organ donor",
     labelDoctor: "Doctor",
     labelClinic: "Clinic",
     labelInsurance: "Insurance",
     importantNotes: "Important Notes",
+    organDonorPlaceholder: "Select an option",
+    organDonorYes: "Yes",
+    organDonorNo: "No",
     savingTitle: "Generating profile...",
     savingText: "Please wait while we store the profile and notify the NFC administrator.",
     successKicker: "Saved",
@@ -131,12 +144,17 @@ const setupTranslations = {
     fieldSlug: "ID del perfil",
     fieldProfileLanguage: "Idioma original de la informacion medica",
     fieldBloodType: "Tipo de sangre",
+    fieldAge: "Edad",
+    fieldWeight: "Peso",
+    fieldHeight: "Estatura",
+    fieldOrganDonor: "Donador de organos",
     fieldInsurance: "Seguro",
     fieldDoctor: "Medico",
     fieldClinic: "Clinica",
     fieldConditions: "Condiciones",
-    fieldAllergies: "Alergias graves",
-    fieldMedications: "Medicamentos criticos",
+    fieldAllergies: "Alergias medicas",
+    fieldFoodAllergies: "Alergias alimentarias",
+    fieldMedications: "Medicamentos y dosis",
     fieldDevices: "Dispositivos medicos",
     fieldNotes: "Notas importantes",
     contact1Title: "Contacto de emergencia 1",
@@ -159,13 +177,21 @@ const setupTranslations = {
     additionalTitle: "Informacion Medica Adicional",
     labelName: "Nombre",
     labelConditions: "Condiciones",
-    labelAllergies: "Alergias graves",
-    labelMedications: "Medicamentos criticos",
+    labelAllergies: "Alergias medicas",
+    labelFoodAllergies: "Alergias alimentarias",
+    labelMedications: "Medicamentos y dosis",
     labelBloodType: "Tipo de sangre",
+    labelAge: "Edad",
+    labelWeight: "Peso",
+    labelHeight: "Estatura",
+    labelOrganDonor: "Donador de organos",
     labelDoctor: "Medico",
     labelClinic: "Clinica",
     labelInsurance: "Seguro",
     importantNotes: "Notas importantes",
+    organDonorPlaceholder: "Selecciona una opcion",
+    organDonorYes: "Si",
+    organDonorNo: "No",
     savingTitle: "Generando perfil...",
     savingText: "Espera un momento mientras guardamos el perfil y notificamos al administrador del NFC.",
     successKicker: "Guardado",
@@ -247,7 +273,7 @@ const countryCodes = [
   { value: "+505", label: "+505 Nicaragua" }
 ];
 
-const medicalFieldKeys = ["conditions", "allergies", "medications", "devices", "notes"];
+const medicalFieldKeys = ["conditions", "allergies", "food_allergies", "medications", "devices", "notes"];
 const config = window.NFC_MEDICO_CONFIG || {};
 const root = document.documentElement;
 const form = document.querySelector("#profile-form");
@@ -533,6 +559,31 @@ function setBloodPlaceholder(copy = getSetupCopy()) {
   }
 }
 
+function setOrganDonorOptions(copy = getSetupCopy()) {
+  const select = form.elements.organ_donor;
+  if (!select?.options?.length) {
+    return;
+  }
+
+  select.options[0].textContent = copy.organDonorPlaceholder || setupTranslations.en.organDonorPlaceholder;
+  if (select.options[1]) {
+    select.options[1].textContent = copy.organDonorYes || setupTranslations.en.organDonorYes;
+  }
+  if (select.options[2]) {
+    select.options[2].textContent = copy.organDonorNo || setupTranslations.en.organDonorNo;
+  }
+}
+
+function formatOrganDonorValue(value, copy = getSetupCopy()) {
+  if (value === true || value === "true") {
+    return copy.organDonorYes || setupTranslations.en.organDonorYes;
+  }
+  if (value === false || value === "false") {
+    return copy.organDonorNo || setupTranslations.en.organDonorNo;
+  }
+  return "-";
+}
+
 function buildPhone(code, local) {
   const prefix = cleanText(code || "+1");
   const number = cleanText(local);
@@ -615,11 +666,16 @@ function getFormState() {
     public_slug: slugify(form.elements.public_slug.value),
     default_language: normalizeProfileLanguage(form.elements.default_language.value),
     blood_type: cleanText(form.elements.blood_type.value),
+    age: cleanText(form.elements.age.value),
+    weight: cleanText(form.elements.weight.value),
+    height: cleanText(form.elements.height.value),
+    organ_donor: cleanText(form.elements.organ_donor.value),
     insurance: cleanText(form.elements.insurance.value),
     doctor: cleanText(form.elements.doctor.value),
     clinic: cleanText(form.elements.clinic.value),
     conditions: cleanText(form.elements.conditions.value),
     allergies: cleanText(form.elements.allergies.value),
+    food_allergies: cleanText(form.elements.food_allergies.value),
     medications: cleanText(form.elements.medications.value),
     devices: cleanText(form.elements.devices.value),
     notes: cleanText(form.elements.notes.value),
@@ -638,6 +694,12 @@ function sourceFieldsFromRecord(record) {
   return {
     conditions: cleanText(record.conditions_source || record[`conditions_${sourceLanguage}`] || record.conditions_en || record.conditions_es),
     allergies: cleanText(record.allergies_source || record[`allergies_${sourceLanguage}`] || record.allergies_en || record.allergies_es),
+    food_allergies: cleanText(
+      record.food_allergies_source ||
+        record[`food_allergies_${sourceLanguage}`] ||
+        record.food_allergies_en ||
+        record.food_allergies_es
+    ),
     medications: cleanText(record.medications_source || record[`medications_${sourceLanguage}`] || record.medications_en || record.medications_es),
     devices: cleanText(record.devices_source || record[`devices_${sourceLanguage}`] || record.devices_en || record.devices_es),
     notes: cleanText(record.notes_source || record[`notes_${sourceLanguage}`] || record.notes_en || record.notes_es)
@@ -653,6 +715,7 @@ function syncSource(raw) {
   const sourceFields = {
     conditions: cleanText(raw.conditions),
     allergies: cleanText(raw.allergies),
+    food_allergies: cleanText(raw.food_allergies),
     medications: cleanText(raw.medications),
     devices: cleanText(raw.devices),
     notes: cleanText(raw.notes)
@@ -677,6 +740,7 @@ function createLoadingFields() {
   return {
     conditions: label,
     allergies: label,
+    food_allergies: label,
     medications: label,
     devices: label,
     notes: label
@@ -755,6 +819,7 @@ function applyInterfaceCopy(copy) {
     node.textContent = copy[key] || setupTranslations.en[key] || "";
   });
   setBloodPlaceholder(copy);
+  setOrganDonorOptions(copy);
   renderStatus();
 }
 
@@ -888,21 +953,28 @@ function buildPayload(raw, sourceFields, englishFields, spanishFields) {
     default_language: raw.default_language,
     full_name: raw.full_name,
     blood_type: raw.blood_type || null,
+    age: raw.age || null,
+    weight: raw.weight || null,
+    height: raw.height || null,
+    organ_donor: raw.organ_donor === "true" ? true : raw.organ_donor === "false" ? false : null,
     insurance: raw.insurance || null,
     doctor: raw.doctor || null,
     clinic: raw.clinic || null,
     conditions_source: sourceFields.conditions,
     allergies_source: sourceFields.allergies,
+    food_allergies_source: sourceFields.food_allergies,
     medications_source: sourceFields.medications,
     devices_source: sourceFields.devices,
     notes_source: sourceFields.notes,
     conditions_en: englishFields.conditions,
     allergies_en: englishFields.allergies,
+    food_allergies_en: englishFields.food_allergies,
     medications_en: englishFields.medications,
     devices_en: englishFields.devices,
     notes_en: englishFields.notes,
     conditions_es: spanishFields.conditions,
     allergies_es: spanishFields.allergies,
+    food_allergies_es: spanishFields.food_allergies,
     medications_es: spanishFields.medications,
     devices_es: spanishFields.devices,
     notes_es: spanishFields.notes,
@@ -984,8 +1056,14 @@ async function renderPreview() {
   document.querySelector('[data-preview="full_name"]').textContent = raw.full_name || "-";
   document.querySelector('[data-preview="conditions"]').textContent = previewFields.conditions || "-";
   document.querySelector('[data-preview="allergies"]').textContent = previewFields.allergies || "-";
+  document.querySelector('[data-preview="food_allergies"]').textContent = previewFields.food_allergies || "-";
   document.querySelector('[data-preview="medications"]').textContent = previewFields.medications || "-";
+  document.querySelector('[data-preview="devices"]').textContent = previewFields.devices || "-";
   document.querySelector('[data-preview="blood_type"]').textContent = raw.blood_type || "-";
+  document.querySelector('[data-preview="age"]').textContent = raw.age || "-";
+  document.querySelector('[data-preview="weight"]').textContent = raw.weight || "-";
+  document.querySelector('[data-preview="height"]').textContent = raw.height || "-";
+  document.querySelector('[data-preview="organ_donor"]').textContent = formatOrganDonorValue(raw.organ_donor, copy);
   document.querySelector('[data-preview="doctor"]').textContent = raw.doctor || "-";
   document.querySelector('[data-preview="clinic"]').textContent = raw.clinic || "-";
   document.querySelector('[data-preview="insurance"]').textContent = raw.insurance || "-";
@@ -1135,6 +1213,7 @@ async function loadExistingProfile() {
       en: {
         conditions: cleanText(data.conditions_en),
         allergies: cleanText(data.allergies_en),
+        food_allergies: cleanText(data.food_allergies_en),
         medications: cleanText(data.medications_en),
         devices: cleanText(data.devices_en),
         notes: cleanText(data.notes_en)
@@ -1142,6 +1221,7 @@ async function loadExistingProfile() {
       es: {
         conditions: cleanText(data.conditions_es),
         allergies: cleanText(data.allergies_es),
+        food_allergies: cleanText(data.food_allergies_es),
         medications: cleanText(data.medications_es),
         devices: cleanText(data.devices_es),
         notes: cleanText(data.notes_es)
@@ -1153,11 +1233,17 @@ async function loadExistingProfile() {
       public_slug: cleanText(data.public_slug),
       default_language: normalizeProfileLanguage(data.default_language || "en"),
       blood_type: cleanText(data.blood_type),
+      age: cleanText(data.age),
+      weight: cleanText(data.weight),
+      height: cleanText(data.height),
+      organ_donor:
+        data.organ_donor === true ? "true" : data.organ_donor === false ? "false" : "",
       insurance: cleanText(data.insurance),
       doctor: cleanText(data.doctor),
       clinic: cleanText(data.clinic),
       conditions: sourceFields.conditions,
       allergies: sourceFields.allergies,
+      food_allergies: sourceFields.food_allergies,
       medications: sourceFields.medications,
       devices: sourceFields.devices,
       notes: sourceFields.notes,

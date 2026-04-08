@@ -110,7 +110,7 @@ module arc_text_top(str, radius, center_angle, size, cy, spread = 1.0) {
         translate([0, cy, 0])
             rotate([0, 0, ang])
                 translate([0, radius, 0])
-                    rotate([0, 0, ang - 90])
+                    rotate([0, 0, -90])
                         thick_char_2d(str[i], size);
     }
 }
@@ -126,7 +126,7 @@ module arc_text_bottom(str, radius, center_angle, size, cy, spread = 1.0) {
         translate([0, cy, 0])
             rotate([0, 0, ang])
                 translate([0, radius, 0])
-                    rotate([0, 0, ang + 90])
+                    rotate([0, 0, 90])
                         thick_char_2d(str[i], size);
     }
 }

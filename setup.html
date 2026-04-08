@@ -147,6 +147,47 @@
                   </label>
                 </div>
 
+                <div class="field-grid four-up">
+                  <label class="field">
+                    <span data-i18n="fieldAge">Age</span>
+                    <input
+                      name="age"
+                      type="number"
+                      min="0"
+                      max="120"
+                      placeholder="42"
+                      inputmode="numeric"
+                      data-clear-helper
+                    />
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldWeight">Weight</span>
+                    <input
+                      name="weight"
+                      type="text"
+                      placeholder="68 kg / 150 lb"
+                      data-clear-helper
+                    />
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldHeight">Height</span>
+                    <input
+                      name="height"
+                      type="text"
+                      placeholder="172 cm / 5'8&quot;"
+                      data-clear-helper
+                    />
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldOrganDonor">Organ donor</span>
+                    <select name="organ_donor">
+                      <option value="">Select an option</option>
+                      <option value="true">Yes</option>
+                      <option value="false">No</option>
+                    </select>
+                  </label>
+                </div>
+
                 <div class="field-grid two-up">
                   <label class="field">
                     <span data-i18n="fieldDoctor">Doctor</span>
@@ -181,25 +222,34 @@
                     <textarea
                       name="conditions"
                       rows="3"
-                      placeholder="Type 1 Diabetes"
+                      placeholder="Type 1 Diabetes&#10;Epilepsy&#10;Hypertension"
                       data-clear-helper
                     ></textarea>
                   </label>
                   <label class="field">
-                    <span data-i18n="fieldAllergies">Severe allergies</span>
+                    <span data-i18n="fieldAllergies">Medical allergies</span>
                     <textarea
                       name="allergies"
                       rows="3"
-                      placeholder="Penicillin"
+                      placeholder="Penicillin&#10;Sulfa drugs&#10;Latex"
                       data-clear-helper
                     ></textarea>
                   </label>
                   <label class="field">
-                    <span data-i18n="fieldMedications">Critical medications</span>
+                    <span data-i18n="fieldFoodAllergies">Food allergies</span>
+                    <textarea
+                      name="food_allergies"
+                      rows="3"
+                      placeholder="Peanuts&#10;Shellfish&#10;Dairy"
+                      data-clear-helper
+                    ></textarea>
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldMedications">Medications and doses</span>
                     <textarea
                       name="medications"
-                      rows="3"
-                      placeholder="Insulin"
+                      rows="4"
+                      placeholder="Insulin glargine 12 units nightly&#10;Metformin 500 mg twice daily"
                       data-clear-helper
                     ></textarea>
                   </label>
@@ -348,12 +398,20 @@
                     <dd data-preview="conditions">-</dd>
                   </div>
                   <div>
-                    <dt data-preview-copy="labelAllergies">Alergias graves</dt>
+                    <dt data-preview-copy="labelAllergies">Alergias medicas</dt>
                     <dd data-preview="allergies">-</dd>
                   </div>
                   <div>
-                    <dt data-preview-copy="labelMedications">Medicamentos criticos</dt>
+                    <dt data-preview-copy="labelFoodAllergies">Alergias alimentarias</dt>
+                    <dd data-preview="food_allergies">-</dd>
+                  </div>
+                  <div>
+                    <dt data-preview-copy="labelMedications">Medicamentos y dosis</dt>
                     <dd data-preview="medications">-</dd>
+                  </div>
+                  <div>
+                    <dt data-preview-copy="labelDevices">Dispositivos medicos</dt>
+                    <dd data-preview="devices">-</dd>
                   </div>
                 </dl>
                 <div class="preview-notes">
@@ -376,6 +434,22 @@
                   <div>
                     <dt data-preview-copy="labelBloodType">Tipo de sangre</dt>
                     <dd data-preview="blood_type">-</dd>
+                  </div>
+                  <div>
+                    <dt data-preview-copy="labelAge">Edad</dt>
+                    <dd data-preview="age">-</dd>
+                  </div>
+                  <div>
+                    <dt data-preview-copy="labelWeight">Peso</dt>
+                    <dd data-preview="weight">-</dd>
+                  </div>
+                  <div>
+                    <dt data-preview-copy="labelHeight">Estatura</dt>
+                    <dd data-preview="height">-</dd>
+                  </div>
+                  <div>
+                    <dt data-preview-copy="labelOrganDonor">Donador de organos</dt>
+                    <dd data-preview="organ_donor">-</dd>
                   </div>
                   <div>
                     <dt data-preview-copy="labelDoctor">Medico</dt>

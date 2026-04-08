@@ -9,8 +9,8 @@ const uiTranslations = {
       "This page is for the person who will complete the medical information before the NFC is programmed. You will add one person's emergency details, extra medical information, family contacts, and the language that should appear when the profile is scanned.",
     overviewPrimary: "Complete Medical Form",
     whatYouWillFill: "What you will fill",
-    fillItem1: "Basic identity and blood type",
-    fillItem2: "Conditions, allergies, medications, and devices",
+    fillItem1: "Basic identity, blood type, age, height, and weight",
+    fillItem2: "Conditions, medical allergies, food allergies, medications, and devices",
     fillItem3: "Emergency contacts for family or caregivers",
     fillItem4: "Optional link to the complete medical record",
     howItWorksKicker: "How it works",
@@ -33,14 +33,21 @@ const uiTranslations = {
     detailsTitle: "Additional Medical Information",
     labelName: "Name",
     labelConditions: "Condition(s)",
-    labelAllergies: "Severe Allergies",
-    labelMedications: "Critical Medications",
+    labelAllergies: "Medical Allergies",
+    labelFoodAllergies: "Food Allergies",
+    labelMedications: "Medications / Doses",
     labelDevices: "Medical Devices",
     labelBloodType: "Blood Type",
+    labelAge: "Age",
+    labelWeight: "Weight",
+    labelHeight: "Height",
+    labelOrganDonor: "Organ donor",
     labelDoctor: "Doctor",
     labelClinic: "Clinic",
     labelInsurance: "Insurance",
     importantNotes: "Important Notes",
+    organDonorYes: "Yes",
+    organDonorNo: "No",
     contactsTitle: "Emergency Contacts",
     contact1Label: "Primary contact",
     contact2Label: "Secondary contact",
@@ -69,8 +76,8 @@ const uiTranslations = {
       "Esta pagina es para la persona que va a completar la informacion medica antes de grabar el NFC. Aqui vas a capturar la informacion de emergencia de una persona, datos medicos adicionales, contactos familiares y el idioma en que se vera el perfil al escanearlo.",
     overviewPrimary: "Completar Formulario Medico",
     whatYouWillFill: "Lo que vas a llenar",
-    fillItem1: "Identidad basica y tipo de sangre",
-    fillItem2: "Condiciones, alergias, medicamentos y dispositivos",
+    fillItem1: "Identidad basica, tipo de sangre, edad, estatura y peso",
+    fillItem2: "Condiciones, alergias medicas, alergias alimentarias, medicamentos y dispositivos",
     fillItem3: "Contactos de emergencia para familia o cuidadores",
     fillItem4: "Enlace opcional al expediente medico completo",
     howItWorksKicker: "Como funciona",
@@ -93,14 +100,21 @@ const uiTranslations = {
     detailsTitle: "Informacion Medica Adicional",
     labelName: "Nombre",
     labelConditions: "Condiciones",
-    labelAllergies: "Alergias graves",
-    labelMedications: "Medicamentos criticos",
+    labelAllergies: "Alergias medicas",
+    labelFoodAllergies: "Alergias alimentarias",
+    labelMedications: "Medicamentos y dosis",
     labelDevices: "Dispositivos medicos",
     labelBloodType: "Tipo de sangre",
+    labelAge: "Edad",
+    labelWeight: "Peso",
+    labelHeight: "Estatura",
+    labelOrganDonor: "Donador de organos",
     labelDoctor: "Medico",
     labelClinic: "Clinica",
     labelInsurance: "Seguro",
     importantNotes: "Notas importantes",
+    organDonorYes: "Si",
+    organDonorNo: "No",
     contactsTitle: "Contactos de emergencia",
     contact1Label: "Contacto principal",
     contact2Label: "Contacto secundario",
@@ -563,12 +577,18 @@ const staticUiLanguages = new Set(["en", "es"]);
 const demoProfile = {
   default_language: "en",
   full_name: "John Doe",
+  age: "29",
+  weight: "68 kg / 150 lb",
+  height: "172 cm / 5'8\"",
+  organ_donor: true,
   conditions_en: "Type 1 Diabetes",
   conditions_es: "Diabetes Tipo 1",
   allergies_en: "Penicillin",
   allergies_es: "Penicilina",
-  medications_en: "Insulin",
-  medications_es: "Insulina",
+  food_allergies_en: "Peanuts",
+  food_allergies_es: "Cacahuates",
+  medications_en: "Insulin glargine 12 units nightly",
+  medications_es: "Insulina glargina 12 unidades por la noche",
   devices_en: "Insulin Pump",
   devices_es: "Bomba de insulina",
   notes_en: "Patient uses insulin\nRisk of hypoglycemia\nMay require immediate glucose",
@@ -751,6 +771,16 @@ function cleanText(value) {
   return String(value).trim();
 }
 
+function formatOrganDonorValue(value, copy = getCopy()) {
+  if (value === true || value === "true") {
+    return copy.organDonorYes || uiTranslations.en.organDonorYes;
+  }
+  if (value === false || value === "false") {
+    return copy.organDonorNo || uiTranslations.en.organDonorNo;
+  }
+  return "N/A";
+}
+
 function resolveField(record, field) {
   const sourceLanguage = cleanText(record.default_language || "en").slice(0, 2).toLowerCase();
   if (sourceLanguage === "es") {
@@ -915,6 +945,7 @@ async function translateFields(record, targetLanguage) {
     return {
       conditions: resolveField(record, "conditions"),
       allergies: resolveField(record, "allergies"),
+      food_allergies: resolveField(record, "food_allergies"),
       medications: resolveField(record, "medications"),
       devices: resolveField(record, "devices"),
       notes: resolveField(record, "notes")
@@ -929,6 +960,7 @@ async function translateFields(record, targetLanguage) {
   const sourceFields = {
     conditions: resolveField(record, "conditions"),
     allergies: resolveField(record, "allergies"),
+    food_allergies: resolveField(record, "food_allergies"),
     medications: resolveField(record, "medications"),
     devices: resolveField(record, "devices"),
     notes: resolveField(record, "notes")
@@ -956,9 +988,14 @@ async function renderProfile() {
     name: cleanText(record.full_name) || "N/A",
     conditions: cleanText(translated.conditions) || "N/A",
     allergies: cleanText(translated.allergies) || "N/A",
+    foodAllergies: cleanText(translated.food_allergies) || "N/A",
     medications: cleanText(translated.medications) || "N/A",
     devices: cleanText(translated.devices) || "N/A",
     bloodType: cleanText(record.blood_type) || "N/A",
+    age: cleanText(record.age) || "N/A",
+    weight: cleanText(record.weight) || "N/A",
+    height: cleanText(record.height) || "N/A",
+    organDonor: formatOrganDonorValue(record.organ_donor, getCopy()),
     doctor: cleanText(record.doctor) || "N/A",
     clinic: cleanText(record.clinic) || "N/A",
     insurance: cleanText(record.insurance) || "N/A",

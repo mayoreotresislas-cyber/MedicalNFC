@@ -436,6 +436,10 @@ button {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.four-up {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
 .contact-grid {
   grid-template-columns: minmax(0, 1.2fr) 160px minmax(0, 1fr);
 }
@@ -902,6 +906,7 @@ button {
   .hero,
   .two-up,
   .three-up,
+  .four-up,
   .contact-grid,
   .url-actions,
   .action-buttons,
