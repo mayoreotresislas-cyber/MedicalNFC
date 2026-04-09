@@ -11,6 +11,9 @@ create table if not exists public.medical_profiles (
   public_slug text not null unique,
   default_language text not null default 'en' check (default_language in ('en', 'es', 'fr', 'pt', 'de', 'it', 'ja', 'ko', 'zh')),
   full_name text not null,
+  pending_label text,
+  chip_reference text,
+  workflow_status text not null default 'pending' check (workflow_status in ('pending', 'ready_to_program', 'active', 'update_requested', 'archived')),
   blood_type text,
   age text,
   weight text,
@@ -44,12 +47,19 @@ create table if not exists public.medical_profiles (
   emergency_contact_2_phone text,
   emergency_contact_2_whatsapp text,
   full_record_url text,
+  activation_started_at timestamptz,
+  activated_at timestamptz,
+  nfc_programmed_at timestamptz,
+  hybrid_summary text,
   is_public boolean not null default true,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
 
 alter table public.medical_profiles
+  add column if not exists pending_label text,
+  add column if not exists chip_reference text,
+  add column if not exists workflow_status text not null default 'pending',
   add column if not exists age text,
   add column if not exists weight text,
   add column if not exists height text,
@@ -61,7 +71,11 @@ alter table public.medical_profiles
   add column if not exists food_allergies_es text,
   add column if not exists medications_source text,
   add column if not exists devices_source text,
-  add column if not exists notes_source text;
+  add column if not exists notes_source text,
+  add column if not exists activation_started_at timestamptz,
+  add column if not exists activated_at timestamptz,
+  add column if not exists nfc_programmed_at timestamptz,
+  add column if not exists hybrid_summary text;
 
 alter table public.medical_profiles
   drop constraint if exists medical_profiles_default_language_check;
@@ -70,8 +84,35 @@ alter table public.medical_profiles
   add constraint medical_profiles_default_language_check
   check (default_language in ('en', 'es', 'fr', 'pt', 'de', 'it', 'ja', 'ko', 'zh'));
 
+alter table public.medical_profiles
+  drop constraint if exists medical_profiles_workflow_status_check;
+
+alter table public.medical_profiles
+  add constraint medical_profiles_workflow_status_check
+  check (workflow_status in ('pending', 'ready_to_program', 'active', 'update_requested', 'archived'));
+
 create index if not exists medical_profiles_public_slug_idx
   on public.medical_profiles (public_slug);
+
+create index if not exists medical_profiles_workflow_status_idx
+  on public.medical_profiles (workflow_status, updated_at desc);
+
+create table if not exists public.medical_profile_activation_tokens (
+  id uuid primary key default gen_random_uuid(),
+  profile_id uuid not null references public.medical_profiles(id) on delete cascade,
+  token_hash text not null unique,
+  token_hint text,
+  status text not null default 'active' check (status in ('active', 'used', 'revoked', 'expired')),
+  expires_at timestamptz,
+  used_at timestamptz,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists medical_profile_activation_tokens_profile_idx
+  on public.medical_profile_activation_tokens (profile_id, status, created_at desc);
+
+create index if not exists medical_profile_activation_tokens_hash_idx
+  on public.medical_profile_activation_tokens (token_hash);
 
 create or replace function public.set_current_timestamp_updated_at()
 returns trigger
@@ -95,6 +136,7 @@ create view public.medical_profiles_public as
 select
   public_slug,
   default_language,
+  workflow_status,
   full_name,
   blood_type,
   age,
@@ -128,11 +170,15 @@ select
   emergency_contact_2_name,
   emergency_contact_2_phone,
   emergency_contact_2_whatsapp,
-  full_record_url
+  full_record_url,
+  activated_at,
+  nfc_programmed_at,
+  hybrid_summary
 from public.medical_profiles
 where is_public = true;
 
 alter table public.medical_profiles enable row level security;
+alter table public.medical_profile_activation_tokens enable row level security;
 
 drop policy if exists "public read medical profiles" on public.medical_profiles;
 create policy "public read medical profiles"

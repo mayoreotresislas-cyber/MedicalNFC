@@ -1,13 +1,13 @@
 const uiTranslations = {
   en: {
     brandTagline: "Medical form and profile access",
-    primaryBuilderAction: "Open Medical Form",
+    primaryBuilderAction: "Open Activation Form",
     languageLabel: "Language",
     overviewKicker: "Medical form",
     overviewTitle: "This page explains the medical form that will be linked to the NFC.",
     overviewText:
-      "This page is for the person who will complete the medical information before the NFC is programmed. You will add one person's emergency details, extra medical information, family contacts, and the language that should appear when the profile is scanned.",
-    overviewPrimary: "Complete Medical Form",
+      "This page explains the medical form that is completed before the NFC is programmed. Use the private activation link for your profile to add emergency details, medical information, family contacts, and the language that should appear when the profile is scanned.",
+    overviewPrimary: "Open Private Activation",
     whatYouWillFill: "What you will fill",
     fillItem1: "Basic identity, blood type, age, height, and weight",
     fillItem2: "Conditions, medical allergies, food allergies, medications, and devices",
@@ -30,6 +30,10 @@ const uiTranslations = {
     serviceItem1: "The online medical profile can be updated remotely.",
     serviceItem2: "The physical NFC information does not change until the administrator has the chip in hand.",
     serviceItem3: "Ask for a reopen request whenever the medical information changes.",
+    pendingKicker: "Pending profile",
+    pendingTitle: "This NFC profile is still waiting for activation",
+    pendingText:
+      "The chip was pre-registered, but the medical information has not been completed yet. Ask the owner or administrator for the private activation link.",
     profileKicker: "Medical profile",
     profileSubtitle: "Emergency information shown from an NFC medical profile.",
     screen1Tag: "Emergency",
@@ -68,6 +72,8 @@ const uiTranslations = {
     statusLoadingMessage: "Looking up the requested medical profile.",
     statusErrorTitle: "Profile unavailable",
     statusErrorMessage: "We could not load this medical profile right now.",
+    statusPendingTitle: "Pending activation",
+    statusPendingMessage: "This NFC profile exists, but the medical information has not been activated yet.",
     statusLocationCopiedTitle: "Location ready",
     statusLocationCopiedMessage: "A link with your current location is ready to share.",
     statusLocationErrorTitle: "Location unavailable",
@@ -75,13 +81,13 @@ const uiTranslations = {
   },
   es: {
     brandTagline: "Formulario medico y acceso al perfil",
-    primaryBuilderAction: "Abrir Formulario Medico",
+    primaryBuilderAction: "Abrir activacion privada",
     languageLabel: "Idioma",
     overviewKicker: "Formulario medico",
     overviewTitle: "Esta pagina explica el formulario medico que estara ligado al NFC.",
     overviewText:
-      "Esta pagina es para la persona que va a completar la informacion medica antes de grabar el NFC. Aqui vas a capturar la informacion de emergencia de una persona, datos medicos adicionales, contactos familiares y el idioma en que se vera el perfil al escanearlo.",
-    overviewPrimary: "Completar Formulario Medico",
+      "Esta pagina explica el formulario medico que se completa antes de grabar el NFC. Usa el enlace privado de activacion de tu perfil para capturar la informacion de emergencia, los datos medicos, los contactos familiares y el idioma en que se vera el perfil al escanearlo.",
+    overviewPrimary: "Abrir activacion privada",
     whatYouWillFill: "Lo que vas a llenar",
     fillItem1: "Identidad basica, tipo de sangre, edad, estatura y peso",
     fillItem2: "Condiciones, alergias medicas, alergias alimentarias, medicamentos y dispositivos",
@@ -104,6 +110,10 @@ const uiTranslations = {
     serviceItem1: "El perfil medico en linea se puede actualizar a distancia.",
     serviceItem2: "La informacion fisica del NFC no cambia hasta que el administrador tenga el chip en la mano.",
     serviceItem3: "Solicita la reapertura cuando cambie la informacion medica.",
+    pendingKicker: "Perfil pendiente",
+    pendingTitle: "Este perfil NFC todavia espera activacion",
+    pendingText:
+      "El chip ya fue preregistrado, pero la informacion medica todavia no se completa. Pide al propietario o al administrador el enlace privado de activacion.",
     profileKicker: "Perfil medico",
     profileSubtitle: "Informacion de emergencia mostrada desde un perfil medico NFC.",
     screen1Tag: "Emergencia",
@@ -142,6 +152,8 @@ const uiTranslations = {
     statusLoadingMessage: "Buscando el perfil medico solicitado.",
     statusErrorTitle: "Perfil no disponible",
     statusErrorMessage: "No pudimos cargar este perfil medico en este momento.",
+    statusPendingTitle: "Activacion pendiente",
+    statusPendingMessage: "Este perfil NFC existe, pero la informacion medica todavia no ha sido activada.",
     statusLocationCopiedTitle: "Ubicacion lista",
     statusLocationCopiedMessage: "Se preparo un enlace con tu ubicacion actual para compartirlo.",
     statusLocationErrorTitle: "Ubicacion no disponible",
@@ -634,6 +646,8 @@ const whatsappLink = document.querySelector('[data-action="whatsapp-primary"]');
 const shareLocationButton = document.querySelector('[data-action="share-location"]');
 const overviewView = document.querySelector('[data-view="overview"]');
 const profileView = document.querySelector('[data-view="profile"]');
+const pendingPanel = document.querySelector("[data-pending-panel]");
+const profileGrid = document.querySelector(".profile-grid");
 
 const state = {
   lang: detectInitialLanguage(),
@@ -996,7 +1010,11 @@ async function translateFields(record, targetLanguage) {
 
 async function renderProfile() {
   const record = state.profile || demoProfile;
+  const isPending = cleanText(record.workflow_status) === "pending";
   const translated = await translateFields(record, state.lang);
+
+  pendingPanel?.classList.toggle("is-hidden", !isPending);
+  profileGrid?.classList.toggle("is-hidden", isPending);
 
   const values = {
     name: cleanText(record.full_name) || "N/A",
@@ -1044,6 +1062,10 @@ async function renderProfile() {
     recordLink.href = record.full_record_url;
   }
 
+  if (isPending) {
+    showStatus("warning", "statusPendingTitle", "statusPendingMessage");
+  }
+
   document.title = `${values.name} | NFC Medico`;
 }
 
@@ -1086,7 +1108,12 @@ async function loadProfile() {
   } catch (error) {
     console.warn("Profile load failed", error);
     showStatus("error", "statusErrorTitle", "statusErrorMessage");
-    state.profile = demoProfile;
+    state.profile = {
+      public_slug: state.identifier,
+      workflow_status: "archived",
+      default_language: "en",
+      full_name: "Medical profile"
+    };
     await renderProfile();
   }
 }

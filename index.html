@@ -28,8 +28,8 @@
         </a>
 
         <div class="toolbar">
-          <a class="toolbar-link toolbar-link-primary" href="/setup" data-i18n="primaryBuilderAction">
-            Open Medical Form
+          <a class="toolbar-link toolbar-link-primary" href="/activate" data-i18n="primaryBuilderAction">
+            Open Activation Form
           </a>
           <label class="language-select-wrap">
             <span data-i18n="languageLabel">Language</span>
@@ -69,8 +69,8 @@
               </p>
 
               <div class="hero-actions">
-                <a class="button button-primary" href="/setup" data-i18n="overviewPrimary">
-                  Complete Medical Form
+                <a class="button button-primary" href="/activate" data-i18n="overviewPrimary">
+                  Open Private Activation
                 </a>
               </div>
             </div>
@@ -135,6 +135,15 @@
               </p>
             </div>
           </div>
+
+          <article class="panel panel-light pending-panel is-hidden" data-pending-panel>
+            <p class="section-kicker" data-i18n="pendingKicker">Pending profile</p>
+            <h2 data-i18n="pendingTitle">This NFC profile is still waiting for activation</h2>
+            <p data-i18n="pendingText">
+              The chip was pre-registered, but the medical information has not been completed yet. Ask the owner or
+              administrator for the private activation link.
+            </p>
+          </article>
 
           <div class="profile-grid">
             <article class="screen-card emergency-card">

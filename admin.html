@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NFC Medico | Admin</title>
+    <meta
+      name="description"
+      content="Panel administrativo para pre-generar enlaces de activacion, revisar perfiles listos para grabar y preparar la version hibrida del NFC."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/setup.css" />
+    <link rel="stylesheet" href="/admin.css" />
+  </head>
+  <body>
+    <div class="builder-shell admin-shell">
+      <header class="builder-topbar">
+        <a class="brand" href="/">
+          <span class="brand-mark">+</span>
+          <span>
+            <strong>NFC Medico</strong>
+            <small>Panel admin para perfiles pregrabados</small>
+          </span>
+        </a>
+
+        <div class="topbar-actions">
+          <a class="nav-link" href="/setup">Formulario directo</a>
+          <a class="nav-link nav-link-primary" href="/">Landing publica</a>
+        </div>
+      </header>
+
+      <main class="admin-main">
+        <section class="hero admin-hero">
+          <div>
+            <p class="eyebrow">Admin workflow</p>
+            <h1>Prepara los perfiles antes de grabar el chip.</h1>
+            <p class="hero-copy">
+              Genera el enlace privado de activacion para tu cliente, espera a que complete su informacion y usa la
+              cola de listos para grabar cuando llegue el momento de programar el NFC en version hibrida.
+            </p>
+            <div class="hero-points">
+              <span>Link privado para el cliente</span>
+              <span>URL publica lista para NFC</span>
+              <span>Resumen offline para version hibrida</span>
+            </div>
+          </div>
+
+          <div class="hero-card">
+            <p class="hero-card-label">Operacion recomendada</p>
+            <ol>
+              <li>Genera el enlace privado de activacion.</li>
+              <li>Comparte ese enlace con el cliente.</li>
+              <li>Espera a que el perfil pase a listo para grabar.</li>
+              <li>Graba el URL publico y el texto offline cuando tengas el chip en la mano.</li>
+            </ol>
+          </div>
+        </section>
+
+        <div class="admin-grid">
+          <section class="form-panel">
+            <div class="status-banner" data-admin-status hidden>
+              <strong data-admin-status-title>Panel listo</strong>
+              <p data-admin-status-message>Ingresa tu clave de administrador para comenzar.</p>
+            </div>
+
+            <section class="form-section">
+              <div class="section-heading">
+                <p class="section-kicker">Acceso</p>
+                <h2>Clave administrativa</h2>
+              </div>
+
+              <form class="field-grid two-up" data-admin-auth-form>
+                <label class="field">
+                  <span>Token de administrador</span>
+                  <input name="admin_token" type="password" placeholder="Ingresa tu clave privada" />
+                </label>
+                <button class="button button-primary admin-auth-button" type="submit">Guardar acceso y cargar cola</button>
+              </form>
+            </section>
+
+            <section class="form-section">
+              <div class="section-heading">
+                <p class="section-kicker">Provision</p>
+                <h2>Generar enlace privado de activacion</h2>
+              </div>
+
+              <form class="profile-form" data-provision-form>
+                <div class="field-grid two-up">
+                  <label class="field">
+                    <span>Nombre del cliente o perfil</span>
+                    <input name="full_name" type="text" placeholder="Erik Lopez" />
+                  </label>
+                  <label class="field">
+                    <span>Etiqueta interna</span>
+                    <input name="pending_label" type="text" placeholder="Familia Lopez / Pulsera roja" />
+                  </label>
+                </div>
+
+                <div class="field-grid two-up">
+                  <label class="field">
+                    <span>Idioma esperado del cliente</span>
+                    <select name="default_language">
+                      <option value="es">ES - Espanol</option>
+                      <option value="en">EN - English</option>
+                      <option value="fr">FR - Francais</option>
+                      <option value="pt">PT - Portugues</option>
+                      <option value="de">DE - Deutsch</option>
+                      <option value="it">IT - Italiano</option>
+                      <option value="ja">JA - Japanese</option>
+                      <option value="ko">KO - Korean</option>
+                      <option value="zh">ZH - Chinese</option>
+                    </select>
+                  </label>
+                  <label class="field">
+                    <span>Referencia del chip o pieza</span>
+                    <input name="chip_reference" type="text" placeholder="Bracelet A-014 / NFC lot 2" />
+                  </label>
+                </div>
+
+                <div class="action-panel">
+                  <p class="action-copy">
+                    Este paso solo crea el perfil pendiente y el enlace privado. El cliente llena la informacion despues.
+                    El NFC se graba cuando el perfil aparezca listo para programar.
+                  </p>
+                  <div class="action-buttons admin-single-action">
+                    <button class="button button-primary" type="submit">Generar enlace privado</button>
+                  </div>
+                </div>
+              </form>
+            </section>
+
+            <section class="form-section latest-result" data-latest-result hidden>
+              <div class="section-heading">
+                <p class="section-kicker">Ultimo enlace</p>
+                <h2>Perfil pendiente creado</h2>
+              </div>
+
+              <div class="admin-result-card">
+                <div class="admin-result-row">
+                  <span>Slug publico</span>
+                  <strong data-result-slug>-</strong>
+                </div>
+                <div class="admin-result-row">
+                  <span>URL publica para el NFC</span>
+                  <div class="readonly-link-box" data-result-public-url>-</div>
+                </div>
+                <div class="admin-result-row">
+                  <span>URL privada para el cliente</span>
+                  <div class="readonly-link-box" data-result-activation-url>-</div>
+                </div>
+                <div class="admin-result-actions">
+                  <button class="button button-secondary" type="button" data-copy-result="public">Copiar URL publica</button>
+                  <button class="button button-primary" type="button" data-copy-result="activation">Copiar link privado</button>
+                </div>
+              </div>
+            </section>
+          </section>
+
+          <aside class="preview-panel admin-queue-panel">
+            <div class="preview-sticky">
+              <div class="preview-header">
+                <div>
+                  <p class="section-kicker">Queue</p>
+                  <h2>Perfiles y estado de grabado</h2>
+                </div>
+                <button class="button button-secondary admin-refresh" type="button" data-refresh-queue>Actualizar</button>
+              </div>
+
+              <div class="queue-legend">
+                <span class="queue-chip pending">Pendiente</span>
+                <span class="queue-chip ready">Listo para grabar</span>
+                <span class="queue-chip active">Activo</span>
+                <span class="queue-chip update">Reapertura</span>
+              </div>
+
+              <div class="queue-list" data-queue-list>
+                <article class="queue-empty">
+                  <p>No hay perfiles cargados todavia.</p>
+                </article>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+
+    <script src="/config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/admin.js"></script>
+  </body>
+</html>

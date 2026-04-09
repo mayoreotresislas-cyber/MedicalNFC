@@ -113,6 +113,20 @@ const setupTranslations = {
     statusLoadedMessage: "Existing data for {slug} is now in the form.",
     statusLoadErrorTitle: "Could not load the profile",
     statusLoadErrorMessage: "We could not find {slug}. You can still create a new profile.",
+    activationGateKicker: "Private access",
+    activationGateTitle: "Open your private activation link",
+    activationGateText:
+      "Use the private link sent for this profile. If you only have the token code, paste it below to open the medical form.",
+    activationTokenLabel: "Activation link or token",
+    openActivationButton: "Open private form",
+    activationAwaitTitle: "Private link required",
+    activationAwaitMessage: "Open this page using the private activation link sent for this profile.",
+    activationLoadedTitle: "Private form ready",
+    activationLoadedMessage: "This private profile is now ready to complete.",
+    activationUsedTitle: "Profile already submitted",
+    activationUsedMessage: "This activation link was already used. If you need changes later, ask the administrator to reopen the profile.",
+    activationInvalidTitle: "Activation unavailable",
+    activationInvalidMessage: "We could not validate this private activation link.",
     previewTranslating: "Translating automatically...",
     bloodPlaceholder: "Select blood type"
   },
@@ -230,6 +244,20 @@ const setupTranslations = {
     statusLoadedMessage: "Los datos existentes de {slug} ya estan en el formulario.",
     statusLoadErrorTitle: "No se pudo cargar el perfil",
     statusLoadErrorMessage: "No encontramos {slug}. Aun puedes crear un perfil nuevo.",
+    activationGateKicker: "Acceso privado",
+    activationGateTitle: "Abre tu enlace privado de activacion",
+    activationGateText:
+      "Usa el enlace privado que fue enviado para este perfil. Si solo tienes el token, pegalo abajo para abrir el formulario medico.",
+    activationTokenLabel: "Enlace o token de activacion",
+    openActivationButton: "Abrir formulario privado",
+    activationAwaitTitle: "Hace falta el enlace privado",
+    activationAwaitMessage: "Abre esta pagina usando el enlace privado de activacion enviado para este perfil.",
+    activationLoadedTitle: "Formulario privado listo",
+    activationLoadedMessage: "Este perfil privado ya esta listo para completarse.",
+    activationUsedTitle: "Perfil ya enviado",
+    activationUsedMessage: "Este enlace de activacion ya fue usado. Si necesitas cambios despues, pide al administrador que reabra el perfil.",
+    activationInvalidTitle: "Activacion no disponible",
+    activationInvalidMessage: "No pudimos validar este enlace privado de activacion.",
     previewTranslating: "Traduciendo automaticamente...",
     bloodPlaceholder: "Selecciona el tipo de sangre"
   }
@@ -282,6 +310,7 @@ const countryCodes = [
 const medicalFieldKeys = ["conditions", "allergies", "food_allergies", "medications", "devices", "notes"];
 const config = window.NFC_MEDICO_CONFIG || {};
 const root = document.documentElement;
+const pageMode = document.body.dataset.pageMode || "setup";
 const form = document.querySelector("#profile-form");
 const textNodes = document.querySelectorAll("[data-i18n]");
 const previewCopyNodes = document.querySelectorAll("[data-preview-copy]");
@@ -296,9 +325,12 @@ const successUrlNode = document.querySelector("[data-success-url]");
 const errorModal = document.querySelector("[data-error-modal]");
 const errorDetailNode = document.querySelector("[data-error-detail]");
 const interfaceSelect = document.querySelector("[data-lang-select]");
-const previewSelect = document.querySelector("[data-preview-select]");
 const helperFields = document.querySelectorAll("[data-clear-helper]");
 const countryCodeSelects = document.querySelectorAll("[data-country-code]");
+const activationGate = document.querySelector("[data-activation-gate]");
+const activationBuilder = document.querySelector("[data-activation-builder]");
+const tokenEntryForm = document.querySelector("[data-token-entry-form]");
+const tokenInput = document.querySelector("[data-token-input]");
 
 const state = {
   uiLang: detectInitialLanguage(),
@@ -315,6 +347,11 @@ const state = {
   statusTimer: null,
   lastSavedUrl: "",
   pendingMode: "save",
+  activation: {
+    token: "",
+    tokenStatus: "",
+    profileLoaded: false
+  },
   translation: {
     sourceLanguage: "en",
     signature: "",
@@ -333,6 +370,45 @@ function detectInitialLanguage() {
 
   const browserCode = navigator.language?.slice(0, 2).toLowerCase();
   return languageOptions[browserCode] ? browserCode : "en";
+}
+
+function isActivationMode() {
+  return pageMode === "activate";
+}
+
+function extractActivationToken(value) {
+  const cleaned = cleanText(value);
+  if (!cleaned) {
+    return "";
+  }
+
+  try {
+    const parsed = new URL(cleaned);
+    const fromPath = parsed.pathname.split("/").filter(Boolean).pop();
+    if (fromPath?.startsWith("nfcm_")) {
+      return fromPath;
+    }
+    const fromQuery = cleanText(parsed.searchParams.get("token"));
+    if (fromQuery) {
+      return fromQuery;
+    }
+  } catch (error) {
+    // Ignore and fall back to plain token parsing.
+  }
+
+  const match = cleaned.match(/nfcm_[a-z0-9]+/i);
+  return match ? match[0] : cleaned;
+}
+
+function getRequestedActivationToken() {
+  const url = new URL(window.location.href);
+  const fromQuery = extractActivationToken(url.searchParams.get("token"));
+  if (fromQuery) {
+    return fromQuery;
+  }
+
+  const fromPath = extractActivationToken(url.pathname.split("/").filter(Boolean).pop());
+  return fromPath;
 }
 
 function buildLanguageMarkup(value) {
@@ -759,6 +835,36 @@ function buildDisplayUrl(slug) {
   return configured.includes("{slug}") ? configured.replace("{slug}", safeSlug) : `${window.location.origin}/med/${safeSlug}`;
 }
 
+function buildActivationUrl(token) {
+  const safeToken = cleanText(token);
+  const configured = cleanText(config.activationBaseUrl);
+  return configured.includes("{token}") ? configured.replace("{token}", safeToken) : `${window.location.origin}/activate/${safeToken}`;
+}
+
+function syncActivationUrl(token) {
+  const url = new URL(window.location.href);
+  if (token) {
+    url.searchParams.set("token", token);
+  } else {
+    url.searchParams.delete("token");
+  }
+  window.history.replaceState({}, "", url);
+}
+
+function toggleActivationLayout(hasToken) {
+  if (!isActivationMode()) {
+    return;
+  }
+
+  if (activationGate) {
+    activationGate.hidden = Boolean(hasToken);
+  }
+
+  if (activationBuilder) {
+    activationBuilder.hidden = !hasToken;
+  }
+}
+
 function renderStatus(status = state.baseStatus) {
   if (!status) {
     statusBanner.hidden = true;
@@ -812,6 +918,7 @@ async function invokeFunction(functionName, body) {
   const payload = await response.json().catch(() => null);
   if (!response.ok) {
     const error = new Error(payload?.error || payload?.message || "Function request failed");
+    error.details = payload?.details || "";
     error.status = response.status;
     throw error;
   }
@@ -953,11 +1060,42 @@ async function notifyAdmin(profileName, slug, profileUrl) {
   }
 }
 
+async function loadActivationProfile(token) {
+  if (!config.activationFunctionName || !hasSupabaseConfig()) {
+    throw new Error("Activation function is not configured");
+  }
+
+  const result = await invokeFunction(config.activationFunctionName, {
+    action: "load",
+    token
+  });
+
+  state.activation.token = token;
+  state.activation.tokenStatus = cleanText(result?.tokenStatus);
+  state.activation.profileLoaded = Boolean(result?.profile);
+
+  return result;
+}
+
+async function submitActivationProfile(token, payload) {
+  if (!config.activationFunctionName || !hasSupabaseConfig()) {
+    throw new Error("Activation function is not configured");
+  }
+
+  return invokeFunction(config.activationFunctionName, {
+    action: "activate",
+    token,
+    payload
+  });
+}
+
 function buildPayload(raw, sourceFields, englishFields, spanishFields) {
+  const now = new Date().toISOString();
   return {
     public_slug: raw.public_slug,
     default_language: raw.default_language,
     full_name: raw.full_name,
+    workflow_status: "ready_to_program",
     blood_type: raw.blood_type || null,
     age: raw.age || null,
     weight: raw.weight || null,
@@ -993,7 +1131,20 @@ function buildPayload(raw, sourceFields, englishFields, spanishFields) {
     emergency_contact_2_whatsapp:
       buildWhatsappNumber(raw.emergency_contact_2_country_code, raw.emergency_contact_2_phone_local) || null,
     full_record_url: raw.full_record_url || null,
+    activation_started_at: now,
+    activated_at: now,
     is_public: true
+  };
+}
+
+async function prepareProfilePayload(raw) {
+  const { sourceLanguage, sourceFields } = syncSource(raw);
+  const englishResult = await translateFieldsForSave(sourceLanguage, "en", sourceFields);
+  const spanishResult = await translateFieldsForSave(sourceLanguage, "es", sourceFields);
+
+  return {
+    payload: buildPayload(raw, sourceFields, englishResult.fields, spanishResult.fields),
+    translationDegraded: englishResult.degraded || spanishResult.degraded
   };
 }
 
@@ -1134,6 +1285,109 @@ function closeErrorModal() {
   errorModal.classList.add("is-hidden");
 }
 
+function setFormEditable(isEditable) {
+  form.querySelectorAll("input, textarea, select, button[type='submit']").forEach((field) => {
+    if (field.name === "public_slug" || field === interfaceSelect) {
+      return;
+    }
+    field.disabled = !isEditable;
+  });
+
+  const familyButton = document.querySelector("[data-action='save-family']");
+  if (familyButton) {
+    familyButton.hidden = isActivationMode();
+    familyButton.disabled = !isEditable;
+  }
+}
+
+function populateProfileIntoForm(data) {
+  const phone1 = parsePhone(data.emergency_contact_1_phone);
+  const phone2 = parsePhone(data.emergency_contact_2_phone);
+  const sourceFields = sourceFieldsFromRecord(data);
+
+  state.translation.signature = buildSourceSignature(normalizeProfileLanguage(data.default_language || "en"), sourceFields);
+  state.translation.results = {
+    [normalizeProfileLanguage(data.default_language || "en")]: sourceFields,
+    en: {
+      conditions: cleanText(data.conditions_en),
+      allergies: cleanText(data.allergies_en),
+      food_allergies: cleanText(data.food_allergies_en),
+      medications: cleanText(data.medications_en),
+      devices: cleanText(data.devices_en),
+      notes: cleanText(data.notes_en)
+    },
+    es: {
+      conditions: cleanText(data.conditions_es),
+      allergies: cleanText(data.allergies_es),
+      food_allergies: cleanText(data.food_allergies_es),
+      medications: cleanText(data.medications_es),
+      devices: cleanText(data.devices_es),
+      notes: cleanText(data.notes_es)
+    }
+  };
+
+  populateForm({
+    full_name: cleanText(data.full_name),
+    public_slug: cleanText(data.public_slug),
+    default_language: normalizeProfileLanguage(data.default_language || "en"),
+    blood_type: cleanText(data.blood_type),
+    age: cleanText(data.age),
+    weight: cleanText(data.weight),
+    height: cleanText(data.height),
+    organ_donor:
+      data.organ_donor === true ? "true" : data.organ_donor === false ? "false" : cleanText(data.organ_donor),
+    insurance: cleanText(data.insurance),
+    doctor: cleanText(data.doctor),
+    clinic: cleanText(data.clinic),
+    conditions: sourceFields.conditions,
+    allergies: sourceFields.allergies,
+    food_allergies: sourceFields.food_allergies,
+    medications: sourceFields.medications,
+    devices: sourceFields.devices,
+    notes: sourceFields.notes,
+    emergency_contact_1_name: cleanText(data.emergency_contact_1_name),
+    emergency_contact_1_country_code: phone1.countryCode,
+    emergency_contact_1_phone_local: phone1.localNumber,
+    emergency_contact_2_name: cleanText(data.emergency_contact_2_name),
+    emergency_contact_2_country_code: phone2.countryCode,
+    emergency_contact_2_phone_local: phone2.localNumber,
+    full_record_url: cleanText(data.full_record_url)
+  });
+
+  form.elements.public_slug.value = cleanText(data.public_slug);
+  state.slugTouched = true;
+}
+
+async function loadActivationState() {
+  const token = getRequestedActivationToken();
+  state.activation.token = token;
+  if (tokenInput) {
+    tokenInput.value = token;
+  }
+  toggleActivationLayout(Boolean(token));
+
+  if (!token) {
+    setFormEditable(false);
+    showStatus("warning", "activationAwaitTitle", "activationAwaitMessage");
+    return;
+  }
+
+  syncActivationUrl(token);
+  setFormEditable(true);
+  showStatus("loading", "statusLoadingTitle", "statusLoadingMessage");
+
+  const result = await loadActivationProfile(token);
+  populateProfileIntoForm(result.profile || {});
+  renderPreview();
+
+  if (result.tokenStatus === "used") {
+    setFormEditable(false);
+    showStatus("warning", "activationUsedTitle", "activationUsedMessage");
+  } else {
+    showStatus("success", "activationLoadedTitle", "activationLoadedMessage");
+  }
+}
+
 async function saveProfile(event) {
   event.preventDefault();
 
@@ -1156,31 +1410,44 @@ async function saveProfile(event) {
   showStatus("loading", "statusSavingTitle", "statusSavingMessage");
 
   try {
-    const { sourceLanguage, sourceFields } = syncSource(raw);
-    const englishResult = await translateFieldsForSave(sourceLanguage, "en", sourceFields);
-    const spanishResult = await translateFieldsForSave(sourceLanguage, "es", sourceFields);
-    const translationDegraded = englishResult.degraded || spanishResult.degraded;
-
-    const payload = buildPayload(raw, sourceFields, englishResult.fields, spanishResult.fields);
-    const { error } = await getClient()
-      .from(config.profilesWriteTable || "medical_profiles")
-      .upsert(payload, { onConflict: "public_slug" });
-
-    if (error) {
-      throw error;
-    }
-
-    saveFamilyTemplate(raw);
+    const { payload, translationDegraded } = await prepareProfilePayload(raw);
     const url = buildDisplayUrl(raw.public_slug);
-    const emailOk = await notifyAdmin(raw.full_name, raw.public_slug, url);
 
-    openSuccessModal(url, state.pendingMode);
-    if (translationDegraded) {
-      showStatus("warning", "statusTranslateErrorTitle", "statusTranslateErrorMessage");
-    } else if (emailOk) {
-      showStatus("success", "statusSavedTitle", "statusSavedMessage");
+    if (isActivationMode()) {
+      const activationToken = state.activation.token || getRequestedActivationToken();
+      if (!activationToken) {
+        throw new Error(getSetupCopy(state.uiLang).activationAwaitMessage || "Activation token missing");
+      }
+
+      const result = await submitActivationProfile(activationToken, payload);
+      state.activation.tokenStatus = "used";
+      setFormEditable(false);
+      openSuccessModal(result?.publicUrl || url, "save");
+      if (translationDegraded) {
+        showStatus("warning", "statusTranslateErrorTitle", "statusTranslateErrorMessage");
+      } else {
+        showStatus("success", "statusSavedTitle", "statusSavedMessage");
+      }
     } else {
-      showStatus("warning", "statusEmailWarningTitle", "statusEmailWarningMessage");
+      const { error } = await getClient()
+        .from(config.profilesWriteTable || "medical_profiles")
+        .upsert(payload, { onConflict: "public_slug" });
+
+      if (error) {
+        throw error;
+      }
+
+      saveFamilyTemplate(raw);
+      const emailOk = await notifyAdmin(raw.full_name, raw.public_slug, url);
+
+      openSuccessModal(url, state.pendingMode);
+      if (translationDegraded) {
+        showStatus("warning", "statusTranslateErrorTitle", "statusTranslateErrorMessage");
+      } else if (emailOk) {
+        showStatus("success", "statusSavedTitle", "statusSavedMessage");
+      } else {
+        showStatus("warning", "statusEmailWarningTitle", "statusEmailWarningMessage");
+      }
     }
   } catch (error) {
     console.warn("Save failed", error);
@@ -1210,59 +1477,7 @@ async function loadExistingProfile() {
       throw error || new Error("Profile not found");
     }
 
-    const phone1 = parsePhone(data.emergency_contact_1_phone);
-    const phone2 = parsePhone(data.emergency_contact_2_phone);
-    const sourceFields = sourceFieldsFromRecord(data);
-    state.translation.signature = buildSourceSignature(normalizeProfileLanguage(data.default_language || "en"), sourceFields);
-    state.translation.results = {
-      [normalizeProfileLanguage(data.default_language || "en")]: sourceFields,
-      en: {
-        conditions: cleanText(data.conditions_en),
-        allergies: cleanText(data.allergies_en),
-        food_allergies: cleanText(data.food_allergies_en),
-        medications: cleanText(data.medications_en),
-        devices: cleanText(data.devices_en),
-        notes: cleanText(data.notes_en)
-      },
-      es: {
-        conditions: cleanText(data.conditions_es),
-        allergies: cleanText(data.allergies_es),
-        food_allergies: cleanText(data.food_allergies_es),
-        medications: cleanText(data.medications_es),
-        devices: cleanText(data.devices_es),
-        notes: cleanText(data.notes_es)
-      }
-    };
-
-    populateForm({
-      full_name: cleanText(data.full_name),
-      public_slug: cleanText(data.public_slug),
-      default_language: normalizeProfileLanguage(data.default_language || "en"),
-      blood_type: cleanText(data.blood_type),
-      age: cleanText(data.age),
-      weight: cleanText(data.weight),
-      height: cleanText(data.height),
-      organ_donor:
-        data.organ_donor === true ? "true" : data.organ_donor === false ? "false" : "",
-      insurance: cleanText(data.insurance),
-      doctor: cleanText(data.doctor),
-      clinic: cleanText(data.clinic),
-      conditions: sourceFields.conditions,
-      allergies: sourceFields.allergies,
-      food_allergies: sourceFields.food_allergies,
-      medications: sourceFields.medications,
-      devices: sourceFields.devices,
-      notes: sourceFields.notes,
-      emergency_contact_1_name: cleanText(data.emergency_contact_1_name),
-      emergency_contact_1_country_code: phone1.countryCode,
-      emergency_contact_1_phone_local: phone1.localNumber,
-      emergency_contact_2_name: cleanText(data.emergency_contact_2_name),
-      emergency_contact_2_country_code: phone2.countryCode,
-      emergency_contact_2_phone_local: phone2.localNumber,
-      full_record_url: cleanText(data.full_record_url)
-    });
-
-    state.slugTouched = true;
+    populateProfileIntoForm(data);
     flashStatus("success", "statusLoadedTitle", "statusLoadedMessage", { slug });
   } catch (error) {
     console.warn("Load existing profile failed", error);
@@ -1273,6 +1488,19 @@ async function loadExistingProfile() {
 function bindEvents() {
   const saveProfileButton = form.querySelector('button[type="submit"]');
   const saveFamilyButton = document.querySelector('[data-action="save-family"]');
+
+  if (tokenEntryForm) {
+    tokenEntryForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const token = extractActivationToken(tokenInput?.value);
+      if (!token) {
+        flashStatus("warning", "activationAwaitTitle", "activationAwaitMessage");
+        return;
+      }
+
+      window.location.href = buildActivationUrl(token);
+    });
+  }
 
   interfaceSelect.addEventListener("change", () => {
     setInterfaceLanguage(interfaceSelect.value);
@@ -1303,11 +1531,18 @@ function bindEvents() {
   saveProfileButton.addEventListener("click", () => {
     state.pendingMode = "save";
   });
-  saveFamilyButton.addEventListener("click", () => {
-    state.pendingMode = "family";
-    form.requestSubmit();
-  });
-  document.querySelector('[data-action="success-family"]').addEventListener("click", startFamilyProfile);
+  if (saveFamilyButton) {
+    saveFamilyButton.hidden = isActivationMode();
+    saveFamilyButton.addEventListener("click", () => {
+      state.pendingMode = "family";
+      form.requestSubmit();
+    });
+  }
+  const successFamilyButton = document.querySelector("[data-action='success-family']");
+  if (successFamilyButton) {
+    successFamilyButton.hidden = isActivationMode();
+    successFamilyButton.addEventListener("click", startFamilyProfile);
+  }
   document.querySelectorAll('[data-action="close-success"]').forEach((button) => {
     button.addEventListener("click", closeSuccessModal);
   });
@@ -1323,8 +1558,23 @@ async function init() {
   clearDraftFields(Boolean(getFamilyTemplate()));
   bindEvents();
   setInterfaceLanguage(state.uiLang);
-  showStatus(hasSupabaseConfig() ? "success" : "warning", hasSupabaseConfig() ? "statusReadyTitle" : "statusConfigTitle", hasSupabaseConfig() ? "statusReadyMessage" : "statusConfigMessage");
-  await loadExistingProfile();
+  showStatus(
+    hasSupabaseConfig() ? "success" : "warning",
+    hasSupabaseConfig() ? "statusReadyTitle" : "statusConfigTitle",
+    hasSupabaseConfig() ? "statusReadyMessage" : "statusConfigMessage"
+  );
+
+  if (isActivationMode()) {
+    await loadActivationState().catch((error) => {
+      console.warn("Activation state load failed", error);
+      setFormEditable(false);
+      toggleActivationLayout(false);
+      showStatus("error", "activationInvalidTitle", "activationInvalidMessage");
+    });
+  } else {
+    await loadExistingProfile();
+  }
+
   renderPreview();
 }
 

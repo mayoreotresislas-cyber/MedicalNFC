@@ -15,5 +15,10 @@ window.NFC_MEDICO_CONFIG = {
   allowDirectProfileWrite: true,
   translationFunctionName: "translate-medical-copy",
   notificationFunctionName: "notify-profile-created",
-  siteBaseUrl: "https://medical-nfc.vercel.app/med/{slug}"
+  activationFunctionName: "medical-activation",
+  adminFunctionName: "medical-admin",
+  siteBaseUrl: "https://medical-nfc.vercel.app/med/{slug}",
+  activationBaseUrl: "https://medical-nfc.vercel.app/activate/{token}",
+  adminBaseUrl: "https://medical-nfc.vercel.app/admin",
+  adminListLimit: 40
 };

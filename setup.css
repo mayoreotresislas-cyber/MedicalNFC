@@ -338,6 +338,17 @@ button {
     rgba(255, 255, 255, 0.76);
 }
 
+.activation-gate {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.activation-entry {
+  grid-template-columns: 1fr auto;
+  align-items: end;
+}
+
 .hero-card ol {
   margin: 18px 0 0;
   padding-left: 22px;
@@ -930,6 +941,7 @@ button {
 
 @media (max-width: 920px) {
   .hero,
+  .activation-entry,
   .two-up,
   .three-up,
   .four-up,

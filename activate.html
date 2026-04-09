@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NFC Medico | Activate Profile</title>
+    <meta
+      name="description"
+      content="Private activation form for pending NFC medical profiles."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/setup.css" />
+  </head>
+  <body data-page-mode="activate">
+    <div class="builder-shell">
+      <header class="builder-topbar">
+        <a class="brand" href="/">
+          <span class="brand-mark">+</span>
+          <span>
+            <strong>NFC Medico</strong>
+            <small data-i18n="brandTagline">Activation form</small>
+          </span>
+        </a>
+
+        <div class="topbar-actions">
+          <a class="nav-link nav-link-primary" href="/" data-i18n="publicLandingLink">What is this?</a>
+          <label class="language-dropdown">
+            <span data-i18n="interfaceLanguage">Interface language</span>
+            <select class="native-language-select" data-lang-select data-flag-menu>
+              <option value="en">🇺🇸 EN</option>
+              <option value="es">🇪🇸 ES</option>
+              <option value="fr">🇫🇷 FR</option>
+              <option value="pt">🇵🇹 PT</option>
+              <option value="de">🇩🇪 DE</option>
+              <option value="it">🇮🇹 IT</option>
+              <option value="ja">🇯🇵 JA</option>
+              <option value="ko">🇰🇷 KO</option>
+              <option value="zh">🇨🇳 ZH</option>
+            </select>
+          </label>
+        </div>
+      </header>
+
+      <main>
+        <section class="form-panel activation-gate" data-activation-gate>
+          <div class="section-heading">
+            <p class="section-kicker" data-i18n="activationGateKicker">Private access</p>
+            <h2 data-i18n="activationGateTitle">Open your private activation link</h2>
+          </div>
+
+          <p class="hero-copy" data-i18n="activationGateText">
+            Use the private link sent for this profile. If you only have the token code, paste it below to open the medical form.
+          </p>
+
+          <form class="field-grid activation-entry" data-token-entry-form>
+            <label class="field">
+              <span data-i18n="activationTokenLabel">Activation link or token</span>
+              <input
+                name="activation_token"
+                type="text"
+                placeholder="https://medical-nfc.vercel.app/activate/nfcm_..."
+                data-token-input
+              />
+            </label>
+            <button class="button button-primary" type="submit" data-i18n="openActivationButton">
+              Open private form
+            </button>
+          </form>
+        </section>
+
+        <section class="hero">
+          <div>
+            <p class="eyebrow" data-i18n="heroKicker">Medical activation</p>
+            <h1 data-i18n="heroTitle">Complete the medical profile linked to your NFC.</h1>
+            <p class="hero-copy" data-i18n="heroText">
+              Fill this form once using your private activation link. When you finish, the administrator will receive the profile and prepare the NFC programming.
+            </p>
+
+            <div class="hero-points">
+              <span data-i18n="heroPoint1">Clear step-by-step flow</span>
+              <span data-i18n="heroPoint2">Multilingual preview</span>
+              <span data-i18n="heroPoint3">Fast family workflow</span>
+            </div>
+          </div>
+
+          <div class="hero-card">
+            <p class="hero-card-label" data-i18n="heroCardLabel">What you will do</p>
+            <ol>
+              <li data-i18n="heroCard1">Fill the health profile for one person.</li>
+              <li data-i18n="heroCard2">Review the emergency preview before saving.</li>
+              <li data-i18n="heroCard3">The secure profile link is emailed to the NFC administrator.</li>
+            </ol>
+          </div>
+        </section>
+
+        <div class="builder-grid" data-activation-builder>
+          <section class="form-panel">
+            <div class="status-banner" data-form-status hidden>
+              <strong data-form-status-title>Listo para guardar</strong>
+              <p data-form-status-message>Configura Supabase para almacenar perfiles reales.</p>
+            </div>
+
+            <div class="step-row">
+              <span class="step-pill" data-i18n="step1">1. Identity</span>
+              <span class="step-pill" data-i18n="step2">2. Medical details</span>
+              <span class="step-pill" data-i18n="step3">3. Contacts</span>
+              <span class="step-pill" data-i18n="step4">4. Finish</span>
+            </div>
+
+            <form id="profile-form" class="profile-form" autocomplete="off">
+              <section class="form-section">
+                <div class="section-heading">
+                  <p class="section-kicker" data-i18n="identityKicker">Identity</p>
+                  <h2 data-i18n="identityTitle">Person details and profile route</h2>
+                </div>
+
+                <div class="field-grid">
+                  <label class="field">
+                    <span data-i18n="fieldFullName">Full name</span>
+                    <input
+                      name="full_name"
+                      type="text"
+                      placeholder="John Doe"
+                      autocomplete="off"
+                      data-clear-helper
+                    />
+                  </label>
+                </div>
+                <input name="public_slug" type="hidden" value="" />
+
+                <div class="field-grid three-up">
+                  <label class="field">
+                    <span data-i18n="fieldProfileLanguage">Original language of the medical information</span>
+                    <select class="native-language-select" name="default_language" data-flag-menu>
+                      <option value="en">🇺🇸 EN - English</option>
+                      <option value="es">🇪🇸 ES - Espanol</option>
+                      <option value="fr">🇫🇷 FR - Francais</option>
+                      <option value="pt">🇵🇹 PT - Portugues</option>
+                      <option value="de">🇩🇪 DE - Deutsch</option>
+                      <option value="it">🇮🇹 IT - Italiano</option>
+                      <option value="ja">🇯🇵 JA - Japanese</option>
+                      <option value="ko">🇰🇷 KO - Korean</option>
+                      <option value="zh">🇨🇳 ZH - Chinese</option>
+                    </select>
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldBloodType">Blood type</span>
+                    <select name="blood_type">
+                      <option value="">Select blood type</option>
+                      <option value="A+">A+</option>
+                      <option value="A-">A-</option>
+                      <option value="B+">B+</option>
+                      <option value="B-">B-</option>
+                      <option value="AB+">AB+</option>
+                      <option value="AB-">AB-</option>
+                      <option value="O+">O+</option>
+                      <option value="O-">O-</option>
+                    </select>
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldInsurance">Insurance</span>
+                    <input
+                      name="insurance"
+                      type="text"
+                      placeholder="BlueCross"
+                      data-clear-helper
+                    />
+                  </label>
+                </div>
+
+                <div class="field-grid four-up">
+                  <label class="field">
+                    <span data-i18n="fieldAge">Age</span>
+                    <input
+                      name="age"
+                      type="number"
+                      min="0"
+                      max="120"
+                      placeholder="42"
+                      inputmode="numeric"
+                      data-clear-helper
+                    />
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldWeight">Weight</span>
+                    <input
+                      name="weight"
+                      type="text"
+                      placeholder="68 kg / 150 lb"
+                      data-clear-helper
+                    />
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldHeight">Height</span>
+                    <input
+                      name="height"
+                      type="text"
+                      placeholder="172 cm / 5'8&quot;"
+                      data-clear-helper
+                    />
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldOrganDonor">Organ donor</span>
+                    <select name="organ_donor">
+                      <option value="">Select an option</option>
+                      <option value="true">Yes</option>
+                      <option value="false">No</option>
+                    </select>
+                  </label>
+                </div>
+
+                <div class="field-grid two-up">
+                  <label class="field">
+                    <span data-i18n="fieldDoctor">Doctor</span>
+                    <input
+                      name="doctor"
+                      type="text"
+                      placeholder="Dr. Smith"
+                      data-clear-helper
+                    />
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldClinic">Clinic</span>
+                    <input
+                      name="clinic"
+                      type="text"
+                      placeholder="XYZ Medical Center"
+                      data-clear-helper
+                    />
+                  </label>
+                </div>
+              </section>
+
+              <section class="form-section">
+                <div class="section-heading">
+                  <p class="section-kicker" data-i18n="medicalKicker">Medical details</p>
+                  <h2 data-i18n="medicalTitle">Write the medical information once</h2>
+                </div>
+
+                <div class="field-grid">
+                  <label class="field">
+                    <span data-i18n="fieldConditions">Conditions</span>
+                    <textarea
+                      name="conditions"
+                      rows="3"
+                      placeholder="Type 1 Diabetes&#10;Epilepsy&#10;Hypertension"
+                      data-clear-helper
+                    ></textarea>
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldAllergies">Medical allergies</span>
+                    <textarea
+                      name="allergies"
+                      rows="3"
+                      placeholder="Penicillin&#10;Sulfa drugs&#10;Latex"
+                      data-clear-helper
+                    ></textarea>
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldFoodAllergies">Food allergies</span>
+                    <textarea
+                      name="food_allergies"
+                      rows="3"
+                      placeholder="Peanuts&#10;Shellfish&#10;Dairy"
+                      data-clear-helper
+                    ></textarea>
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldMedications">Medications and doses</span>
+                    <textarea
+                      name="medications"
+                      rows="4"
+                      placeholder="Insulin glargine 12 units nightly&#10;Metformin 500 mg twice daily"
+                      data-clear-helper
+                    ></textarea>
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldDevices">Medical devices</span>
+                    <textarea
+                      name="devices"
+                      rows="3"
+                      placeholder="Insulin Pump"
+                      data-clear-helper
+                    ></textarea>
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldNotes">Important notes</span>
+                    <textarea
+                      name="notes"
+                      rows="4"
+                      placeholder="Patient uses insulin&#10;Risk of hypoglycemia&#10;May require immediate glucose"
+                      data-clear-helper
+                    ></textarea>
+                  </label>
+                </div>
+              </section>
+
+              <section class="form-section">
+                <div class="section-heading">
+                  <p class="section-kicker" data-i18n="contactsKicker">Contacts</p>
+                  <h2 data-i18n="contactsTitle">Family or caregiver contacts</h2>
+                </div>
+
+                <div class="contact-block">
+                  <h3 data-i18n="contact1Title">Emergency contact 1</h3>
+                  <div class="field-grid contact-grid">
+                    <label class="field contact-name">
+                      <span data-i18n="fieldContactName">Name</span>
+                      <input
+                        name="emergency_contact_1_name"
+                        type="text"
+                        placeholder="Jane Doe"
+                        data-clear-helper
+                      />
+                    </label>
+                    <label class="field country-code">
+                      <span data-i18n="fieldCountryCode">Country code</span>
+                      <select name="emergency_contact_1_country_code" data-country-code></select>
+                    </label>
+                    <label class="field contact-phone">
+                      <span data-i18n="fieldContactPhone">Phone</span>
+                      <input
+                        name="emergency_contact_1_phone_local"
+                        type="tel"
+                        placeholder="555 123 4567"
+                        inputmode="tel"
+                        data-clear-helper
+                      />
+                    </label>
+                  </div>
+                </div>
+
+                <div class="contact-block">
+                  <h3 data-i18n="contact2Title">Emergency contact 2</h3>
+                  <div class="field-grid contact-grid">
+                    <label class="field contact-name">
+                      <span data-i18n="fieldContactName">Name</span>
+                      <input
+                        name="emergency_contact_2_name"
+                        type="text"
+                        placeholder="Mike Doe"
+                        data-clear-helper
+                      />
+                    </label>
+                    <label class="field country-code">
+                      <span data-i18n="fieldCountryCode">Country code</span>
+                      <select name="emergency_contact_2_country_code" data-country-code></select>
+                    </label>
+                    <label class="field contact-phone">
+                      <span data-i18n="fieldContactPhone">Phone</span>
+                      <input
+                        name="emergency_contact_2_phone_local"
+                        type="tel"
+                        placeholder="555 987 6543"
+                        inputmode="tel"
+                        data-clear-helper
+                      />
+                    </label>
+                  </div>
+                </div>
+              </section>
+
+              <section class="form-section">
+                <div class="section-heading">
+                  <p class="section-kicker" data-i18n="publishKicker">Finish</p>
+                  <h2 data-i18n="publishTitle">Generate the profile link</h2>
+                </div>
+
+                <input name="full_record_url" type="hidden" value="" />
+
+                <div class="field-grid">
+                  <div class="field">
+                    <span data-i18n="fieldRecordUrl">Generated profile link</span>
+                    <div class="readonly-link-box" data-generated-url-inline>https://tudominio.com/med/new-profile</div>
+                  </div>
+                </div>
+
+                <div class="action-panel">
+                  <p class="action-copy" data-i18n="generatedUrlLabel">
+                    When you generate the profile, the secure link is sent to the administrator email used for NFC recording.
+                  </p>
+                  <div class="action-buttons">
+                    <button class="button button-primary" type="submit" data-i18n="saveProfile">
+                      Submit profile
+                    </button>
+                    <button class="button button-secondary" type="button" data-action="save-family" data-i18n="saveFamily">
+                      Generate another family member
+                    </button>
+                  </div>
+                </div>
+
+                <div class="service-note">
+                  <p class="service-note-title" data-i18n="updatePolicyTitle">Future profile changes</p>
+                  <p class="service-note-copy" data-i18n="updatePolicyText">
+                    If you need this profile reopened later for remote changes, that service has an additional cost.
+                    The online profile can be updated remotely, but the physical NFC information is only changed when
+                    the administrator has the chip in hand.
+                  </p>
+                </div>
+              </section>
+            </form>
+          </section>
+
+          <aside class="preview-panel">
+            <div class="preview-sticky">
+              <div class="preview-header">
+                <div>
+                  <p class="section-kicker" data-i18n="previewKicker">Live preview</p>
+                  <h2 data-i18n="previewTitle">How the NFC page will look</h2>
+                </div>
+              </div>
+
+              <div class="preview-url-bar" data-generated-url-inline>https://tudominio.com/med/new-profile</div>
+
+              <article class="preview-card emergency">
+                <div class="preview-card-head">
+                  <span class="preview-badge critical" data-preview-copy="criticalBadge">Critico</span>
+                  <span class="preview-step" data-preview-copy="screenOne">Pantalla 1</span>
+                </div>
+                <h3 data-preview-copy="emergencyTitle">Informacion Medica de Emergencia</h3>
+                <dl class="preview-list">
+                  <div>
+                    <dt data-preview-copy="labelName">Nombre</dt>
+                    <dd data-preview="full_name">-</dd>
+                  </div>
+                  <div>
+                    <dt data-preview-copy="labelConditions">Condiciones</dt>
+                    <dd data-preview="conditions">-</dd>
+                  </div>
+                  <div>
+                    <dt data-preview-copy="labelAllergies">Alergias medicas</dt>
+                    <dd data-preview="allergies">-</dd>
+                  </div>
+                  <div>
+                    <dt data-preview-copy="labelFoodAllergies">Alergias alimentarias</dt>
+                    <dd data-preview="food_allergies">-</dd>
+                  </div>
+                  <div>
+                    <dt data-preview-copy="labelMedications">Medicamentos y dosis</dt>
+                    <dd data-preview="medications">-</dd>
+                  </div>
+                  <div>
+                    <dt data-preview-copy="labelDevices">Dispositivos medicos</dt>
+                    <dd data-preview="devices">-</dd>
+                  </div>
+                </dl>
+                <div class="preview-notes">
+                  <p data-preview-copy="importantNotes">Notas importantes</p>
+                  <ul>
+                    <li data-preview-note="0">-</li>
+                    <li data-preview-note="1"></li>
+                    <li data-preview-note="2"></li>
+                  </ul>
+                </div>
+              </article>
+
+              <article class="preview-card detail">
+                <div class="preview-card-head">
+                  <span class="preview-badge info" data-preview-copy="detailBadge">Detalle</span>
+                  <span class="preview-step" data-preview-copy="screenTwo">Pantalla 2</span>
+                </div>
+                <h3 data-preview-copy="additionalTitle">Informacion Medica Adicional</h3>
+                <dl class="preview-list">
+                  <div>
+                    <dt data-preview-copy="labelBloodType">Tipo de sangre</dt>
+                    <dd data-preview="blood_type">-</dd>
+                  </div>
+                  <div>
+                    <dt data-preview-copy="labelAge">Edad</dt>
+                    <dd data-preview="age">-</dd>
+                  </div>
+                  <div>
+                    <dt data-preview-copy="labelWeight">Peso</dt>
+                    <dd data-preview="weight">-</dd>
+                  </div>
+                  <div>
+                    <dt data-preview-copy="labelHeight">Estatura</dt>
+                    <dd data-preview="height">-</dd>
+                  </div>
+                  <div>
+                    <dt data-preview-copy="labelOrganDonor">Donador de organos</dt>
+                    <dd data-preview="organ_donor">-</dd>
+                  </div>
+                  <div>
+                    <dt data-preview-copy="labelDoctor">Medico</dt>
+                    <dd data-preview="doctor">-</dd>
+                  </div>
+                  <div>
+                    <dt data-preview-copy="labelClinic">Clinica</dt>
+                    <dd data-preview="clinic">-</dd>
+                  </div>
+                  <div>
+                    <dt data-preview-copy="labelInsurance">Seguro</dt>
+                    <dd data-preview="insurance">-</dd>
+                  </div>
+                </dl>
+              </article>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+
+    <div class="saving-overlay is-hidden" data-saving-overlay>
+      <div class="saving-card">
+        <div class="saving-spinner"></div>
+        <strong data-i18n="savingTitle">Generating profile...</strong>
+        <p data-i18n="savingText">Please wait while we store the information securely.</p>
+      </div>
+    </div>
+
+    <div class="success-modal is-hidden" data-success-modal>
+      <div class="success-backdrop" data-action="close-success"></div>
+      <div class="success-card" role="dialog" aria-modal="true" aria-labelledby="success-title">
+        <button class="success-close" type="button" data-action="close-success" aria-label="Close">
+          x
+        </button>
+        <p class="success-kicker" data-i18n="successKicker">Saved</p>
+        <h2 id="success-title" data-i18n="successTitle">Profile generated successfully</h2>
+        <p class="success-copy" data-i18n="successText">
+          The profile was generated correctly and the secure link was sent to the administrator email for NFC recording.
+        </p>
+        <div class="success-url-box" data-success-url>https://tudominio.com/med/new-profile</div>
+        <div class="success-actions">
+          <button class="button button-secondary" type="button" data-action="success-family" data-i18n="saveFamily">
+            Generate another family profile
+          </button>
+          <button class="button button-primary" type="button" data-action="close-success" data-i18n="closeSuccess">
+            Done
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="success-modal error-modal is-hidden" data-error-modal>
+      <div class="success-backdrop" data-action="close-error"></div>
+      <div class="success-card error-card" role="dialog" aria-modal="true" aria-labelledby="error-title">
+        <button class="success-close" type="button" data-action="close-error" aria-label="Close">
+          x
+        </button>
+        <p class="success-kicker" data-i18n="errorKicker">Error</p>
+        <h2 id="error-title" data-i18n="errorTitle">We could not generate the profile</h2>
+        <p class="success-copy" data-i18n="errorText">
+          The profile could not be saved. Review the technical message below and try again.
+        </p>
+        <div class="success-url-box error-detail-box" data-error-detail>Unknown error</div>
+        <div class="success-actions error-actions">
+          <button class="button button-primary" type="button" data-action="close-error" data-i18n="closeError">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="/config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/setup.js"></script>
+  </body>
+</html>

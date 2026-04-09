@@ -6,6 +6,18 @@
       "destination": "/setup.html"
     },
     {
+      "source": "/activate",
+      "destination": "/activate.html"
+    },
+    {
+      "source": "/activate/:token",
+      "destination": "/activate.html?token=:token"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin.html"
+    },
+    {
       "source": "/med/:slug",
       "destination": "/index.html?slug=:slug"
     }
