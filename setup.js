@@ -376,7 +376,7 @@ function isActivationMode() {
   return pageMode === "activate";
 }
 
-function extractActivationToken(value) {
+function extractActivationToken(value, allowPlain = true) {
   const cleaned = cleanText(value);
   if (!cleaned) {
     return "";
@@ -397,17 +397,21 @@ function extractActivationToken(value) {
   }
 
   const match = cleaned.match(/nfcm_[a-z0-9]+/i);
-  return match ? match[0] : cleaned;
+  if (match) {
+    return match[0];
+  }
+
+  return allowPlain ? cleaned : "";
 }
 
 function getRequestedActivationToken() {
   const url = new URL(window.location.href);
-  const fromQuery = extractActivationToken(url.searchParams.get("token"));
+  const fromQuery = extractActivationToken(url.searchParams.get("token"), false);
   if (fromQuery) {
     return fromQuery;
   }
 
-  const fromPath = extractActivationToken(url.pathname.split("/").filter(Boolean).pop());
+  const fromPath = extractActivationToken(url.pathname.split("/").filter(Boolean).pop(), false);
   return fromPath;
 }
 
