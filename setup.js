@@ -6,7 +6,7 @@ const setupTranslations = {
     heroKicker: "Medical form",
     heroTitle: "Fill the medical form for one person.",
     heroText:
-      "Add the emergency information once, review the live preview, and generate the secure link that will be emailed to the administrator who records the NFC tags.",
+      "Add the emergency information once, review the live preview, accept the agreements, and generate the secure link that will be shared with the NFC administrator.",
     heroPoint1: "Clear step-by-step flow",
     heroPoint2: "Multilingual preview",
     heroPoint3: "Fast family workflow",
@@ -27,6 +27,10 @@ const setupTranslations = {
     publishKicker: "Finish",
     publishTitle: "Generate the profile link",
     fieldFullName: "Full name",
+    fieldFirstName: "First name",
+    fieldLastName: "Last name",
+    fieldGender: "Gender",
+    fieldBirthDate: "Birthday",
     fieldSlug: "Profile ID",
     fieldProfileLanguage: "Original language of the medical information",
     fieldBloodType: "Blood type",
@@ -37,6 +41,10 @@ const setupTranslations = {
     fieldInsurance: "Insurance",
     fieldDoctor: "Doctor",
     fieldClinic: "Clinic",
+    fieldCountry: "Country",
+    fieldState: "State / Region",
+    fieldCity: "City",
+    fieldPostalCode: "ZIP / Postal code",
     fieldConditions: "Conditions",
     fieldAllergies: "Medical allergies",
     fieldFoodAllergies: "Food allergies",
@@ -70,6 +78,8 @@ const setupTranslations = {
     labelFoodAllergies: "Food Allergies",
     labelMedications: "Medications / Doses",
     labelBloodType: "Blood Type",
+    labelGender: "Gender",
+    labelBirthDate: "Birthday",
     labelAge: "Age",
     labelWeight: "Weight",
     labelHeight: "Height",
@@ -77,10 +87,19 @@ const setupTranslations = {
     labelDoctor: "Doctor",
     labelClinic: "Clinic",
     labelInsurance: "Insurance",
+    labelCountry: "Country",
+    labelState: "State / Region",
+    labelCity: "City",
+    labelPostalCode: "ZIP / Postal code",
     importantNotes: "Important Notes",
     organDonorPlaceholder: "Select an option",
     organDonorYes: "Yes",
     organDonorNo: "No",
+    genderPlaceholder: "Select an option",
+    genderMale: "Male",
+    genderFemale: "Female",
+    genderNonBinary: "Non-binary",
+    genderPreferNot: "Prefer not to say",
     savingTitle: "Generating profile...",
     savingText: "Please wait while we store the profile and notify the NFC administrator.",
     successKicker: "Saved",
@@ -94,9 +113,11 @@ const setupTranslations = {
     statusReadyTitle: "Ready to generate",
     statusReadyMessage: "Complete the form, review the multilingual preview, and generate the profile link.",
     statusConfigTitle: "Supabase setup missing",
-    statusConfigMessage: "Add the dedicated NFC Medico Supabase URL and anon key in config.js.",
+    statusConfigMessage: "Add the dedicated MyMedicalNFC.com Supabase URL and anon key in config.js.",
     statusValidationTitle: "Missing required fields",
-    statusValidationMessage: "Add at least the full name before generating the profile.",
+    statusValidationMessage: "Add at least the person's first and last name before generating the profile.",
+    statusTermsTitle: "Legal acceptance required",
+    statusTermsMessage: "The profile owner must accept the legal terms, privacy consent, and emergency disclaimer before generating the link.",
     statusSavingTitle: "Generation in progress",
     statusSavingMessage: "Generating the secure link and language versions.",
     statusSavedTitle: "Profile generated",
@@ -128,7 +149,15 @@ const setupTranslations = {
     activationInvalidTitle: "Activation unavailable",
     activationInvalidMessage: "We could not validate this private activation link.",
     previewTranslating: "Translating automatically...",
-    bloodPlaceholder: "Select blood type"
+    bloodPlaceholder: "Select blood type",
+    agreementsTitle: "Before generating the profile",
+    agreementsAccept: "I accept the service terms, privacy consent, and emergency disclaimer.",
+    legalTermsLink: "View service terms",
+    legalPrivacyLink: "View privacy & consent",
+    legalDisclaimerLink: "View emergency disclaimer",
+    legalTermsTitle: "Service terms",
+    legalPrivacyTitle: "Privacy & consent",
+    legalDisclaimerTitle: "Emergency disclaimer"
   },
   es: {
     brandTagline: "Formulario medico",
@@ -137,7 +166,7 @@ const setupTranslations = {
     heroKicker: "Formulario medico",
     heroTitle: "Llena el formulario medico para una persona.",
     heroText:
-      "Agrega la informacion de emergencia una sola vez, revisa el preview en vivo y genera el enlace seguro que se enviara al administrador que graba los tags NFC.",
+      "Agrega la informacion de emergencia una sola vez, revisa el preview en vivo, acepta los acuerdos y genera el enlace seguro que se compartira con el administrador del NFC.",
     heroPoint1: "Flujo claro paso a paso",
     heroPoint2: "Preview multilenguaje",
     heroPoint3: "Flujo agil para familias",
@@ -158,6 +187,10 @@ const setupTranslations = {
     publishKicker: "Finalizar",
     publishTitle: "Generar el enlace del perfil",
     fieldFullName: "Nombre completo",
+    fieldFirstName: "Nombre",
+    fieldLastName: "Apellido",
+    fieldGender: "Genero",
+    fieldBirthDate: "Fecha de nacimiento",
     fieldSlug: "ID del perfil",
     fieldProfileLanguage: "Idioma original de la informacion medica",
     fieldBloodType: "Tipo de sangre",
@@ -168,6 +201,10 @@ const setupTranslations = {
     fieldInsurance: "Seguro",
     fieldDoctor: "Medico",
     fieldClinic: "Clinica",
+    fieldCountry: "Pais",
+    fieldState: "Estado / Region",
+    fieldCity: "Ciudad",
+    fieldPostalCode: "ZIP / Codigo postal",
     fieldConditions: "Condiciones",
     fieldAllergies: "Alergias medicas",
     fieldFoodAllergies: "Alergias alimentarias",
@@ -201,6 +238,8 @@ const setupTranslations = {
     labelFoodAllergies: "Alergias alimentarias",
     labelMedications: "Medicamentos y dosis",
     labelBloodType: "Tipo de sangre",
+    labelGender: "Genero",
+    labelBirthDate: "Fecha de nacimiento",
     labelAge: "Edad",
     labelWeight: "Peso",
     labelHeight: "Estatura",
@@ -208,10 +247,19 @@ const setupTranslations = {
     labelDoctor: "Medico",
     labelClinic: "Clinica",
     labelInsurance: "Seguro",
+    labelCountry: "Pais",
+    labelState: "Estado / Region",
+    labelCity: "Ciudad",
+    labelPostalCode: "ZIP / Codigo postal",
     importantNotes: "Notas importantes",
     organDonorPlaceholder: "Selecciona una opcion",
     organDonorYes: "Si",
     organDonorNo: "No",
+    genderPlaceholder: "Selecciona una opcion",
+    genderMale: "Hombre",
+    genderFemale: "Mujer",
+    genderNonBinary: "No binario",
+    genderPreferNot: "Prefiero no decirlo",
     savingTitle: "Generando perfil...",
     savingText: "Espera un momento mientras guardamos el perfil y notificamos al administrador del NFC.",
     successKicker: "Guardado",
@@ -225,9 +273,12 @@ const setupTranslations = {
     statusReadyTitle: "Listo para generar",
     statusReadyMessage: "Completa el formulario, revisa el preview multilenguaje y genera el enlace del perfil.",
     statusConfigTitle: "Falta configurar Supabase",
-    statusConfigMessage: "Agrega en config.js la URL y la anon key del proyecto de NFC Medico.",
+    statusConfigMessage: "Agrega en config.js la URL y la anon key del proyecto de MyMedicalNFC.com.",
     statusValidationTitle: "Faltan campos obligatorios",
-    statusValidationMessage: "Agrega al menos el nombre completo antes de generar el perfil.",
+    statusValidationMessage: "Agrega por lo menos el nombre y apellido antes de generar el perfil.",
+    statusTermsTitle: "Hace falta la aceptacion legal",
+    statusTermsMessage:
+      "La persona debe aceptar los terminos del servicio, el consentimiento de privacidad y el disclaimer de emergencia antes de generar el enlace.",
     statusSavingTitle: "Generacion en proceso",
     statusSavingMessage: "Estamos generando el enlace seguro y las versiones de idioma.",
     statusSavedTitle: "Perfil generado",
@@ -259,7 +310,15 @@ const setupTranslations = {
     activationInvalidTitle: "Activacion no disponible",
     activationInvalidMessage: "No pudimos validar este enlace privado de activacion.",
     previewTranslating: "Traduciendo automaticamente...",
-    bloodPlaceholder: "Selecciona el tipo de sangre"
+    bloodPlaceholder: "Selecciona el tipo de sangre",
+    agreementsTitle: "Antes de generar el perfil",
+    agreementsAccept: "Acepto los terminos del servicio, el consentimiento de privacidad y el disclaimer de emergencia.",
+    legalTermsLink: "Ver terminos del servicio",
+    legalPrivacyLink: "Ver privacidad y consentimiento",
+    legalDisclaimerLink: "Ver disclaimer de emergencia",
+    legalTermsTitle: "Terminos del servicio",
+    legalPrivacyTitle: "Privacidad y consentimiento",
+    legalDisclaimerTitle: "Disclaimer de emergencia"
   }
 };
 
@@ -273,6 +332,51 @@ const languageOptions = {
   ja: { code: "JA", label: "Japanese", flag: "🇯🇵" },
   ko: { code: "KO", label: "Korean", flag: "🇰🇷" },
   zh: { code: "ZH", label: "Chinese", flag: "🇨🇳" }
+};
+
+const legalCopy = {
+  en: {
+    kicker: "Legal",
+    termsTitle: "Service terms",
+    privacyTitle: "Privacy & consent",
+    disclaimerTitle: "Emergency disclaimer",
+    termsHtml: `
+      <p><strong>MyMedicalNFC.com</strong> provides a digital medical profile service linked to an NFC tag. The secure profile link may be generated before the NFC is physically recorded.</p>
+      <p>The owner of the profile is responsible for providing accurate information and reviewing it before the NFC is programmed. Future remote reopening or editing requests may carry an additional service fee.</p>
+      <p>The physical NFC content does not change until the tag is returned to the administrator for reprogramming. Business address: 2200 Patton Dr. Reno, Nevada 89512 USA.</p>
+    `,
+    privacyHtml: `
+      <p>By submitting this form, the owner authorizes the storage of medical profile information for emergency display and NFC management purposes.</p>
+      <p>The profile may contain sensitive medical details, emergency contacts, and optional links to complete records. Access should be shared only with trusted responders, caregivers, and the designated administrator.</p>
+      <p>The administrator may receive the profile link, activation notices, and later requests for updates in order to manage the NFC service.</p>
+    `,
+    disclaimerHtml: `
+      <p>This profile is informational only and does not replace emergency services, professional diagnosis, or clinical treatment.</p>
+      <p>In case of emergency, call local emergency services immediately. Medical decisions must be made by qualified professionals using the full circumstances of the emergency.</p>
+      <p>The information shown is provided by the profile owner or authorized caregiver. MyMedicalNFC.com is not responsible for incomplete, outdated, or inaccurate medical data submitted by the owner.</p>
+    `
+  },
+  es: {
+    kicker: "Legal",
+    termsTitle: "Terminos del servicio",
+    privacyTitle: "Privacidad y consentimiento",
+    disclaimerTitle: "Disclaimer de emergencia",
+    termsHtml: `
+      <p><strong>MyMedicalNFC.com</strong> ofrece un servicio de perfil medico digital vinculado a una etiqueta NFC. El enlace seguro del perfil puede generarse antes de grabar fisicamente el chip NFC.</p>
+      <p>El propietario del perfil es responsable de proporcionar informacion correcta y revisarla antes de que el NFC sea programado. Las solicitudes futuras de reapertura o edicion remota pueden tener un costo adicional.</p>
+      <p>La informacion fisica del NFC no cambia hasta que la etiqueta vuelve a manos del administrador para reprogramarla. Direccion del negocio: 2200 Patton Dr. Reno, Nevada 89512 USA.</p>
+    `,
+    privacyHtml: `
+      <p>Al enviar este formulario, el titular autoriza el almacenamiento de la informacion del perfil medico para visualizacion de emergencia y administracion del servicio NFC.</p>
+      <p>El perfil puede contener datos medicos sensibles, contactos de emergencia y enlaces opcionales a expedientes completos. Debe compartirse solo con rescatistas, cuidadores y el administrador designado.</p>
+      <p>El administrador puede recibir el enlace del perfil, avisos de activacion y futuras solicitudes de cambio para poder gestionar el servicio NFC.</p>
+    `,
+    disclaimerHtml: `
+      <p>Este perfil es solo informativo y no sustituye a los servicios de emergencia, el diagnostico profesional ni el tratamiento clinico.</p>
+      <p>En caso de emergencia, llama de inmediato a los servicios medicos locales. Las decisiones medicas deben ser tomadas por profesionales calificados con base en toda la situacion clinica.</p>
+      <p>La informacion mostrada es proporcionada por el propietario del perfil o su cuidador autorizado. MyMedicalNFC.com no es responsable por informacion incompleta, desactualizada o incorrecta enviada por el usuario.</p>
+    `
+  }
 };
 
 const languageVisuals = {
@@ -324,6 +428,10 @@ const successModal = document.querySelector("[data-success-modal]");
 const successUrlNode = document.querySelector("[data-success-url]");
 const errorModal = document.querySelector("[data-error-modal]");
 const errorDetailNode = document.querySelector("[data-error-detail]");
+const legalModal = document.querySelector("[data-legal-modal]");
+const legalTitleNode = document.querySelector("[data-legal-title]");
+const legalKickerNode = document.querySelector("[data-legal-kicker]");
+const legalContentNode = document.querySelector("[data-legal-content]");
 const interfaceSelect = document.querySelector("[data-lang-select]");
 const helperFields = document.querySelectorAll("[data-clear-helper]");
 const countryCodeSelects = document.querySelectorAll("[data-country-code]");
@@ -554,6 +662,63 @@ function cleanText(value) {
   return value === null || value === undefined ? "" : String(value).trim();
 }
 
+function buildFullName(firstName, lastName, fallback = "") {
+  const composed = [cleanText(firstName), cleanText(lastName)].filter(Boolean).join(" ");
+  return composed || cleanText(fallback);
+}
+
+function splitFullName(fullName = "") {
+  const normalized = cleanText(fullName);
+  if (!normalized) {
+    return { firstName: "", lastName: "" };
+  }
+
+  const parts = normalized.split(" ").filter(Boolean);
+  return {
+    firstName: parts.shift() || "",
+    lastName: parts.join(" ")
+  };
+}
+
+function formatMeasurement(value, unit) {
+  const normalizedValue = cleanText(value);
+  const normalizedUnit = cleanText(unit);
+  if (!normalizedValue) {
+    return "";
+  }
+  return normalizedUnit ? `${normalizedValue} ${normalizedUnit}` : normalizedValue;
+}
+
+function parseMeasurement(value, fallbackUnit) {
+  const normalized = cleanText(value);
+  const match = normalized.match(/^([\d.]+)\s*([a-zA-Z'"]+)?$/);
+  if (!match) {
+    return { value: normalized, unit: fallbackUnit };
+  }
+
+  return {
+    value: cleanText(match[1]),
+    unit: cleanText(match[2] || fallbackUnit).toLowerCase()
+  };
+}
+
+function formatBirthDate(value) {
+  const normalized = cleanText(value);
+  if (!normalized) {
+    return "-";
+  }
+
+  try {
+    return new Date(`${normalized}T00:00:00`).toLocaleDateString(root.lang || "en", {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    });
+  } catch (error) {
+    return normalized;
+  }
+}
+
 function createSlugSeed() {
   return Math.random().toString(36).slice(2, 8);
 }
@@ -623,9 +788,14 @@ function clearDraftFields(preserveContacts = false) {
   });
 
   form.elements.full_record_url.value = "";
+  form.elements.full_name.value = "";
   form.elements.public_slug.value = "";
   form.elements.blood_type.value = "";
   form.elements.default_language.value = "en";
+  form.elements.gender.value = "";
+  form.elements.weight_unit.value = "kg";
+  form.elements.height_unit.value = "cm";
+  form.elements.terms_accepted.checked = false;
   syncFlagSelect(form.elements.default_language);
   countryCodeSelects.forEach((select) => {
     select.value = "+1";
@@ -658,6 +828,39 @@ function setOrganDonorOptions(copy = getSetupCopy()) {
   if (select.options[2]) {
     select.options[2].textContent = copy.organDonorNo || setupTranslations.en.organDonorNo;
   }
+}
+
+function setGenderOptions(copy = getSetupCopy()) {
+  const select = form.elements.gender;
+  if (!select?.options?.length) {
+    return;
+  }
+
+  select.options[0].textContent = copy.genderPlaceholder || setupTranslations.en.genderPlaceholder;
+  if (select.options[1]) {
+    select.options[1].textContent = copy.genderMale || setupTranslations.en.genderMale;
+  }
+  if (select.options[2]) {
+    select.options[2].textContent = copy.genderFemale || setupTranslations.en.genderFemale;
+  }
+  if (select.options[3]) {
+    select.options[3].textContent = copy.genderNonBinary || setupTranslations.en.genderNonBinary;
+  }
+  if (select.options[4]) {
+    select.options[4].textContent = copy.genderPreferNot || setupTranslations.en.genderPreferNot;
+  }
+}
+
+function formatGenderValue(value, copy = getSetupCopy()) {
+  const normalized = cleanText(value);
+  return (
+    {
+      male: copy.genderMale || setupTranslations.en.genderMale,
+      female: copy.genderFemale || setupTranslations.en.genderFemale,
+      non_binary: copy.genderNonBinary || setupTranslations.en.genderNonBinary,
+      prefer_not_to_say: copy.genderPreferNot || setupTranslations.en.genderPreferNot
+    }[normalized] || "-"
+  );
 }
 
 function formatOrganDonorValue(value, copy = getSetupCopy()) {
@@ -747,18 +950,33 @@ function splitNotes(value) {
 }
 
 function getFormState() {
+  const firstName = cleanText(form.elements.first_name.value);
+  const lastName = cleanText(form.elements.last_name.value);
+  const fullName = buildFullName(firstName, lastName, form.elements.full_name.value);
   return {
-    full_name: cleanText(form.elements.full_name.value),
+    first_name: firstName,
+    last_name: lastName,
+    full_name: fullName,
     public_slug: slugify(form.elements.public_slug.value),
     default_language: normalizeProfileLanguage(form.elements.default_language.value),
+    gender: cleanText(form.elements.gender.value),
+    birth_date: cleanText(form.elements.birth_date.value),
     blood_type: cleanText(form.elements.blood_type.value),
     age: cleanText(form.elements.age.value),
-    weight: cleanText(form.elements.weight.value),
-    height: cleanText(form.elements.height.value),
+    weight: formatMeasurement(form.elements.weight_value.value, form.elements.weight_unit.value),
+    weight_value: cleanText(form.elements.weight_value.value),
+    weight_unit: cleanText(form.elements.weight_unit.value || "kg"),
+    height: formatMeasurement(form.elements.height_value.value, form.elements.height_unit.value),
+    height_value: cleanText(form.elements.height_value.value),
+    height_unit: cleanText(form.elements.height_unit.value || "cm"),
     organ_donor: cleanText(form.elements.organ_donor.value),
     insurance: cleanText(form.elements.insurance.value),
     doctor: cleanText(form.elements.doctor.value),
     clinic: cleanText(form.elements.clinic.value),
+    country: cleanText(form.elements.country.value),
+    state_region: cleanText(form.elements.state_region.value),
+    city: cleanText(form.elements.city.value),
+    postal_code: cleanText(form.elements.postal_code.value),
     conditions: cleanText(form.elements.conditions.value),
     allergies: cleanText(form.elements.allergies.value),
     food_allergies: cleanText(form.elements.food_allergies.value),
@@ -771,7 +989,8 @@ function getFormState() {
     emergency_contact_2_name: cleanText(form.elements.emergency_contact_2_name.value),
     emergency_contact_2_country_code: cleanText(form.elements.emergency_contact_2_country_code.value || "+1"),
     emergency_contact_2_phone_local: cleanText(form.elements.emergency_contact_2_phone_local.value),
-    full_record_url: cleanText(form.elements.full_record_url.value)
+    full_record_url: cleanText(form.elements.full_record_url.value),
+    terms_accepted: Boolean(form.elements.terms_accepted.checked)
   };
 }
 
@@ -937,6 +1156,7 @@ function applyInterfaceCopy(copy) {
   });
   setBloodPlaceholder(copy);
   setOrganDonorOptions(copy);
+  setGenderOptions(copy);
   renderStatus();
 }
 
@@ -1099,7 +1319,11 @@ function buildPayload(raw, sourceFields, englishFields, spanishFields) {
     public_slug: raw.public_slug,
     default_language: raw.default_language,
     full_name: raw.full_name,
+    first_name: raw.first_name || null,
+    last_name: raw.last_name || null,
     workflow_status: "ready_to_program",
+    gender: raw.gender || null,
+    birth_date: raw.birth_date || null,
     blood_type: raw.blood_type || null,
     age: raw.age || null,
     weight: raw.weight || null,
@@ -1108,6 +1332,10 @@ function buildPayload(raw, sourceFields, englishFields, spanishFields) {
     insurance: raw.insurance || null,
     doctor: raw.doctor || null,
     clinic: raw.clinic || null,
+    country: raw.country || null,
+    state_region: raw.state_region || null,
+    city: raw.city || null,
+    postal_code: raw.postal_code || null,
     conditions_source: sourceFields.conditions,
     allergies_source: sourceFields.allergies,
     food_allergies_source: sourceFields.food_allergies,
@@ -1135,6 +1363,8 @@ function buildPayload(raw, sourceFields, englishFields, spanishFields) {
     emergency_contact_2_whatsapp:
       buildWhatsappNumber(raw.emergency_contact_2_country_code, raw.emergency_contact_2_phone_local) || null,
     full_record_url: raw.full_record_url || null,
+    terms_accepted_at: now,
+    terms_version: "2026-04-09",
     activation_started_at: now,
     activated_at: now,
     is_public: true
@@ -1155,7 +1385,11 @@ async function prepareProfilePayload(raw) {
 function populateForm(values) {
   Object.entries(values).forEach(([key, value]) => {
     if (form.elements[key]) {
-      form.elements[key].value = value || "";
+      if (form.elements[key].type === "checkbox") {
+        form.elements[key].checked = Boolean(value);
+      } else {
+        form.elements[key].value = value || "";
+      }
       if (form.elements[key].matches?.("select[data-flag-menu]")) {
         syncFlagSelect(form.elements[key]);
       }
@@ -1221,6 +1455,8 @@ async function renderPreview() {
   document.querySelector('[data-preview="medications"]').textContent = previewFields.medications || "-";
   document.querySelector('[data-preview="devices"]').textContent = previewFields.devices || "-";
   document.querySelector('[data-preview="blood_type"]').textContent = raw.blood_type || "-";
+  document.querySelector('[data-preview="gender"]').textContent = formatGenderValue(raw.gender, copy);
+  document.querySelector('[data-preview="birth_date"]').textContent = formatBirthDate(raw.birth_date);
   document.querySelector('[data-preview="age"]').textContent = raw.age || "-";
   document.querySelector('[data-preview="weight"]').textContent = raw.weight || "-";
   document.querySelector('[data-preview="height"]').textContent = raw.height || "-";
@@ -1228,6 +1464,10 @@ async function renderPreview() {
   document.querySelector('[data-preview="doctor"]').textContent = raw.doctor || "-";
   document.querySelector('[data-preview="clinic"]').textContent = raw.clinic || "-";
   document.querySelector('[data-preview="insurance"]').textContent = raw.insurance || "-";
+  document.querySelector('[data-preview="country"]').textContent = raw.country || "-";
+  document.querySelector('[data-preview="state_region"]').textContent = raw.state_region || "-";
+  document.querySelector('[data-preview="city"]').textContent = raw.city || "-";
+  document.querySelector('[data-preview="postal_code"]').textContent = raw.postal_code || "-";
 
   const notes = splitNotes(previewFields.notes);
   previewNoteNodes.forEach((node, index) => {
@@ -1241,6 +1481,7 @@ async function renderPreview() {
 }
 
 function syncSlugFromName() {
+  form.elements.full_name.value = buildFullName(form.elements.first_name.value, form.elements.last_name.value);
   if (!state.slugTouched) {
     form.elements.public_slug.value = buildAutoSlug(form.elements.full_name.value);
   }
@@ -1289,6 +1530,33 @@ function closeErrorModal() {
   errorModal.classList.add("is-hidden");
 }
 
+function getLegalCopy(lang = state.uiLang) {
+  return legalCopy[normalizeUiLanguage(lang)] || legalCopy.en;
+}
+
+function openLegalModal(type) {
+  const copy = getLegalCopy(state.uiLang);
+  const titleMap = {
+    terms: copy.termsTitle,
+    privacy: copy.privacyTitle,
+    disclaimer: copy.disclaimerTitle
+  };
+  const contentMap = {
+    terms: copy.termsHtml,
+    privacy: copy.privacyHtml,
+    disclaimer: copy.disclaimerHtml
+  };
+
+  legalKickerNode.textContent = copy.kicker;
+  legalTitleNode.textContent = titleMap[type] || copy.termsTitle;
+  legalContentNode.innerHTML = contentMap[type] || copy.termsHtml;
+  legalModal.classList.remove("is-hidden");
+}
+
+function closeLegalModal() {
+  legalModal.classList.add("is-hidden");
+}
+
 function setFormEditable(isEditable) {
   form.querySelectorAll("input, textarea, select, button[type='submit']").forEach((field) => {
     if (field.name === "public_slug" || field === interfaceSelect) {
@@ -1307,6 +1575,9 @@ function setFormEditable(isEditable) {
 function populateProfileIntoForm(data) {
   const phone1 = parsePhone(data.emergency_contact_1_phone);
   const phone2 = parsePhone(data.emergency_contact_2_phone);
+  const nameParts = splitFullName(cleanText(data.full_name));
+  const weight = parseMeasurement(data.weight, "kg");
+  const height = parseMeasurement(data.height, "cm");
   const sourceFields = sourceFieldsFromRecord(data);
 
   state.translation.signature = buildSourceSignature(normalizeProfileLanguage(data.default_language || "en"), sourceFields);
@@ -1331,18 +1602,28 @@ function populateProfileIntoForm(data) {
   };
 
   populateForm({
+    first_name: cleanText(data.first_name) || nameParts.firstName,
+    last_name: cleanText(data.last_name) || nameParts.lastName,
     full_name: cleanText(data.full_name),
     public_slug: cleanText(data.public_slug),
     default_language: normalizeProfileLanguage(data.default_language || "en"),
+    gender: cleanText(data.gender),
+    birth_date: cleanText(data.birth_date),
     blood_type: cleanText(data.blood_type),
     age: cleanText(data.age),
-    weight: cleanText(data.weight),
-    height: cleanText(data.height),
+    weight_value: weight.value,
+    weight_unit: weight.unit || "kg",
+    height_value: height.value,
+    height_unit: height.unit || "cm",
     organ_donor:
       data.organ_donor === true ? "true" : data.organ_donor === false ? "false" : cleanText(data.organ_donor),
     insurance: cleanText(data.insurance),
     doctor: cleanText(data.doctor),
     clinic: cleanText(data.clinic),
+    country: cleanText(data.country),
+    state_region: cleanText(data.state_region),
+    city: cleanText(data.city),
+    postal_code: cleanText(data.postal_code),
     conditions: sourceFields.conditions,
     allergies: sourceFields.allergies,
     food_allergies: sourceFields.food_allergies,
@@ -1355,9 +1636,11 @@ function populateProfileIntoForm(data) {
     emergency_contact_2_name: cleanText(data.emergency_contact_2_name),
     emergency_contact_2_country_code: phone2.countryCode,
     emergency_contact_2_phone_local: phone2.localNumber,
-    full_record_url: cleanText(data.full_record_url)
+    full_record_url: cleanText(data.full_record_url),
+    terms_accepted: Boolean(data.terms_accepted_at)
   });
 
+  form.elements.full_name.value = buildFullName(form.elements.first_name.value, form.elements.last_name.value, data.full_name);
   form.elements.public_slug.value = cleanText(data.public_slug);
   state.slugTouched = true;
 }
@@ -1382,6 +1665,7 @@ async function loadActivationState() {
 
   const result = await loadActivationProfile(token);
   populateProfileIntoForm(result.profile || {});
+  setInterfaceLanguage(normalizeProfileLanguage(result.profile?.default_language || state.uiLang));
   renderPreview();
 
   if (result.tokenStatus === "used") {
@@ -1402,6 +1686,11 @@ async function saveProfile(event) {
   if (!raw.full_name) {
     flashStatus("warning", "statusValidationTitle", "statusValidationMessage");
     renderPreview();
+    return;
+  }
+
+  if (!raw.terms_accepted) {
+    flashStatus("warning", "statusTermsTitle", "statusTermsMessage");
     return;
   }
 
@@ -1482,6 +1771,7 @@ async function loadExistingProfile() {
     }
 
     populateProfileIntoForm(data);
+    setInterfaceLanguage(normalizeProfileLanguage(data.default_language || state.uiLang));
     flashStatus("success", "statusLoadedTitle", "statusLoadedMessage", { slug });
   } catch (error) {
     console.warn("Load existing profile failed", error);
@@ -1510,19 +1800,20 @@ function bindEvents() {
     setInterfaceLanguage(interfaceSelect.value);
   });
 
-  form.elements.full_name.addEventListener("input", () => {
+  ["first_name", "last_name"].forEach((fieldName) => {
+    form.elements[fieldName].addEventListener("input", () => {
+      syncSlugFromName();
+      renderPreview();
+    });
+  });
+
+  form.elements.birth_date.addEventListener("change", () => {
     syncSlugFromName();
     renderPreview();
   });
 
-  form.elements.public_slug.addEventListener("input", () => {
-    state.slugTouched = true;
-    form.elements.public_slug.value = slugify(form.elements.public_slug.value);
-    renderPreview();
-  });
-
   form.addEventListener("input", (event) => {
-    if (event.target.name !== "full_name" && event.target.name !== "public_slug") {
+    if (!["first_name", "last_name"].includes(event.target.name)) {
       renderPreview();
     }
   });
@@ -1553,13 +1844,21 @@ function bindEvents() {
   document.querySelectorAll('[data-action="close-error"]').forEach((button) => {
     button.addEventListener("click", closeErrorModal);
   });
+  document.querySelectorAll("[data-legal-open]").forEach((button) => {
+    button.addEventListener("click", () => {
+      openLegalModal(button.dataset.legalOpen);
+    });
+  });
+  document.querySelectorAll('[data-action="close-legal"]').forEach((button) => {
+    button.addEventListener("click", closeLegalModal);
+  });
 }
 
 async function init() {
   populateCountryCodes();
   initFlagSelects();
   setupHelperPlaceholders();
-  clearDraftFields(Boolean(getFamilyTemplate()));
+  clearDraftFields(false);
   bindEvents();
   setInterfaceLanguage(state.uiLang);
   showStatus(

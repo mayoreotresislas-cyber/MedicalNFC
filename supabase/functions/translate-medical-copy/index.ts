@@ -1,6 +1,6 @@
 import { corsHeaders } from "../_shared/cors.ts";
 
-const medicalFieldKeys = ["conditions", "allergies", "medications", "devices", "notes"] as const;
+const medicalFieldKeys = ["conditions", "allergies", "food_allergies", "medications", "devices", "notes"] as const;
 const languageNames = {
   en: "English",
   es: "Spanish",

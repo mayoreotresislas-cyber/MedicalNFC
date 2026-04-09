@@ -8,17 +8,30 @@ const statusBanner = document.querySelector("[data-admin-status]");
 const statusTitle = document.querySelector("[data-admin-status-title]");
 const statusMessage = document.querySelector("[data-admin-status-message]");
 const refreshButton = document.querySelector("[data-refresh-queue]");
+const filterButtons = document.querySelectorAll("[data-filter-status]");
+const searchInput = document.querySelector("[data-profile-search]");
 
 const resultNodes = {
   slug: document.querySelector("[data-result-slug]"),
   publicUrl: document.querySelector("[data-result-public-url]"),
-  activationUrl: document.querySelector("[data-result-activation-url]")
+  activationUrl: document.querySelector("[data-result-activation-url]"),
+  clientEmail: document.querySelector("[data-result-client-email]"),
+  clientPhone: document.querySelector("[data-result-client-phone]")
+};
+
+const statNodes = {
+  all: document.querySelector('[data-stat="all"]'),
+  pending: document.querySelector('[data-stat="pending"]'),
+  ready_to_program: document.querySelector('[data-stat="ready_to_program"]'),
+  active: document.querySelector('[data-stat="active"]')
 };
 
 const state = {
   adminToken: window.localStorage.getItem("nfc-medico-admin-token") || "",
   latest: null,
-  profiles: []
+  profiles: [],
+  filterStatus: "all",
+  search: ""
 };
 
 function cleanText(value) {
@@ -63,9 +76,66 @@ function getStatusClass(status) {
       ready_to_program: "ready",
       active: "active",
       update_requested: "update",
-      archived: "pending"
+      archived: "archived"
     }[status] || "pending"
   );
+}
+
+function buildMailtoUrl(email, activationUrl, profileName) {
+  if (!cleanText(email)) {
+    return "";
+  }
+
+  const subject = encodeURIComponent(`MyMedicalNFC.com | Completa tu perfil medico`);
+  const body = encodeURIComponent(
+    [
+      `Hola ${cleanText(profileName) || ""},`,
+      "",
+      "Este es tu enlace privado para llenar o actualizar tu perfil medico NFC:",
+      cleanText(activationUrl),
+      "",
+      "Cuando termines, el administrador recibira la notificacion para preparar la grabacion del NFC.",
+      "",
+      "MyMedicalNFC.com"
+    ].join("\n")
+  );
+
+  return `mailto:${encodeURIComponent(cleanText(email))}?subject=${subject}&body=${body}`;
+}
+
+function buildSmsUrl(phone, activationUrl) {
+  const normalized = cleanText(phone).replace(/[^\d+]/g, "");
+  if (!normalized) {
+    return "";
+  }
+
+  const body = encodeURIComponent(
+    `Tu enlace privado de MyMedicalNFC.com para llenar el perfil medico es: ${cleanText(activationUrl)}`
+  );
+
+  return `sms:${normalized}?body=${body}`;
+}
+
+function openShare(kind, record) {
+  if (!record) {
+    return;
+  }
+
+  const activationUrl = cleanText(record.profile?.activation_url || record.activationUrl);
+  const email = cleanText(record.profile?.client_email || record.clientEmail);
+  const phone = cleanText(record.profile?.client_phone || record.clientPhone);
+  const name = cleanText(record.profile?.full_name);
+
+  const url = kind === "email" ? buildMailtoUrl(email, activationUrl, name) : buildSmsUrl(phone, activationUrl);
+  if (!url) {
+    throw new Error(
+      kind === "email"
+        ? "Este perfil no tiene correo del cliente para preparar el envio."
+        : "Este perfil no tiene telefono del cliente para preparar el SMS."
+    );
+  }
+
+  window.open(url, "_blank", "noopener");
 }
 
 async function invokeAdmin(action, payload = {}) {
@@ -100,6 +170,12 @@ async function copyText(value, successMessage) {
   setStatus("success", "Copiado", successMessage);
 }
 
+function syncProvisionDefaults() {
+  provisionForm.reset();
+  provisionForm.elements.default_language.value = "es";
+  provisionForm.elements.full_name.focus();
+}
+
 function renderLatestResult(result) {
   state.latest = result;
   if (!result) {
@@ -109,8 +185,25 @@ function renderLatestResult(result) {
 
   latestResult.hidden = false;
   resultNodes.slug.textContent = cleanText(result.profile?.public_slug);
-  resultNodes.publicUrl.textContent = cleanText(result.profile?.public_url);
+  resultNodes.publicUrl.textContent = cleanText(result.profile?.public_url || result.publicUrl);
   resultNodes.activationUrl.textContent = cleanText(result.profile?.activation_url || result.activationUrl || result.activationToken);
+  resultNodes.clientEmail.textContent = cleanText(result.profile?.client_email || result.clientEmail) || "-";
+  resultNodes.clientPhone.textContent = cleanText(result.profile?.client_phone || result.clientPhone) || "-";
+}
+
+function updateStats(profiles) {
+  const totals = {
+    all: profiles.length,
+    pending: profiles.filter((profile) => profile.workflow_status === "pending").length,
+    ready_to_program: profiles.filter((profile) => profile.workflow_status === "ready_to_program").length,
+    active: profiles.filter((profile) => profile.workflow_status === "active").length
+  };
+
+  Object.entries(statNodes).forEach(([key, node]) => {
+    if (node) {
+      node.textContent = String(totals[key] || 0);
+    }
+  });
 }
 
 function buildQueueCard(profile) {
@@ -120,32 +213,44 @@ function buildQueueCard(profile) {
   const statusClass = getStatusClass(profile.workflow_status);
   const statusLabel = getStatusLabel(profile.workflow_status);
   const hybridSummary = cleanText(profile.hybrid_summary);
+  const canMarkProgrammed = ["ready_to_program", "active"].includes(profile.workflow_status);
+  const reopenLabel = profile.workflow_status === "pending" ? "Nuevo link privado" : "Reabrir / nuevo link";
 
   wrapper.innerHTML = `
     <div class="queue-card-head">
       <div>
         <h3>${cleanText(profile.full_name || profile.pending_label || profile.public_slug)}</h3>
-        <p>${cleanText(profile.chip_reference || profile.public_slug)}</p>
+        <p>${cleanText(profile.chip_reference || profile.public_slug || "Sin referencia")}</p>
       </div>
       <span class="queue-chip ${statusClass}">${statusLabel}</span>
     </div>
 
     <div class="queue-card-meta">
-      <div class="queue-meta-row">
-        <span>URL publica</span>
-        <strong>${cleanText(profile.public_url)}</strong>
-      </div>
-      <div class="queue-meta-row">
-        <span>Actualizado</span>
-        <strong>${formatDate(profile.updated_at)}</strong>
-      </div>
-      <div class="queue-meta-row">
-        <span>Activo desde</span>
-        <strong>${formatDate(profile.activated_at)}</strong>
-      </div>
-      <div class="queue-meta-row">
-        <span>Programado en chip</span>
-        <strong>${formatDate(profile.nfc_programmed_at)}</strong>
+      <div class="queue-meta-grid">
+        <div class="queue-meta-row">
+          <span>Slug publico</span>
+          <strong>${cleanText(profile.public_slug)}</strong>
+        </div>
+        <div class="queue-meta-row">
+          <span>URL publica</span>
+          <strong>${cleanText(profile.public_url)}</strong>
+        </div>
+        <div class="queue-meta-row">
+          <span>Correo cliente</span>
+          <strong>${cleanText(profile.client_email) || "Sin correo"}</strong>
+        </div>
+        <div class="queue-meta-row">
+          <span>Telefono cliente</span>
+          <strong>${cleanText(profile.client_phone) || "Sin telefono"}</strong>
+        </div>
+        <div class="queue-meta-row">
+          <span>Actualizado</span>
+          <strong>${formatDate(profile.updated_at)}</strong>
+        </div>
+        <div class="queue-meta-row">
+          <span>Grabado en chip</span>
+          <strong>${formatDate(profile.nfc_programmed_at)}</strong>
+        </div>
       </div>
       ${
         hybridSummary
@@ -155,14 +260,25 @@ function buildQueueCard(profile) {
     </div>
 
     <div class="queue-card-actions">
+      <button class="button button-secondary" type="button" data-action="open-public" data-slug="${profile.public_slug}">
+        Abrir perfil
+      </button>
       <button class="button button-secondary" type="button" data-action="copy-public" data-slug="${profile.public_slug}">
         Copiar URL publica
       </button>
-      <button class="button button-secondary" type="button" data-action="reissue" data-slug="${profile.public_slug}">
-        Reemitir activacion
+      <button class="button button-primary" type="button" data-action="reopen" data-slug="${profile.public_slug}">
+        ${reopenLabel}
       </button>
-      <button class="button button-primary" type="button" data-action="mark-programmed" data-slug="${profile.public_slug}">
-        Marcar como grabado
+      <button class="button button-secondary" type="button" data-action="mark-programmed" data-slug="${profile.public_slug}" ${
+        canMarkProgrammed ? "" : "disabled"
+      }>
+        ${profile.workflow_status === "active" ? "Ya esta activo" : "Marcar como grabado"}
+      </button>
+      <button class="button button-secondary" type="button" data-action="archive" data-slug="${profile.public_slug}">
+        Archivar
+      </button>
+      <button class="button button-danger" type="button" data-action="delete" data-slug="${profile.public_slug}">
+        Borrar
       </button>
       ${
         hybridSummary
@@ -177,28 +293,58 @@ function buildQueueCard(profile) {
   return wrapper;
 }
 
-function renderQueue(profiles) {
-  state.profiles = profiles || [];
+function getFilteredProfiles() {
+  const search = cleanText(state.search).toLowerCase();
+
+  return state.profiles.filter((profile) => {
+    const statusMatches = state.filterStatus === "all" || profile.workflow_status === state.filterStatus;
+    if (!statusMatches) {
+      return false;
+    }
+
+    if (!search) {
+      return true;
+    }
+
+    const haystack = [
+      profile.full_name,
+      profile.pending_label,
+      profile.public_slug,
+      profile.chip_reference,
+      profile.client_email,
+      profile.client_phone
+    ]
+      .map((value) => cleanText(value).toLowerCase())
+      .join(" ");
+
+    return haystack.includes(search);
+  });
+}
+
+function renderQueue() {
+  const profiles = getFilteredProfiles();
   queueList.innerHTML = "";
 
-  if (!state.profiles.length) {
-    queueList.innerHTML = `<article class="queue-empty"><p>No hay perfiles cargados todavia.</p></article>`;
+  if (!profiles.length) {
+    queueList.innerHTML = `<article class="queue-empty"><p>No hay perfiles para ese filtro.</p></article>`;
     return;
   }
 
-  state.profiles.forEach((profile) => {
+  profiles.forEach((profile) => {
     queueList.appendChild(buildQueueCard(profile));
   });
 }
 
 async function refreshQueue() {
-  setStatus("loading", "Cargando cola", "Buscando perfiles pendientes, listos y activos.");
+  setStatus("loading", "Cargando perfiles", "Buscando perfiles pendientes, listos, activos y archivados.");
   const result = await invokeAdmin("list", {
-    statuses: ["pending", "ready_to_program", "active", "update_requested"],
-    limit: config.adminListLimit || 40
+    statuses: [],
+    limit: config.adminListLimit || 80
   });
-  renderQueue(result.profiles || []);
-  setStatus("success", "Cola actualizada", "La lista de perfiles ya esta sincronizada.");
+  state.profiles = result.profiles || [];
+  updateStats(state.profiles);
+  renderQueue();
+  setStatus("success", "Panel actualizado", "La lista de perfiles ya esta sincronizada.");
 }
 
 authForm.addEventListener("submit", async (event) => {
@@ -222,17 +368,19 @@ provisionForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   try {
-    setStatus("loading", "Generando enlace", "Creando el perfil pendiente y el token privado.");
+    setStatus("loading", "Generando link", "Creando el perfil pendiente y el acceso privado del cliente.");
     const result = await invokeAdmin("provision", {
       fullName: provisionForm.elements.full_name.value,
       pendingLabel: provisionForm.elements.pending_label.value,
       defaultLanguage: provisionForm.elements.default_language.value,
-      chipReference: provisionForm.elements.chip_reference.value
+      chipReference: provisionForm.elements.chip_reference.value,
+      clientEmail: provisionForm.elements.client_email.value,
+      clientPhone: provisionForm.elements.client_phone.value
     });
 
     renderLatestResult(result);
-    provisionForm.reset();
-    setStatus("success", "Enlace generado", "El perfil pendiente ya tiene URL publica y link privado de activacion.");
+    syncProvisionDefaults();
+    setStatus("success", "Link generado", "El acceso privado ya esta listo para copiar o enviarse por correo o SMS.");
     await refreshQueue();
   } catch (error) {
     setStatus("error", "No se pudo generar", cleanText(error.message));
@@ -247,20 +395,41 @@ refreshButton.addEventListener("click", async () => {
   }
 });
 
+filterButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    state.filterStatus = button.dataset.filterStatus || "all";
+    filterButtons.forEach((item) => item.classList.toggle("is-active", item === button));
+    renderQueue();
+  });
+});
+
+searchInput.addEventListener("input", () => {
+  state.search = searchInput.value;
+  renderQueue();
+});
+
 latestResult.addEventListener("click", async (event) => {
-  const trigger = event.target.closest("[data-copy-result]");
-  if (!trigger || !state.latest) {
-    return;
-  }
+  const copyTrigger = event.target.closest("[data-copy-result]");
+  const shareTrigger = event.target.closest("[data-share-result]");
 
   try {
-    if (trigger.dataset.copyResult === "public") {
-      await copyText(cleanText(state.latest.profile?.public_url), "La URL publica ya esta copiada.");
-    } else {
-      await copyText(cleanText(state.latest.profile?.activation_url), "El link privado de activacion ya esta copiado.");
+    if (copyTrigger && state.latest) {
+      if (copyTrigger.dataset.copyResult === "public") {
+        await copyText(cleanText(state.latest.profile?.public_url || state.latest.publicUrl), "La URL publica ya esta copiada.");
+      } else {
+        await copyText(
+          cleanText(state.latest.profile?.activation_url || state.latest.activationUrl),
+          "El link privado de activacion ya esta copiado."
+        );
+      }
+    }
+
+    if (shareTrigger && state.latest) {
+      openShare(shareTrigger.dataset.shareResult, state.latest);
+      setStatus("success", "Listo para enviar", "Se abrio la app predeterminada para compartir el link.");
     }
   } catch (error) {
-    setStatus("error", "No se pudo copiar", cleanText(error.message));
+    setStatus("error", "No se pudo compartir", cleanText(error.message));
   }
 });
 
@@ -272,13 +441,16 @@ queueList.addEventListener("click", async (event) => {
 
   const action = trigger.dataset.action;
   const slug = cleanText(trigger.dataset.slug);
+  const profile = state.profiles.find((item) => item.public_slug === slug);
 
   try {
-    if (action === "copy-public") {
-      const profile = state.profiles.find((item) => item.public_slug === slug);
-      if (profile) {
-        await copyText(cleanText(profile.public_url), "La URL publica ya esta copiada.");
-      }
+    if (action === "open-public" && profile) {
+      window.open(cleanText(profile.public_url), "_blank", "noopener");
+      return;
+    }
+
+    if (action === "copy-public" && profile) {
+      await copyText(cleanText(profile.public_url), "La URL publica ya esta copiada.");
       return;
     }
 
@@ -287,25 +459,54 @@ queueList.addEventListener("click", async (event) => {
       return;
     }
 
-    if (action === "reissue") {
-      setStatus("loading", "Reemitiendo", "Creando un nuevo link privado para este perfil.");
-      const result = await invokeAdmin("reissueActivation", { publicSlug: slug });
+    if (action === "reopen") {
+      setStatus("loading", "Generando nuevo acceso", "Creando un nuevo link privado para este perfil.");
+      const result = await invokeAdmin("reopenProfile", { publicSlug: slug });
       renderLatestResult({
         profile: {
           public_slug: slug,
           public_url: result.publicUrl,
-          activation_url: result.activationUrl
-        }
+          activation_url: result.activationUrl,
+          client_email: result.clientEmail,
+          client_phone: result.clientPhone
+        },
+        activationUrl: result.activationUrl,
+        clientEmail: result.clientEmail,
+        clientPhone: result.clientPhone
       });
-      setStatus("success", "Nueva activacion lista", "Se genero un nuevo link privado para este perfil.");
+      setStatus("success", "Nuevo link privado listo", "Ya puedes copiarlo o enviarlo al cliente.");
       await refreshQueue();
       return;
     }
 
     if (action === "mark-programmed") {
-      setStatus("loading", "Marcando grabado", "Actualizando el estado del perfil en la cola.");
+      setStatus("loading", "Marcando como grabado", "Actualizando el estado del perfil en el panel.");
       await invokeAdmin("markProgrammed", { publicSlug: slug });
-      setStatus("success", "Perfil activo", "El perfil ya quedo marcado como grabado en el chip.");
+      setStatus("success", "Perfil activo", "El perfil ya quedo marcado como grabado.");
+      await refreshQueue();
+      return;
+    }
+
+    if (action === "archive") {
+      if (!window.confirm("Este perfil pasara a archivado. Puedes reabrirlo despues con un nuevo link privado. ¿Deseas continuar?")) {
+        return;
+      }
+
+      setStatus("loading", "Archivando perfil", "Guardando el nuevo estado del perfil.");
+      await invokeAdmin("archiveProfile", { publicSlug: slug });
+      setStatus("success", "Perfil archivado", "El perfil ya no aparecera como activo.");
+      await refreshQueue();
+      return;
+    }
+
+    if (action === "delete") {
+      if (!window.confirm("Esta accion borrara el perfil y sus links privados. No se puede deshacer. ¿Deseas continuar?")) {
+        return;
+      }
+
+      setStatus("loading", "Borrando perfil", "Eliminando el perfil y sus links asociados.");
+      await invokeAdmin("deleteProfile", { publicSlug: slug });
+      setStatus("success", "Perfil borrado", "El perfil ya fue eliminado.");
       await refreshQueue();
     }
   } catch (error) {
@@ -315,6 +516,7 @@ queueList.addEventListener("click", async (event) => {
 
 function init() {
   authForm.elements.admin_token.value = state.adminToken;
+  syncProvisionDefaults();
 
   if (state.adminToken) {
     refreshQueue().catch((error) => {

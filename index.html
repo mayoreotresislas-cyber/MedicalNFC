@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NFC Medico | Medical Form</title>
+    <title>MyMedicalNFC.com | Medical Profile</title>
     <meta
       name="description"
       content="Informational landing for the NFC medical form and multilingual emergency profile."
@@ -22,7 +22,7 @@
         <a class="brand" href="/">
           <span class="brand-mark">+</span>
           <span>
-            <strong>NFC Medico</strong>
+            <strong>MyMedicalNFC.com</strong>
             <small data-i18n="brandTagline">Medical form and profile access</small>
           </span>
         </a>
@@ -222,6 +222,14 @@
                   <dd data-field="bloodType">O+</dd>
                 </div>
                 <div>
+                  <dt data-i18n="labelGender">Gender</dt>
+                  <dd data-field="gender">Male</dd>
+                </div>
+                <div>
+                  <dt data-i18n="labelBirthDate">Birthday</dt>
+                  <dd data-field="birthDate">1997-02-01</dd>
+                </div>
+                <div>
                   <dt data-i18n="labelAge">Age</dt>
                   <dd data-field="age">29</dd>
                 </div>
@@ -248,6 +256,22 @@
                 <div>
                   <dt data-i18n="labelInsurance">Insurance</dt>
                   <dd data-field="insurance">BlueCross</dd>
+                </div>
+                <div>
+                  <dt data-i18n="labelCountry">Country</dt>
+                  <dd data-field="country">United States</dd>
+                </div>
+                <div>
+                  <dt data-i18n="labelState">State / Region</dt>
+                  <dd data-field="stateRegion">Nevada</dd>
+                </div>
+                <div>
+                  <dt data-i18n="labelCity">City</dt>
+                  <dd data-field="city">Reno</dd>
+                </div>
+                <div>
+                  <dt data-i18n="labelPostalCode">ZIP / Postal code</dt>
+                  <dd data-field="postalCode">89512</dd>
                 </div>
               </dl>
 
@@ -284,6 +308,12 @@
         <div class="footer-note">
           <p data-i18n="legalText">
             This information is provided by the profile owner. In case of emergency, contact local emergency services.
+          </p>
+          <a class="footer-link" href="#" data-action="request-changes" data-i18n="requestChangesLink">
+            Request profile changes
+          </a>
+          <p class="footer-meta" data-i18n="updateFeeNote">
+            Online profile reopening or remote changes may have an additional service cost. Physical NFC changes require the tag in hand.
           </p>
         </div>
       </footer>

@@ -1,6 +1,6 @@
 const uiTranslations = {
   en: {
-    brandTagline: "Medical form and profile access",
+    brandTagline: "Medical profile access",
     primaryBuilderAction: "Open Activation Form",
     languageLabel: "Language",
     overviewKicker: "Medical form",
@@ -49,6 +49,8 @@ const uiTranslations = {
     labelMedications: "Medications / Doses",
     labelDevices: "Medical Devices",
     labelBloodType: "Blood Type",
+    labelGender: "Gender",
+    labelBirthDate: "Birthday",
     labelAge: "Age",
     labelWeight: "Weight",
     labelHeight: "Height",
@@ -56,7 +58,15 @@ const uiTranslations = {
     labelDoctor: "Doctor",
     labelClinic: "Clinic",
     labelInsurance: "Insurance",
+    labelCountry: "Country",
+    labelState: "State / Region",
+    labelCity: "City",
+    labelPostalCode: "ZIP / Postal code",
     importantNotes: "Important Notes",
+    labelMale: "Male",
+    labelFemale: "Female",
+    labelNonBinary: "Non-binary",
+    labelPreferNot: "Prefer not to say",
     organDonorYes: "Yes",
     organDonorNo: "No",
     contactsTitle: "Emergency Contacts",
@@ -66,6 +76,9 @@ const uiTranslations = {
     whatsappButton: "WhatsApp",
     shareLocation: "Share current location",
     recordLink: "Open full medical record",
+    requestChangesLink: "Request profile changes",
+    updateFeeNote:
+      "Online profile reopening or remote changes may have an additional service cost. Physical NFC changes require the tag in hand.",
     legalText:
       "This information is provided by the profile owner. In case of emergency, contact local emergency services.",
     statusLoadingTitle: "Loading profile",
@@ -80,7 +93,7 @@ const uiTranslations = {
     statusLocationErrorMessage: "The browser could not access your current location."
   },
   es: {
-    brandTagline: "Formulario medico y acceso al perfil",
+    brandTagline: "Acceso al perfil medico",
     primaryBuilderAction: "Abrir activacion privada",
     languageLabel: "Idioma",
     overviewKicker: "Formulario medico",
@@ -129,6 +142,8 @@ const uiTranslations = {
     labelMedications: "Medicamentos y dosis",
     labelDevices: "Dispositivos medicos",
     labelBloodType: "Tipo de sangre",
+    labelGender: "Genero",
+    labelBirthDate: "Fecha de nacimiento",
     labelAge: "Edad",
     labelWeight: "Peso",
     labelHeight: "Estatura",
@@ -136,7 +151,15 @@ const uiTranslations = {
     labelDoctor: "Medico",
     labelClinic: "Clinica",
     labelInsurance: "Seguro",
+    labelCountry: "Pais",
+    labelState: "Estado / Region",
+    labelCity: "Ciudad",
+    labelPostalCode: "ZIP / Codigo postal",
     importantNotes: "Notas importantes",
+    labelMale: "Hombre",
+    labelFemale: "Mujer",
+    labelNonBinary: "No binario",
+    labelPreferNot: "Prefiero no decirlo",
     organDonorYes: "Si",
     organDonorNo: "No",
     contactsTitle: "Contactos de emergencia",
@@ -146,6 +169,9 @@ const uiTranslations = {
     whatsappButton: "WhatsApp",
     shareLocation: "Compartir ubicacion actual",
     recordLink: "Abrir expediente completo",
+    requestChangesLink: "Solicitar cambios del perfil",
+    updateFeeNote:
+      "La reapertura en linea o los cambios remotos del perfil pueden tener un costo adicional. Los cambios fisicos del NFC requieren tener la pieza en mano.",
     legalText:
       "Esta informacion es proporcionada por el propietario del perfil. En caso de emergencia, contacte a los servicios medicos locales.",
     statusLoadingTitle: "Cargando perfil",
@@ -598,7 +624,7 @@ const languageVisuals = {
   zh: { label: "Chinese", flagClass: "flag-zh" }
 };
 
-const staticUiLanguages = new Set(["en", "es"]);
+const staticUiLanguages = new Set(Object.keys(uiTranslations));
 
 const demoProfile = {
   default_language: "en",
@@ -644,6 +670,7 @@ const recordLink = document.querySelector('[data-action="record-link"]');
 const callLink = document.querySelector('[data-action="call-primary"]');
 const whatsappLink = document.querySelector('[data-action="whatsapp-primary"]');
 const shareLocationButton = document.querySelector('[data-action="share-location"]');
+const requestChangesLink = document.querySelector('[data-action="request-changes"]');
 const overviewView = document.querySelector('[data-view="overview"]');
 const profileView = document.querySelector('[data-view="profile"]');
 const pendingPanel = document.querySelector("[data-pending-panel]");
@@ -807,6 +834,34 @@ function formatOrganDonorValue(value, copy = getCopy()) {
     return copy.organDonorNo || uiTranslations.en.organDonorNo;
   }
   return "N/A";
+}
+
+function formatGenderValue(value, copy = getCopy()) {
+  return (
+    {
+      male: copy.labelMale || "Male",
+      female: copy.labelFemale || "Female",
+      non_binary: copy.labelNonBinary || "Non-binary",
+      prefer_not_to_say: copy.labelPreferNot || "Prefer not to say"
+    }[cleanText(value)] || "N/A"
+  );
+}
+
+function formatBirthDate(value) {
+  const normalized = cleanText(value);
+  if (!normalized) {
+    return "N/A";
+  }
+
+  try {
+    return new Date(`${normalized}T00:00:00`).toLocaleDateString(root.lang || "en", {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    });
+  } catch (error) {
+    return normalized;
+  }
 }
 
 function resolveField(record, field) {
@@ -1024,6 +1079,8 @@ async function renderProfile() {
     medications: cleanText(translated.medications) || "N/A",
     devices: cleanText(translated.devices) || "N/A",
     bloodType: cleanText(record.blood_type) || "N/A",
+    gender: formatGenderValue(record.gender, getCopy()),
+    birthDate: formatBirthDate(record.birth_date),
     age: cleanText(record.age) || "N/A",
     weight: cleanText(record.weight) || "N/A",
     height: cleanText(record.height) || "N/A",
@@ -1031,6 +1088,10 @@ async function renderProfile() {
     doctor: cleanText(record.doctor) || "N/A",
     clinic: cleanText(record.clinic) || "N/A",
     insurance: cleanText(record.insurance) || "N/A",
+    country: cleanText(record.country) || "N/A",
+    stateRegion: cleanText(record.state_region) || "N/A",
+    city: cleanText(record.city) || "N/A",
+    postalCode: cleanText(record.postal_code) || "N/A",
     contact1Name: cleanText(record.emergency_contact_1_name),
     contact1Phone: cleanText(record.emergency_contact_1_phone),
     contact2Name: cleanText(record.emergency_contact_2_name),
@@ -1062,16 +1123,29 @@ async function renderProfile() {
     recordLink.href = record.full_record_url;
   }
 
+  const supportEmail = cleanText(config.supportEmail) || "support@mymedicalnfc.com";
+  const changeSubject = encodeURIComponent(`MyMedicalNFC.com | Request profile changes | ${cleanText(record.public_slug)}`);
+  const changeBody = encodeURIComponent(
+    [
+      `Hello, I want to request a profile change for: ${cleanText(record.full_name) || cleanText(record.public_slug)}`,
+      `Public profile URL: ${window.location.href}`,
+      "",
+      "Please let me know the reopening cost and next step."
+    ].join("\n")
+  );
+  requestChangesLink.href = `mailto:${supportEmail}?subject=${changeSubject}&body=${changeBody}`;
+
   if (isPending) {
     showStatus("warning", "statusPendingTitle", "statusPendingMessage");
   }
 
-  document.title = `${values.name} | NFC Medico`;
+  document.title = `${values.name} | MyMedicalNFC.com`;
 }
 
 async function loadProfile() {
   state.identifier = detectIdentifier();
   if (!state.identifier) {
+    document.body.classList.remove("profile-mode");
     overviewView.classList.remove("is-hidden");
     profileView.classList.add("is-hidden");
     state.baseStatus = null;
@@ -1081,6 +1155,7 @@ async function loadProfile() {
 
   overviewView.classList.add("is-hidden");
   profileView.classList.remove("is-hidden");
+  document.body.classList.add("profile-mode");
 
   if (!hasSupabaseConfig()) {
     state.profile = demoProfile;

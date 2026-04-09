@@ -2,6 +2,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const DEFAULT_SITE_BASE_URL = "https://medical-nfc.vercel.app/med/{slug}";
 const DEFAULT_ACTIVATION_BASE_URL = "https://medical-nfc.vercel.app/activate/{token}";
+const DEFAULT_BRAND_NAME = "MyMedicalNFC.com";
 
 export const profileStatuses = [
   "pending",
@@ -75,6 +76,16 @@ export function buildActivationUrl(token: string) {
   return template.includes("{token}") ? template.replace("{token}", safeToken) : `${template.replace(/\/$/, "")}/${safeToken}`;
 }
 
+export function buildActivationUrlWithLanguage(token: string, language: string) {
+  const baseUrl = buildActivationUrl(token);
+  const normalizedLanguage = normalizeLanguage(language);
+  const url = baseUrl.startsWith("http://") || baseUrl.startsWith("https://")
+    ? new URL(baseUrl)
+    : new URL(baseUrl, "https://medical-nfc.vercel.app");
+  url.searchParams.set("lang", normalizedLanguage);
+  return url.toString();
+}
+
 export function verifyAdminToken(value: unknown) {
   const provided = cleanText(value);
   const expected = cleanText(Deno.env.get("MEDICAL_ADMIN_TOKEN"));
@@ -127,6 +138,8 @@ export function buildHybridSummary(record: Record<string, unknown>) {
   const parts = [
     cleanText(record.full_name) ? `NAME: ${cleanText(record.full_name)}` : "",
     cleanText(record.blood_type) ? `BLOOD: ${cleanText(record.blood_type)}` : "",
+    cleanText(record.age) ? `AGE: ${cleanText(record.age)}` : "",
+    cleanText(record.gender) ? `GENDER: ${cleanText(record.gender)}` : "",
     cleanText(record.conditions_en || record.conditions_source) ? `CONDITIONS: ${cleanText(record.conditions_en || record.conditions_source)}` : "",
     cleanText(record.allergies_en || record.allergies_source)
       ? `MED ALLERGIES: ${cleanText(record.allergies_en || record.allergies_source)}`
@@ -167,7 +180,8 @@ export async function sendAdminNotification({
 }) {
   const resendKey = cleanText(Deno.env.get("RESEND_API_KEY"));
   const notifyTo = cleanText(Deno.env.get("MEDICAL_PROFILE_NOTIFY_TO"));
-  const notifyFrom = cleanText(Deno.env.get("MEDICAL_PROFILE_NOTIFY_FROM")) || "NFC Medico <onboarding@resend.dev>";
+  const brandName = cleanText(Deno.env.get("MEDICAL_BRAND_NAME")) || DEFAULT_BRAND_NAME;
+  const notifyFrom = cleanText(Deno.env.get("MEDICAL_PROFILE_NOTIFY_FROM")) || `${brandName} <onboarding@resend.dev>`;
 
   if (!resendKey || !notifyTo) {
     return { ok: false, reason: "Notification email is not configured" };
@@ -221,6 +235,10 @@ export function sanitizeProfile(record: Record<string, unknown>) {
     workflow_status: record.workflow_status,
     default_language: record.default_language,
     full_name: record.full_name,
+    first_name: record.first_name,
+    last_name: record.last_name,
+    gender: record.gender,
+    birth_date: record.birth_date,
     blood_type: record.blood_type,
     age: record.age,
     weight: record.weight,
@@ -229,6 +247,10 @@ export function sanitizeProfile(record: Record<string, unknown>) {
     doctor: record.doctor,
     clinic: record.clinic,
     insurance: record.insurance,
+    country: record.country,
+    state_region: record.state_region,
+    city: record.city,
+    postal_code: record.postal_code,
     conditions_source: record.conditions_source,
     conditions_en: record.conditions_en,
     conditions_es: record.conditions_es,
@@ -252,6 +274,10 @@ export function sanitizeProfile(record: Record<string, unknown>) {
     emergency_contact_2_name: record.emergency_contact_2_name,
     emergency_contact_2_phone: record.emergency_contact_2_phone,
     full_record_url: record.full_record_url,
+    client_email: record.client_email,
+    client_phone: record.client_phone,
+    terms_accepted_at: record.terms_accepted_at,
+    terms_version: record.terms_version,
     hybrid_summary: record.hybrid_summary,
     activated_at: record.activated_at,
     nfc_programmed_at: record.nfc_programmed_at

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NFC Medico | Medical Form</title>
+    <title>MyMedicalNFC.com | Medical Form</title>
     <meta
       name="description"
       content="Medical form for NFC setup with multilingual preview and family-friendly profile creation."
@@ -22,7 +22,7 @@
         <a class="brand" href="/">
           <span class="brand-mark">+</span>
           <span>
-            <strong>NFC Medico</strong>
+            <strong>MyMedicalNFC.com</strong>
             <small data-i18n="brandTagline">Medical form</small>
           </span>
         </a>
@@ -90,24 +90,35 @@
               <section class="form-section">
                 <div class="section-heading">
                   <p class="section-kicker" data-i18n="identityKicker">Identity</p>
-                  <h2 data-i18n="identityTitle">Person details and profile route</h2>
+                  <h2 data-i18n="identityTitle">Person details</h2>
                 </div>
 
-                <div class="field-grid">
+                <div class="field-grid two-up">
                   <label class="field">
-                    <span data-i18n="fieldFullName">Full name</span>
+                    <span data-i18n="fieldFirstName">First name</span>
                     <input
-                      name="full_name"
+                      name="first_name"
                       type="text"
-                      placeholder="John Doe"
+                      placeholder="John"
+                      autocomplete="off"
+                      data-clear-helper
+                    />
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldLastName">Last name</span>
+                    <input
+                      name="last_name"
+                      type="text"
+                      placeholder="Doe"
                       autocomplete="off"
                       data-clear-helper
                     />
                   </label>
                 </div>
+                <input name="full_name" type="hidden" value="" />
                 <input name="public_slug" type="hidden" value="" />
 
-                <div class="field-grid three-up">
+                <div class="field-grid four-up">
                   <label class="field">
                     <span data-i18n="fieldProfileLanguage">Original language of the medical information</span>
                     <select class="native-language-select" name="default_language" data-flag-menu>
@@ -121,6 +132,20 @@
                       <option value="ko">🇰🇷 KO - Korean</option>
                       <option value="zh">🇨🇳 ZH - Chinese</option>
                     </select>
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldGender">Gender</span>
+                    <select name="gender">
+                      <option value="">Select an option</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                      <option value="non_binary">Non-binary</option>
+                      <option value="prefer_not_to_say">Prefer not to say</option>
+                    </select>
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldBirthDate">Birthday</span>
+                    <input name="birth_date" type="date" />
                   </label>
                   <label class="field">
                     <span data-i18n="fieldBloodType">Blood type</span>
@@ -162,21 +187,40 @@
                   </label>
                   <label class="field">
                     <span data-i18n="fieldWeight">Weight</span>
-                    <input
-                      name="weight"
-                      type="text"
-                      placeholder="68 kg / 150 lb"
-                      data-clear-helper
-                    />
+                    <div class="field-group compact">
+                      <input
+                        name="weight_value"
+                        type="number"
+                        min="0"
+                        step="0.1"
+                        placeholder="68"
+                        inputmode="decimal"
+                        data-clear-helper
+                      />
+                      <select name="weight_unit">
+                        <option value="kg">kg</option>
+                        <option value="lb">lb</option>
+                      </select>
+                    </div>
                   </label>
                   <label class="field">
                     <span data-i18n="fieldHeight">Height</span>
-                    <input
-                      name="height"
-                      type="text"
-                      placeholder="172 cm / 5'8&quot;"
-                      data-clear-helper
-                    />
+                    <div class="field-group compact">
+                      <input
+                        name="height_value"
+                        type="number"
+                        min="0"
+                        step="0.1"
+                        placeholder="172"
+                        inputmode="decimal"
+                        data-clear-helper
+                      />
+                      <select name="height_unit">
+                        <option value="cm">cm</option>
+                        <option value="in">in</option>
+                        <option value="ft">ft</option>
+                      </select>
+                    </div>
                   </label>
                   <label class="field">
                     <span data-i18n="fieldOrganDonor">Organ donor</span>
@@ -188,7 +232,26 @@
                   </label>
                 </div>
 
-                <div class="field-grid two-up">
+                <div class="field-grid four-up">
+                  <label class="field">
+                    <span data-i18n="fieldCountry">Country</span>
+                    <input name="country" type="text" placeholder="United States" data-clear-helper />
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldState">State / Region</span>
+                    <input name="state_region" type="text" placeholder="Nevada" data-clear-helper />
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldCity">City</span>
+                    <input name="city" type="text" placeholder="Reno" data-clear-helper />
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldPostalCode">ZIP / Postal code</span>
+                    <input name="postal_code" type="text" placeholder="89512" data-clear-helper />
+                  </label>
+                </div>
+
+                <div class="field-grid three-up">
                   <label class="field">
                     <span data-i18n="fieldDoctor">Doctor</span>
                     <input
@@ -368,6 +431,21 @@
                   </div>
                 </div>
 
+                <div class="service-note consent-note">
+                  <p class="service-note-title" data-i18n="agreementsTitle">Before generating the profile</p>
+                  <label class="consent-check">
+                    <input type="checkbox" name="terms_accepted" />
+                    <span data-i18n="agreementsAccept">
+                      I accept the service terms, privacy consent, and emergency disclaimer.
+                    </span>
+                  </label>
+                  <div class="legal-links">
+                    <button type="button" class="text-link-button" data-legal-open="terms" data-i18n="legalTermsLink">View service terms</button>
+                    <button type="button" class="text-link-button" data-legal-open="privacy" data-i18n="legalPrivacyLink">View privacy & consent</button>
+                    <button type="button" class="text-link-button" data-legal-open="disclaimer" data-i18n="legalDisclaimerLink">View emergency disclaimer</button>
+                  </div>
+                </div>
+
                 <div class="service-note">
                   <p class="service-note-title" data-i18n="updatePolicyTitle">Future profile changes</p>
                   <p class="service-note-copy" data-i18n="updatePolicyText">
@@ -445,6 +523,14 @@
                     <dd data-preview="blood_type">-</dd>
                   </div>
                   <div>
+                    <dt data-preview-copy="labelGender">Genero</dt>
+                    <dd data-preview="gender">-</dd>
+                  </div>
+                  <div>
+                    <dt data-preview-copy="labelBirthDate">Fecha de nacimiento</dt>
+                    <dd data-preview="birth_date">-</dd>
+                  </div>
+                  <div>
                     <dt data-preview-copy="labelAge">Edad</dt>
                     <dd data-preview="age">-</dd>
                   </div>
@@ -471,6 +557,22 @@
                   <div>
                     <dt data-preview-copy="labelInsurance">Seguro</dt>
                     <dd data-preview="insurance">-</dd>
+                  </div>
+                  <div>
+                    <dt data-preview-copy="labelCountry">Pais</dt>
+                    <dd data-preview="country">-</dd>
+                  </div>
+                  <div>
+                    <dt data-preview-copy="labelState">Estado / Region</dt>
+                    <dd data-preview="state_region">-</dd>
+                  </div>
+                  <div>
+                    <dt data-preview-copy="labelCity">Ciudad</dt>
+                    <dd data-preview="city">-</dd>
+                  </div>
+                  <div>
+                    <dt data-preview-copy="labelPostalCode">ZIP / Codigo postal</dt>
+                    <dd data-preview="postal_code">-</dd>
                   </div>
                 </dl>
               </article>
@@ -528,6 +630,18 @@
             Close
           </button>
         </div>
+      </div>
+    </div>
+
+    <div class="success-modal legal-modal is-hidden" data-legal-modal>
+      <div class="success-backdrop" data-action="close-legal"></div>
+      <div class="success-card legal-card" role="dialog" aria-modal="true" aria-labelledby="legal-title">
+        <button class="success-close" type="button" data-action="close-legal" aria-label="Close">
+          x
+        </button>
+        <p class="success-kicker" data-legal-kicker>Legal</p>
+        <h2 id="legal-title" data-legal-title>Legal agreement</h2>
+        <div class="legal-content" data-legal-content></div>
       </div>
     </div>
 

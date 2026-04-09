@@ -21,7 +21,7 @@ Deno.serve(async (request) => {
 
   const resendKey = Deno.env.get("RESEND_API_KEY");
   const notifyTo = Deno.env.get("MEDICAL_PROFILE_NOTIFY_TO");
-  const notifyFrom = Deno.env.get("MEDICAL_PROFILE_NOTIFY_FROM") || "NFC Medico <onboarding@resend.dev>";
+  const notifyFrom = Deno.env.get("MEDICAL_PROFILE_NOTIFY_FROM") || "MyMedicalNFC.com <onboarding@resend.dev>";
 
   if (!resendKey || !notifyTo) {
     return json({ error: "Notification email is not configured" }, 500);
@@ -42,7 +42,7 @@ Deno.serve(async (request) => {
       body: JSON.stringify({
         from: notifyFrom,
         to: [notifyTo],
-        subject: `New NFC medical profile ready: ${profileName}`,
+        subject: `New MyMedicalNFC.com profile ready: ${profileName}`,
         html: `
           <div style="font-family:Arial,sans-serif;line-height:1.6;color:#1f1f1f">
             <h2 style="margin:0 0 12px">New medical profile saved</h2>

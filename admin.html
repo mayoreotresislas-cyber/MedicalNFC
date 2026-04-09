@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NFC Medico | Admin</title>
+    <title>MyMedicalNFC.com | Admin</title>
     <meta
       name="description"
-      content="Panel administrativo para pre-generar enlaces de activacion, revisar perfiles listos para grabar y preparar la version hibrida del NFC."
+      content="Panel administrativo para crear enlaces privados, reenviar activaciones, reabrir perfiles y administrar estados de grabado NFC."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,13 +23,13 @@
         <a class="brand" href="/">
           <span class="brand-mark">+</span>
           <span>
-            <strong>NFC Medico</strong>
-            <small>Panel admin para perfiles pregrabados</small>
+            <strong>MyMedicalNFC.com</strong>
+            <small>Panel administrativo</small>
           </span>
         </a>
 
         <div class="topbar-actions">
-          <a class="nav-link" href="/setup">Formulario directo</a>
+          <a class="nav-link" href="/activate">Activacion privada</a>
           <a class="nav-link nav-link-primary" href="/">Landing publica</a>
         </div>
       </header>
@@ -38,25 +38,25 @@
         <section class="hero admin-hero">
           <div>
             <p class="eyebrow">Admin workflow</p>
-            <h1>Prepara los perfiles antes de grabar el chip.</h1>
+            <h1>Genera, envia y administra perfiles medicos NFC.</h1>
             <p class="hero-copy">
-              Genera el enlace privado de activacion para tu cliente, espera a que complete su informacion y usa la
-              cola de listos para grabar cuando llegue el momento de programar el NFC en version hibrida.
+              Desde aqui puedes crear el link privado del cliente, reenviarlo por correo o SMS, reabrir perfiles,
+              archivarlos, borrarlos y controlar cuales ya estan listos para grabarse en version hibrida.
             </p>
             <div class="hero-points">
-              <span>Link privado para el cliente</span>
-              <span>URL publica lista para NFC</span>
+              <span>Link privado del cliente</span>
+              <span>URL publica final para NFC</span>
               <span>Resumen offline para version hibrida</span>
             </div>
           </div>
 
           <div class="hero-card">
-            <p class="hero-card-label">Operacion recomendada</p>
+            <p class="hero-card-label">Flujo recomendado</p>
             <ol>
-              <li>Genera el enlace privado de activacion.</li>
-              <li>Comparte ese enlace con el cliente.</li>
-              <li>Espera a que el perfil pase a listo para grabar.</li>
-              <li>Graba el URL publico y el texto offline cuando tengas el chip en la mano.</li>
+              <li>Genera el acceso privado del cliente.</li>
+              <li>Envialo por correo o SMS.</li>
+              <li>Espera a que complete el perfil.</li>
+              <li>Graba el NFC cuando quede listo para programar.</li>
             </ol>
           </div>
         </section>
@@ -79,14 +79,14 @@
                   <span>Token de administrador</span>
                   <input name="admin_token" type="password" placeholder="Ingresa tu clave privada" />
                 </label>
-                <button class="button button-primary admin-auth-button" type="submit">Guardar acceso y cargar cola</button>
+                <button class="button button-primary admin-auth-button" type="submit">Guardar acceso y cargar panel</button>
               </form>
             </section>
 
             <section class="form-section">
               <div class="section-heading">
                 <p class="section-kicker">Provision</p>
-                <h2>Generar enlace privado de activacion</h2>
+                <h2>Crear acceso privado para un nuevo cliente</h2>
               </div>
 
               <form class="profile-form" data-provision-form>
@@ -101,7 +101,7 @@
                   </label>
                 </div>
 
-                <div class="field-grid two-up">
+                <div class="field-grid three-up">
                   <label class="field">
                     <span>Idioma esperado del cliente</span>
                     <select name="default_language">
@@ -118,17 +118,35 @@
                   </label>
                   <label class="field">
                     <span>Referencia del chip o pieza</span>
-                    <input name="chip_reference" type="text" placeholder="Bracelet A-014 / NFC lot 2" />
+                    <input name="chip_reference" type="text" placeholder="Pulsera A-014 / NFC lote 2" />
                   </label>
+                  <label class="field">
+                    <span>Correo del cliente</span>
+                    <input name="client_email" type="email" placeholder="cliente@correo.com" />
+                  </label>
+                </div>
+
+                <div class="field-grid two-up">
+                  <label class="field">
+                    <span>Telefono movil del cliente</span>
+                    <input name="client_phone" type="tel" placeholder="+1 775 555 0101" />
+                  </label>
+                  <div class="field admin-tip">
+                    <span>Entrega del link</span>
+                    <p>
+                      Puedes generarlo primero, copiarlo y abrir un correo o SMS preparado desde el panel. Si necesitas
+                      reenviarlo despues, usa la accion <strong>Nuevo link privado</strong> dentro del perfil.
+                    </p>
+                  </div>
                 </div>
 
                 <div class="action-panel">
                   <p class="action-copy">
-                    Este paso solo crea el perfil pendiente y el enlace privado. El cliente llena la informacion despues.
-                    El NFC se graba cuando el perfil aparezca listo para programar.
+                    Este paso solo preregistra el perfil y genera un acceso privado. El cliente llena la informacion
+                    despues y el NFC se graba cuando el perfil quede listo.
                   </p>
                   <div class="action-buttons admin-single-action">
-                    <button class="button button-primary" type="submit">Generar enlace privado</button>
+                    <button class="button button-primary" type="submit">Generar link privado</button>
                   </div>
                 </div>
               </form>
@@ -136,8 +154,8 @@
 
             <section class="form-section latest-result" data-latest-result hidden>
               <div class="section-heading">
-                <p class="section-kicker">Ultimo enlace</p>
-                <h2>Perfil pendiente creado</h2>
+                <p class="section-kicker">Ultimo resultado</p>
+                <h2>Link listo para compartir</h2>
               </div>
 
               <div class="admin-result-card">
@@ -146,16 +164,28 @@
                   <strong data-result-slug>-</strong>
                 </div>
                 <div class="admin-result-row">
-                  <span>URL publica para el NFC</span>
+                  <span>URL publica para grabar el NFC</span>
                   <div class="readonly-link-box" data-result-public-url>-</div>
                 </div>
                 <div class="admin-result-row">
-                  <span>URL privada para el cliente</span>
+                  <span>Link privado para llenar el formulario</span>
                   <div class="readonly-link-box" data-result-activation-url>-</div>
+                </div>
+                <div class="admin-result-row admin-result-row-inline">
+                  <div>
+                    <span>Correo del cliente</span>
+                    <strong data-result-client-email>-</strong>
+                  </div>
+                  <div>
+                    <span>Telefono del cliente</span>
+                    <strong data-result-client-phone>-</strong>
+                  </div>
                 </div>
                 <div class="admin-result-actions">
                   <button class="button button-secondary" type="button" data-copy-result="public">Copiar URL publica</button>
                   <button class="button button-primary" type="button" data-copy-result="activation">Copiar link privado</button>
+                  <button class="button button-secondary" type="button" data-share-result="email">Enviar por correo</button>
+                  <button class="button button-secondary" type="button" data-share-result="sms">Enviar por SMS</button>
                 </div>
               </div>
             </section>
@@ -165,17 +195,50 @@
             <div class="preview-sticky">
               <div class="preview-header">
                 <div>
-                  <p class="section-kicker">Queue</p>
-                  <h2>Perfiles y estado de grabado</h2>
+                  <p class="section-kicker">Workspace</p>
+                  <h2>Perfiles, estados y acciones</h2>
                 </div>
                 <button class="button button-secondary admin-refresh" type="button" data-refresh-queue>Actualizar</button>
               </div>
 
-              <div class="queue-legend">
-                <span class="queue-chip pending">Pendiente</span>
-                <span class="queue-chip ready">Listo para grabar</span>
-                <span class="queue-chip active">Activo</span>
-                <span class="queue-chip update">Reapertura</span>
+              <div class="admin-stats" data-admin-stats>
+                <article class="admin-stat-card">
+                  <span>Total</span>
+                  <strong data-stat="all">0</strong>
+                </article>
+                <article class="admin-stat-card">
+                  <span>Pendientes</span>
+                  <strong data-stat="pending">0</strong>
+                </article>
+                <article class="admin-stat-card">
+                  <span>Listos</span>
+                  <strong data-stat="ready_to_program">0</strong>
+                </article>
+                <article class="admin-stat-card">
+                  <span>Activos</span>
+                  <strong data-stat="active">0</strong>
+                </article>
+              </div>
+
+              <div class="admin-filter-bar">
+                <div class="queue-legend admin-filters">
+                  <button class="queue-chip filter-chip is-active" type="button" data-filter-status="all">Todos</button>
+                  <button class="queue-chip pending filter-chip" type="button" data-filter-status="pending">Pendientes</button>
+                  <button class="queue-chip ready filter-chip" type="button" data-filter-status="ready_to_program">Listos</button>
+                  <button class="queue-chip active filter-chip" type="button" data-filter-status="active">Activos</button>
+                  <button class="queue-chip update filter-chip" type="button" data-filter-status="update_requested">Reapertura</button>
+                  <button class="queue-chip archived filter-chip" type="button" data-filter-status="archived">Archivados</button>
+                </div>
+
+                <label class="field admin-search-field">
+                  <span>Buscar perfil</span>
+                  <input
+                    name="profile_search"
+                    type="search"
+                    placeholder="Nombre, slug, correo, telefono o referencia"
+                    data-profile-search
+                  />
+                </label>
               </div>
 
               <div class="queue-list" data-queue-list>
