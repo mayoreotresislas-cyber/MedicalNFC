@@ -1,8 +1,8 @@
 $fn = 180;
 
-show_model = true;
-show_front_preview = false;
-show_back_preview = false;
+show_model = is_undef(user_show_model) ? true : user_show_model;
+show_front_preview = is_undef(user_show_front_preview) ? false : user_show_front_preview;
+show_back_preview = is_undef(user_show_back_preview) ? false : user_show_back_preview;
 preview_side = is_undef(user_preview_side) ? "front" : user_preview_side;
 
 font_name = "Segoe UI:style=Bold";
