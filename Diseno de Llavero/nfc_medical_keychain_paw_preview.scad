@@ -19,7 +19,7 @@ nfc_t = 1.0;
 bottom_solid = 2.2;
 
 hole_d = 5.0;
-hole_y = 40.7;
+hole_y = 40.3;
 
 relief_h = 0.62;
 join_eps = 0.04;
@@ -133,34 +133,34 @@ module paw_2d() {
             union() {
                 translate([0, 14.2]) scale([1.02, 0.98]) circle(r = 15.6);
 
-                translate([-14.2, 27.2]) scale([0.86, 1.22]) circle(r = 5.7);
-                translate([14.2, 27.2]) scale([0.86, 1.22]) circle(r = 5.7);
+                translate([-14.8, 27.6]) scale([0.88, 1.24]) circle(r = 5.7);
+                translate([14.8, 27.6]) scale([0.88, 1.24]) circle(r = 5.7);
 
-                translate([-5.8, 36.9]) scale([0.80, 1.30]) circle(r = 5.8);
-                translate([5.8, 36.9]) scale([0.80, 1.30]) circle(r = 5.8);
+                translate([-6.1, 36.8]) scale([0.82, 1.34]) circle(r = 5.8);
+                translate([6.1, 36.8]) scale([0.82, 1.34]) circle(r = 5.8);
 
                 hull() {
-                    translate([-10.8, 24.8]) circle(r = 4.6);
-                    translate([-7.8, 21.8]) circle(r = 5.8);
-                    translate([-14.0, 25.6]) circle(r = 4.1);
+                    translate([-11.1, 25.0]) circle(r = 4.7);
+                    translate([-7.8, 21.9]) circle(r = 5.9);
+                    translate([-14.3, 25.9]) circle(r = 4.2);
                 }
 
                 hull() {
-                    translate([10.8, 24.8]) circle(r = 4.6);
-                    translate([7.8, 21.8]) circle(r = 5.8);
-                    translate([14.0, 25.6]) circle(r = 4.1);
+                    translate([11.1, 25.0]) circle(r = 4.7);
+                    translate([7.8, 21.9]) circle(r = 5.9);
+                    translate([14.3, 25.9]) circle(r = 4.2);
                 }
 
                 hull() {
-                    translate([-5.8, 31.8]) circle(r = 3.9);
-                    translate([5.8, 31.8]) circle(r = 3.9);
-                    translate([0, 27.4]) circle(r = 6.1);
+                    translate([-6.0, 31.4]) circle(r = 3.9);
+                    translate([6.0, 31.4]) circle(r = 3.9);
+                    translate([0, 27.1]) circle(r = 6.2);
                 }
 
                 hull() {
-                    translate([-3.4, 38.4]) circle(r = 4.0);
-                    translate([3.4, 38.4]) circle(r = 4.0);
-                    translate([0, 42.9]) circle(r = 4.1);
+                    translate([-2.9, 38.6]) circle(r = 3.5);
+                    translate([2.9, 38.6]) circle(r = 3.5);
+                    translate([0, 41.3]) circle(r = 1.8);
                 }
             }
 }
