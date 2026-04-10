@@ -6,7 +6,7 @@
     <title>MyMedicalNFC.com | Medical Profile</title>
     <meta
       name="description"
-      content="Informational landing for the NFC medical form and multilingual emergency profile."
+      content="Informational landing for the MyMedicalNFC.com setup flow and multilingual emergency profile."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -20,10 +20,10 @@
     <div class="site-shell">
       <header class="topbar">
         <a class="brand" href="/">
-          <span class="brand-mark">+</span>
+          <span class="brand-mark" aria-hidden="true"></span>
           <span>
             <strong>MyMedicalNFC.com</strong>
-            <small data-i18n="brandTagline">Medical form and profile access</small>
+            <small data-i18n="brandTagline">Medical profile access</small>
           </span>
         </a>
 
@@ -31,27 +31,25 @@
           <a class="toolbar-link toolbar-link-primary" href="/setup.html" data-i18n="primaryBuilderAction">
             Create Profile
           </a>
+          <a class="toolbar-link" href="/admin" data-i18n="adminAction">Admin</a>
           <label class="language-select-wrap">
             <span data-i18n="languageLabel">Language</span>
-            <div class="flag-native-field">
-              <span class="flag-select-swatch flag-us" data-language-swatch aria-hidden="true"></span>
-              <select class="language-select native-language-select" data-language-select data-flag-menu aria-label="Language">
-              <option value="en">🇺🇸 EN</option>
-              <option value="es">🇪🇸 ES</option>
-              <option value="fr">🇫🇷 FR</option>
-              <option value="pt">🇵🇹 PT</option>
-              <option value="de">🇩🇪 DE</option>
-              <option value="it">🇮🇹 IT</option>
-              <option value="ja">🇯🇵 JA</option>
-              <option value="ko">🇰🇷 KO</option>
-              <option value="zh">🇨🇳 ZH</option>
-              </select>
-            </div>
+            <select class="language-select native-language-select" data-language-select data-flag-menu aria-label="Language">
+              <option value="en">EN</option>
+              <option value="es">ES</option>
+              <option value="fr">FR</option>
+              <option value="pt">PT</option>
+              <option value="de">DE</option>
+              <option value="it">IT</option>
+              <option value="ja">JA</option>
+              <option value="ko">KO</option>
+              <option value="zh">ZH</option>
+            </select>
           </label>
         </div>
       </header>
 
-      <section class="runtime-status" data-runtime-status hidden>
+      <section class="runtime-status" data-runtime-status hidden aria-live="polite">
         <strong data-runtime-title>Loading profile</strong>
         <p data-runtime-message>Looking up the requested medical profile.</p>
       </section>
@@ -63,10 +61,16 @@
               <p class="eyebrow" data-i18n="overviewKicker">Medical NFC</p>
               <h1 data-i18n="overviewTitle">A medical NFC that speaks for you when every second matters.</h1>
               <p class="hero-text" data-i18n="overviewText">
-                MyMedicalNFC.com connects a bracelet, tag, card, or keychain to a private medical profile that can be
-                opened in seconds. It can carry critical conditions, allergies, medications and doses, devices,
-                emergency contacts, and additional health details in a cleaner format than a traditional engraved tag.
+                MyMedicalNFC.com connects a tag or keychain to a private medical profile that can be opened in
+                seconds. It can carry critical conditions, allergies, medications and doses, devices, emergency
+                contacts, and additional health details in a cleaner format than a traditional engraved tag.
               </p>
+
+              <div class="hero-badges">
+                <span data-i18n="heroBadge1">Fast to scan</span>
+                <span data-i18n="heroBadge2">Multilingual</span>
+                <span data-i18n="heroBadge3">More complete than engraving</span>
+              </div>
 
               <div class="hero-actions">
                 <a class="button button-primary" href="/setup.html" data-i18n="overviewPrimary">
@@ -84,32 +88,106 @@
                 <li data-i18n="fillItem1">Name, blood type, age, weight, height, and organ donor status</li>
                 <li data-i18n="fillItem2">Conditions, medical allergies, food allergies, medications, doses, and devices</li>
                 <li data-i18n="fillItem3">Emergency contacts for family, caregivers, or parents</li>
-                <li data-i18n="fillItem4">Doctor, clinic, insurance, location details, and optional full record link</li>
+                <li data-i18n="fillItem4">Doctor, clinic, insurance, location details, and more</li>
               </ul>
+
+              <div class="hero-panel-card">
+                <p class="hero-panel-kicker" data-i18n="heroPanelKicker">Why it sells</p>
+                <h3 data-i18n="heroPanelTitle">A smarter medical tag for families, seniors, children, and chronic conditions</h3>
+                <p data-i18n="heroPanelText">
+                  Instead of trying to engrave too much in too little space, the NFC opens a cleaner page with the
+                  details that actually help during an emergency.
+                </p>
+              </div>
             </aside>
           </div>
 
           <section class="benefit-showcase">
             <article class="benefit-card">
-              <span class="benefit-icon">SOS</span>
+              <span class="benefit-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M12 21s-6.5-4.35-8.8-8.4C1.2 9.2 2.9 5 7 5c2.02 0 3.2 1.06 5 3 1.8-1.94 2.98-3 5-3 4.1 0 5.8 4.2 3.8 7.6C18.5 16.65 12 21 12 21Z"></path>
+                  <path d="M12 8.6v6.8M8.6 12h6.8"></path>
+                </svg>
+              </span>
               <h3 data-i18n="benefit1Title">Instant emergency access</h3>
               <p data-i18n="benefit1Text">First responders can see more than a name and one condition when time is critical.</p>
             </article>
+
             <article class="benefit-card">
-              <span class="benefit-icon">RX</span>
+              <span class="benefit-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M8 4h5.5a4.5 4.5 0 0 1 0 9H8z"></path>
+                  <path d="M8 13l7 7"></path>
+                  <path d="M4 20l5-5"></path>
+                </svg>
+              </span>
               <h3 data-i18n="benefit2Title">Real medication detail</h3>
               <p data-i18n="benefit2Text">Store medications with doses, allergies, and devices in a format that is easier to read.</p>
             </article>
+
             <article class="benefit-card">
-              <span class="benefit-icon">ML</span>
+              <span class="benefit-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M4 7h10"></path>
+                  <path d="M4 12h8"></path>
+                  <path d="M4 17h6"></path>
+                  <path d="M16 5c2.4 2.6 3.6 5 3.6 7s-1.2 4.4-3.6 7"></path>
+                  <path d="M13.4 5c-2.4 2.6-3.6 5-3.6 7s1.2 4.4 3.6 7"></path>
+                </svg>
+              </span>
               <h3 data-i18n="benefit3Title">Multilingual profile</h3>
               <p data-i18n="benefit3Text">The medical page can be viewed in multiple languages for travel, family, and caregivers.</p>
             </article>
+
             <article class="benefit-card">
-              <span class="benefit-icon">24</span>
+              <span class="benefit-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M12 3v4"></path>
+                  <path d="M12 17v4"></path>
+                  <path d="M3 12h4"></path>
+                  <path d="M17 12h4"></path>
+                  <circle cx="12" cy="12" r="5"></circle>
+                </svg>
+              </span>
               <h3 data-i18n="benefit4Title">Useful beyond the hospital</h3>
               <p data-i18n="benefit4Text">Helpful for school, sports, senior care, daily life, road trips, and outdoor activities.</p>
             </article>
+          </section>
+
+          <section class="panel panel-light pricing-panel">
+            <div class="pricing-heading">
+              <div>
+                <p class="section-kicker" data-i18n="pricingKicker">Pricing</p>
+                <h2 data-i18n="pricingTitle">Simple pricing for individual tags, duplicate tags, and family packs</h2>
+              </div>
+              <p class="pricing-copy" data-i18n="pricingIntro">
+                These bundles make it easier to sell one profile, duplicate NFC pieces for the same person, or family
+                sets with different medical profiles.
+              </p>
+            </div>
+
+            <div class="pricing-grid">
+              <article class="price-card">
+                <p class="price-card-kicker" data-i18n="pricingSameProfile">Same profile</p>
+                <ul class="price-list">
+                  <li><span data-i18n="priceSame1">1 tag with the same profile</span><strong>$25</strong></li>
+                  <li><span data-i18n="priceSame2">2 tags with the same profile</span><strong>$35</strong></li>
+                  <li><span data-i18n="priceSameExtra">Each additional same-profile tag</span><strong>+$10</strong></li>
+                  <li><span data-i18n="priceExtraSame">Extra replacement tag for one existing profile</span><strong>$10</strong></li>
+                </ul>
+              </article>
+
+              <article class="price-card price-card-accent">
+                <p class="price-card-kicker" data-i18n="pricingFamily">Family pack</p>
+                <ul class="price-list">
+                  <li><span data-i18n="priceFamily2">2 tags / 2 different profiles</span><strong>$45</strong></li>
+                  <li><span data-i18n="priceFamily3">3 tags / 3 different profiles</span><strong>$65</strong></li>
+                  <li><span data-i18n="priceFamily4">4 tags / 4 different profiles</span><strong>$80</strong></li>
+                  <li><span data-i18n="priceFamilyExtra">Each additional different-profile tag after 4</span><strong>+$15</strong></li>
+                </ul>
+              </article>
+            </div>
           </section>
 
           <section class="info-layout">
@@ -117,9 +195,9 @@
               <p class="section-kicker" data-i18n="howItWorksKicker">How it works</p>
               <h2 data-i18n="howItWorksTitle">A simple flow from setup to emergency access</h2>
               <ol class="flow-list">
-                <li data-i18n="howStep1">Create the medical profile directly or send a private activation link to the client.</li>
+                <li data-i18n="howStep1">Create the medical profile directly or receive a private activation link from us.</li>
                 <li data-i18n="howStep2">Complete the health information once and review the emergency page preview.</li>
-                <li data-i18n="howStep3">The secure link becomes the medical page connected to the bracelet, keychain, or card.</li>
+                <li data-i18n="howStep3">The secure link becomes the medical page connected to the NFC tag.</li>
                 <li data-i18n="howStep4">When the NFC is scanned, the profile opens with emergency details ready to read.</li>
               </ol>
             </article>
@@ -136,7 +214,7 @@
             </article>
 
             <article class="panel panel-light service-panel">
-              <p class="section-kicker" data-i18n="serviceKicker">Profile management</p>
+              <p class="section-kicker" data-i18n="serviceKicker">Future changes</p>
               <h2 data-i18n="serviceTitle">The profile can be reopened later if medical information changes</h2>
               <p data-i18n="serviceText">
                 If you want online access reopened later for remote edits, that service may have an additional cost.
@@ -293,12 +371,12 @@
               <div class="contacts">
                 <h3 data-i18n="contactsTitle">Emergency Contacts</h3>
                 <a class="contact-card" href="#" data-contact-card="1">
-                  <span class="contact-index" data-i18n="contact1Label">Contact 1</span>
+                  <span class="contact-index" data-i18n="contact1Label">Primary contact</span>
                   <strong data-field="contact1Name">-</strong>
                   <span data-field="contact1Phone">-</span>
                 </a>
                 <a class="contact-card" href="#" data-contact-card="2">
-                  <span class="contact-index" data-i18n="contact2Label">Contact 2</span>
+                  <span class="contact-index" data-i18n="contact2Label">Secondary contact</span>
                   <strong data-field="contact2Name">-</strong>
                   <span data-field="contact2Phone">-</span>
                 </a>
@@ -328,7 +406,8 @@
             Request profile changes
           </a>
           <p class="footer-meta" data-i18n="updateFeeNote">
-            Online profile reopening or remote changes may have an additional service cost. Physical NFC changes require the tag in hand.
+            Online profile reopening or remote changes may have an additional service cost. Physical NFC changes
+            require the tag in hand.
           </p>
         </div>
       </footer>

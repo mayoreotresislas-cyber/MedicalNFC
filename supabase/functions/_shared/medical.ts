@@ -92,6 +92,29 @@ export function verifyAdminToken(value: unknown) {
   return Boolean(provided && expected && provided === expected);
 }
 
+export function verifyAdminAccess(input: { token?: unknown; username?: unknown; password?: unknown }) {
+  const providedToken = cleanText(input.token);
+  const providedUsername = cleanText(input.username);
+  const providedPassword = cleanText(input.password);
+  const expectedUsername = cleanText(Deno.env.get("MEDICAL_ADMIN_USERNAME"));
+  const expectedPassword = cleanText(Deno.env.get("MEDICAL_ADMIN_PASSWORD"));
+
+  if (expectedUsername && expectedPassword) {
+    return Boolean(
+      providedUsername &&
+        providedPassword &&
+        providedUsername === expectedUsername &&
+        providedPassword === expectedPassword
+    );
+  }
+
+  const expectedToken = cleanText(Deno.env.get("MEDICAL_ADMIN_TOKEN"));
+  return Boolean(
+    (providedToken && expectedToken && providedToken === expectedToken) ||
+      (providedPassword && expectedToken && providedPassword === expectedToken)
+  );
+}
+
 export function getAdminClient() {
   const supabaseUrl = cleanText(Deno.env.get("SUPABASE_URL"));
   const serviceRoleKey = cleanText(Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"));
@@ -167,7 +190,9 @@ export async function sendAdminNotification({
   profileUrl,
   activationUrl,
   hybridSummary,
-  status
+  status,
+  clientEmail,
+  clientLanguage
 }: {
   subject: string;
   title: string;
@@ -177,6 +202,8 @@ export async function sendAdminNotification({
   activationUrl?: string;
   hybridSummary?: string;
   status: string;
+  clientEmail?: string;
+  clientLanguage?: string;
 }) {
   const resendKey = cleanText(Deno.env.get("RESEND_API_KEY"));
   const notifyTo = cleanText(Deno.env.get("MEDICAL_PROFILE_NOTIFY_TO"));
@@ -196,13 +223,24 @@ export async function sendAdminNotification({
     hybridSummary ? `<p><strong>Hybrid offline text:</strong><br />${hybridSummary}</p>` : ""
   ].filter(Boolean);
 
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${resendKey}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
+  const requestEmail = async (payload: Record<string, unknown>) => {
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${resendKey}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      const details = await response.text();
+      throw new Error(details || "Resend request failed");
+    }
+  };
+
+  try {
+    await requestEmail({
       from: notifyFrom,
       to: [notifyTo],
       subject,
@@ -218,12 +256,25 @@ export async function sendAdminNotification({
       ]
         .filter(Boolean)
         .join("\n")
-    })
-  });
+    });
 
-  if (!response.ok) {
-    const details = await response.text();
-    return { ok: false, reason: details || "Resend request failed" };
+    const normalizedClientEmail = cleanText(clientEmail);
+    if (normalizedClientEmail) {
+      const spanish = normalizeLanguage(clientLanguage) === "es";
+      await requestEmail({
+        from: notifyFrom,
+        to: [normalizedClientEmail],
+        subject: spanish ? `${brandName} | Perfil medico listo` : `${brandName} | Medical profile ready`,
+        html: spanish
+          ? `<div style="font-family:Arial,sans-serif;line-height:1.6;color:#1f1f1f"><h2 style="margin:0 0 12px">Tu perfil medico ya fue guardado</h2><p><strong>Nombre:</strong> ${profileName || "Perfil medico"}</p><p><strong>Enlace del perfil:</strong><br /><a href="${profileUrl}">${profileUrl}</a></p><p>Si necesitas cambios en el futuro, ponte en contacto con el administrador del NFC.</p></div>`
+          : `<div style="font-family:Arial,sans-serif;line-height:1.6;color:#1f1f1f"><h2 style="margin:0 0 12px">Your medical profile has been saved</h2><p><strong>Name:</strong> ${profileName || "Medical profile"}</p><p><strong>Profile link:</strong><br /><a href="${profileUrl}">${profileUrl}</a></p><p>If you need changes later, please contact the NFC administrator.</p></div>`,
+        text: spanish
+          ? `Tu perfil medico ya fue guardado\n\nNombre: ${profileName || "Perfil medico"}\nEnlace del perfil: ${profileUrl}\n\nSi necesitas cambios en el futuro, ponte en contacto con el administrador del NFC.`
+          : `Your medical profile has been saved\n\nName: ${profileName || "Medical profile"}\nProfile link: ${profileUrl}\n\nIf you need changes later, please contact the NFC administrator.`
+      });
+    }
+  } catch (error) {
+    return { ok: false, reason: error instanceof Error ? error.message : "Resend request failed" };
   }
 
   return { ok: true };
@@ -237,6 +288,7 @@ export function sanitizeProfile(record: Record<string, unknown>) {
     full_name: record.full_name,
     first_name: record.first_name,
     last_name: record.last_name,
+    family_group: record.family_group,
     gender: record.gender,
     birth_date: record.birth_date,
     blood_type: record.blood_type,

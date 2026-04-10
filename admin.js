@@ -27,7 +27,9 @@ const statNodes = {
 };
 
 const state = {
-  adminToken: window.localStorage.getItem("nfc-medico-admin-token") || "",
+  adminUsername: window.localStorage.getItem("nfc-medico-admin-username") || "admin",
+  adminPassword:
+    window.localStorage.getItem("nfc-medico-admin-password") || window.localStorage.getItem("nfc-medico-admin-token") || "",
   latest: null,
   profiles: [],
   filterStatus: "all",
@@ -178,8 +180,8 @@ function openShare(kind, record) {
 }
 
 async function invokeAdmin(action, payload = {}) {
-  if (!state.adminToken) {
-    throw new Error("Primero guarda tu token de administrador.");
+  if (!state.adminPassword) {
+    throw new Error("Primero guarda tu acceso administrativo.");
   }
 
   const response = await fetch(`${config.supabaseUrl}/functions/v1/${config.adminFunctionName || "medical-admin"}`, {
@@ -190,7 +192,8 @@ async function invokeAdmin(action, payload = {}) {
       Authorization: `Bearer ${config.supabaseAnonKey}`
     },
     body: JSON.stringify({
-      adminToken: state.adminToken,
+      adminUsername: state.adminUsername,
+      adminPassword: state.adminPassword,
       action,
       ...payload
     })
@@ -255,6 +258,7 @@ function buildQueueCard(profile) {
   const canMarkProgrammed = ["ready_to_program", "active"].includes(profile.workflow_status);
   const reopenLabel = profile.workflow_status === "pending" ? "Nuevo link privado" : "Reabrir / nuevo link";
   const secondaryLine = cleanText(profile.client_email) || formatPhone(profile.client_phone) || cleanText(profile.public_slug);
+  const familyGroup = cleanText(profile.family_group);
 
   wrapper.innerHTML = `
     <div class="queue-card-head">
@@ -282,6 +286,10 @@ function buildQueueCard(profile) {
         <div class="queue-meta-row">
           <span>Telefono cliente</span>
           <strong>${formatPhone(profile.client_phone) || "Sin telefono"}</strong>
+        </div>
+        <div class="queue-meta-row">
+          <span>Grupo familiar</span>
+          <strong>${familyGroup || "Sin grupo"}</strong>
         </div>
         <div class="queue-meta-row">
           <span>Actualizado</span>
@@ -349,6 +357,7 @@ function getFilteredProfiles() {
     const haystack = [
       profile.full_name,
       profile.public_slug,
+      profile.family_group,
       profile.client_email,
       profile.client_phone
     ]
@@ -387,13 +396,15 @@ async function refreshQueue() {
 
 authForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  state.adminToken = cleanText(authForm.elements.admin_token.value);
-  if (!state.adminToken) {
-    setStatus("warning", "Falta la clave", "Ingresa el token de administrador para continuar.");
+  state.adminUsername = cleanText(authForm.elements.admin_username.value) || "admin";
+  state.adminPassword = cleanText(authForm.elements.admin_password.value);
+  if (!state.adminPassword) {
+    setStatus("warning", "Falta la contrasena", "Ingresa tu acceso administrativo para continuar.");
     return;
   }
 
-  window.localStorage.setItem("nfc-medico-admin-token", state.adminToken);
+  window.localStorage.setItem("nfc-medico-admin-username", state.adminUsername);
+  window.localStorage.setItem("nfc-medico-admin-password", state.adminPassword);
 
   try {
     await refreshQueue();
@@ -551,18 +562,23 @@ queueList.addEventListener("click", async (event) => {
 });
 
 function init() {
-  authForm.elements.admin_token.value = state.adminToken;
+  authForm.elements.admin_username.value = state.adminUsername;
+  authForm.elements.admin_password.value = state.adminPassword;
   syncProvisionDefaults();
   provisionForm.elements.client_phone.addEventListener("blur", () => {
     provisionForm.elements.client_phone.value = formatPhone(provisionForm.elements.client_phone.value);
   });
 
-  if (state.adminToken) {
+  if (state.adminPassword) {
     refreshQueue().catch((error) => {
       setStatus("error", "No se pudo cargar", cleanText(error.message));
     });
   } else {
-    setStatus("warning", "Ingresa tu acceso", "Guarda tu token privado de administrador para usar este panel.");
+    setStatus(
+      "warning",
+      "Ingresa tu acceso",
+      "Guarda tu usuario y contrasena de administrador para usar este panel. Si aun usas la clave privada anterior, puedes escribirla como contrasena."
+    );
   }
 }
 

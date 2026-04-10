@@ -155,7 +155,9 @@ Deno.serve(async (request) => {
         slug: cleanText(updatedProfile.public_slug),
         profileUrl: publicUrl,
         hybridSummary,
-        status: "ready_to_program"
+        status: "ready_to_program",
+        clientEmail: cleanText(updatedProfile.client_email),
+        clientLanguage: cleanText(updatedProfile.default_language)
       });
 
       return response({

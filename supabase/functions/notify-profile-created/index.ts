@@ -32,14 +32,26 @@ Deno.serve(async (request) => {
     const profileName = String(body?.profileName ?? "Medical profile").trim();
     const profileUrl = String(body?.profileUrl ?? "").trim();
     const slug = String(body?.slug ?? "").trim();
+    const clientEmail = String(body?.clientEmail ?? "").trim();
+    const profileLanguage = String(body?.profileLanguage ?? "en").trim().slice(0, 2).toLowerCase();
 
-    const response = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${resendKey}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
+    const sendEmail = async (payload: Record<string, unknown>) => {
+      const response = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${resendKey}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        const details = await response.text();
+        throw new Error(details || "Resend request failed");
+      }
+    };
+
+    await sendEmail({
         from: notifyFrom,
         to: [notifyTo],
         subject: `New MyMedicalNFC.com profile ready: ${profileName}`,
@@ -53,12 +65,37 @@ Deno.serve(async (request) => {
           </div>
         `,
         text: `New medical profile saved\n\nName: ${profileName}\nSlug: ${slug || "N/A"}\nProfile URL: ${profileUrl}\n\nThis is the URL to record on the NFC tag.`
-      })
     });
 
-    if (!response.ok) {
-      const details = await response.text();
-      return json({ error: "Resend request failed", details }, 502);
+    if (clientEmail) {
+      const spanish = profileLanguage === "es";
+      await sendEmail({
+        from: notifyFrom,
+        to: [clientEmail],
+        subject: spanish
+          ? "MyMedicalNFC.com | Tu perfil medico fue creado"
+          : "MyMedicalNFC.com | Your medical profile was created",
+        html: spanish
+          ? `
+            <div style="font-family:Arial,sans-serif;line-height:1.6;color:#1f1f1f">
+              <h2 style="margin:0 0 12px">Tu perfil medico ya fue creado</h2>
+              <p><strong>Nombre:</strong> ${profileName}</p>
+              <p><strong>Enlace del perfil:</strong><br /><a href="${profileUrl}">${profileUrl}</a></p>
+              <p>Guarda este enlace para futuras referencias y para solicitar cambios cuando sea necesario.</p>
+            </div>
+          `
+          : `
+            <div style="font-family:Arial,sans-serif;line-height:1.6;color:#1f1f1f">
+              <h2 style="margin:0 0 12px">Your medical profile has been created</h2>
+              <p><strong>Name:</strong> ${profileName}</p>
+              <p><strong>Profile link:</strong><br /><a href="${profileUrl}">${profileUrl}</a></p>
+              <p>Please keep this link for future reference and to request changes later if needed.</p>
+            </div>
+          `,
+        text: spanish
+          ? `Tu perfil medico ya fue creado\n\nNombre: ${profileName}\nEnlace del perfil: ${profileUrl}\n\nGuarda este enlace para futuras referencias y para solicitar cambios cuando sea necesario.`
+          : `Your medical profile has been created\n\nName: ${profileName}\nProfile link: ${profileUrl}\n\nPlease keep this link for future reference and to request changes later if needed.`
+      });
     }
 
     return json({ ok: true });

@@ -8,7 +8,7 @@ import {
   getAdminClient,
   hashToken,
   normalizeLanguage,
-  verifyAdminToken
+  verifyAdminAccess
 } from "../_shared/medical.ts";
 
 function response(body: unknown, status = 200) {
@@ -72,9 +72,11 @@ Deno.serve(async (request) => {
   try {
     const body = await request.json();
     const adminToken = cleanText(body?.adminToken || request.headers.get("x-admin-token"));
+    const adminUsername = cleanText(body?.adminUsername);
+    const adminPassword = cleanText(body?.adminPassword);
 
-    if (!verifyAdminToken(adminToken)) {
-      return response({ error: "Invalid admin token" }, 401);
+    if (!verifyAdminAccess({ token: adminToken, username: adminUsername, password: adminPassword })) {
+      return response({ error: "Invalid admin access" }, 401);
     }
 
     const action = cleanText(body?.action);
@@ -96,6 +98,7 @@ Deno.serve(async (request) => {
           public_slug: publicSlug,
           default_language: defaultLanguage,
           full_name: baseName,
+          family_group: publicSlug,
           pending_label: pendingLabel || null,
           chip_reference: chipReference || null,
           client_email: clientEmail || null,
@@ -104,7 +107,7 @@ Deno.serve(async (request) => {
           is_public: true
         })
         .select(
-          "id, public_slug, full_name, pending_label, chip_reference, workflow_status, default_language, client_email, client_phone, created_at"
+          "id, public_slug, full_name, family_group, pending_label, chip_reference, workflow_status, default_language, client_email, client_phone, created_at"
         )
         .single();
 
@@ -136,7 +139,7 @@ Deno.serve(async (request) => {
       let query = client
         .from("medical_profiles")
         .select(
-          "public_slug, full_name, pending_label, chip_reference, default_language, workflow_status, hybrid_summary, activated_at, nfc_programmed_at, updated_at, created_at, client_email, client_phone"
+          "public_slug, full_name, family_group, pending_label, chip_reference, default_language, workflow_status, hybrid_summary, activated_at, nfc_programmed_at, updated_at, created_at, client_email, client_phone"
         )
         .order("updated_at", { ascending: false })
         .limit(limit);
@@ -158,6 +161,7 @@ Deno.serve(async (request) => {
 
           const haystack = [
             profile.full_name,
+            profile.family_group,
             profile.pending_label,
             profile.public_slug,
             profile.chip_reference,
@@ -188,7 +192,7 @@ Deno.serve(async (request) => {
 
       const { data: profile, error: profileError } = await client
         .from("medical_profiles")
-        .select("id, public_slug, full_name, workflow_status, default_language, client_email, client_phone")
+        .select("id, public_slug, full_name, family_group, workflow_status, default_language, client_email, client_phone")
         .eq("public_slug", publicSlug)
         .single();
 
@@ -217,7 +221,8 @@ Deno.serve(async (request) => {
         activationToken,
         workflowStatus: nextStatus,
         clientEmail: profile.client_email,
-        clientPhone: profile.client_phone
+        clientPhone: profile.client_phone,
+        familyGroup: profile.family_group
       });
     }
 

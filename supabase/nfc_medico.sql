@@ -13,6 +13,7 @@ create table if not exists public.medical_profiles (
   full_name text not null,
   first_name text,
   last_name text,
+  family_group text,
   pending_label text,
   chip_reference text,
   client_email text,
@@ -71,6 +72,7 @@ create table if not exists public.medical_profiles (
 alter table public.medical_profiles
   add column if not exists first_name text,
   add column if not exists last_name text,
+  add column if not exists family_group text,
   add column if not exists pending_label text,
   add column if not exists chip_reference text,
   add column if not exists client_email text,

@@ -55,8 +55,8 @@ button {
 }
 
 .topbar {
-  position: sticky;
-  top: 18px;
+  position: relative;
+  top: 0;
   z-index: 10;
   display: flex;
   align-items: center;
@@ -68,9 +68,12 @@ button {
   background: rgba(255, 255, 255, 0.74);
   backdrop-filter: blur(18px);
   box-shadow: var(--shadow);
+  margin-bottom: 22px;
+  min-height: 84px;
 }
 
 body.profile-mode .topbar {
+  min-height: 72px;
   padding: 10px 14px;
 }
 
@@ -102,10 +105,10 @@ body.profile-mode .topbar {
   width: 42px;
   height: 42px;
   border-radius: 14px;
-  background: linear-gradient(135deg, #fff6f1, #ffd1c3);
-  color: var(--accent-dark);
-  font-size: 1.5rem;
-  font-weight: 800;
+  border: 1px solid rgba(197, 65, 45, 0.12);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'%3E%3Crect x='0.5' y='0.5' width='41' height='41' rx='14' fill='url(%23g)' stroke='%23f0c7bb'/%3E%3Cpath d='M21 30s-8-5.2-10.8-10.1C7.7 15.9 9.8 10.8 14.8 10.8c2.5 0 4 1.3 6.2 3.7 2.2-2.4 3.7-3.7 6.2-3.7 5 0 7.1 5.1 4.6 9.1C29 24.8 21 30 21 30Z' fill='%237c251b' opacity='0.92'/%3E%3Cpath d='M21 16.9v8.4M16.8 21.1h8.4' stroke='%23fff6f1' stroke-width='2' stroke-linecap='round'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='6' y1='5' x2='34' y2='37' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23fff8f4'/%3E%3Cstop offset='1' stop-color='%23ffd1c3'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E")
+      center/cover no-repeat;
 }
 
 .toolbar {
@@ -126,6 +129,7 @@ body.profile-mode .toolbar {
   align-items: center;
   justify-content: center;
   font-weight: 800;
+  background: rgba(28, 23, 20, 0.05);
 }
 
 .toolbar-link-primary {
@@ -142,7 +146,7 @@ body.profile-mode .toolbar {
   font-weight: 700;
 }
 
-body.profile-mode .toolbar-link-primary {
+body.profile-mode .toolbar-link {
   display: none;
 }
 
@@ -320,8 +324,7 @@ body.profile-mode .flag-select-label {
 }
 
 .runtime-status[data-state="loading"] {
-  border-color: rgba(59, 130, 246, 0.2);
-  background: rgba(59, 130, 246, 0.08);
+  display: none !important;
 }
 
 .runtime-status[data-state="error"] {
@@ -377,6 +380,23 @@ body.profile-mode .flag-select-label {
   margin-top: 22px;
 }
 
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.hero-badges span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: rgba(28, 23, 20, 0.06);
+  font-weight: 800;
+}
+
 .hero-panel,
 .panel,
 .screen-card,
@@ -422,15 +442,44 @@ body.profile-mode .flag-select-label {
   border-radius: 18px;
   background: linear-gradient(135deg, #fff4ef, #ffd2c3);
   color: var(--accent-dark);
-  font-family: "Space Grotesk", sans-serif;
-  font-weight: 900;
-  letter-spacing: 0.08em;
+}
+
+.benefit-icon svg {
+  width: 24px;
+  height: 24px;
 }
 
 .hero-panel {
   background:
     linear-gradient(180deg, rgba(197, 65, 45, 0.12), rgba(255, 255, 255, 0.56)),
     rgba(255, 255, 255, 0.84);
+}
+
+.hero-panel-card {
+  margin-top: 22px;
+  padding: 18px 20px;
+  border-radius: 22px;
+  background: rgba(28, 23, 20, 0.06);
+}
+
+.hero-panel-kicker {
+  margin: 0;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.hero-panel-card h3 {
+  margin: 10px 0 8px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.28rem;
+  line-height: 1.08;
+}
+
+.hero-panel-card p {
+  margin: 0;
 }
 
 .panel-light {
@@ -441,6 +490,78 @@ body.profile-mode .flag-select-label {
   background:
     linear-gradient(180deg, rgba(197, 65, 45, 0.08), rgba(255, 255, 255, 0.78)),
     rgba(255, 255, 255, 0.92);
+}
+
+.pricing-panel {
+  margin-bottom: 24px;
+}
+
+.pricing-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  gap: 20px;
+  align-items: start;
+  margin-bottom: 18px;
+}
+
+.pricing-copy {
+  margin: 0;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.price-card {
+  padding: 22px;
+  border-radius: 24px;
+  border: 1px solid rgba(28, 23, 20, 0.08);
+  background: rgba(28, 23, 20, 0.03);
+}
+
+.price-card-accent {
+  background:
+    linear-gradient(180deg, rgba(197, 65, 45, 0.1), rgba(255, 255, 255, 0.62)),
+    rgba(255, 255, 255, 0.88);
+}
+
+.price-card-kicker {
+  margin: 0 0 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.price-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.price-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: start;
+  padding: 0 0 12px;
+  border-bottom: 1px solid rgba(28, 23, 20, 0.08);
+}
+
+.price-list li:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.price-list strong {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.1rem;
+  white-space: nowrap;
 }
 
 .panel-dark,
@@ -715,7 +836,9 @@ dd {
   .hero,
   .info-layout,
   .profile-grid,
-  .benefit-showcase {
+  .benefit-showcase,
+  .pricing-grid,
+  .pricing-heading {
     grid-template-columns: 1fr;
   }
 

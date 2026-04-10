@@ -55,8 +55,8 @@ button {
 }
 
 .builder-topbar {
-  position: sticky;
-  top: 18px;
+  position: relative;
+  top: 0;
   z-index: 10;
   display: flex;
   align-items: center;
@@ -68,6 +68,8 @@ button {
   background: rgba(255, 255, 255, 0.72);
   backdrop-filter: blur(18px);
   box-shadow: var(--shadow);
+  margin-bottom: 22px;
+  min-height: 84px;
 }
 
 .brand {
@@ -99,10 +101,10 @@ button {
   width: 42px;
   height: 42px;
   border-radius: 14px;
-  background: linear-gradient(135deg, #fff5f2, #ffc9bc);
-  color: var(--accent-dark);
-  font-size: 1.5rem;
-  font-weight: 800;
+  border: 1px solid rgba(199, 59, 47, 0.12);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'%3E%3Crect x='0.5' y='0.5' width='41' height='41' rx='14' fill='url(%23g)' stroke='%23f0c7bb'/%3E%3Cpath d='M21 30s-8-5.2-10.8-10.1C7.7 15.9 9.8 10.8 14.8 10.8c2.5 0 4 1.3 6.2 3.7 2.2-2.4 3.7-3.7 6.2-3.7 5 0 7.1 5.1 4.6 9.1C29 24.8 21 30 21 30Z' fill='%237a1f1f' opacity='0.92'/%3E%3Cpath d='M21 16.9v8.4M16.8 21.1h8.4' stroke='%23fff6f1' stroke-width='2' stroke-linecap='round'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='6' y1='5' x2='34' y2='37' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23fff8f4'/%3E%3Cstop offset='1' stop-color='%23ffd1c3'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E")
+      center/cover no-repeat;
 }
 
 .topbar-actions {
@@ -452,7 +454,7 @@ button {
 }
 
 .metrics-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .contact-grid {
@@ -470,7 +472,7 @@ button {
 }
 
 .field-group.compact {
-  grid-template-columns: minmax(0, 1.8fr) 132px;
+  grid-template-columns: minmax(180px, 1fr) 132px;
 }
 
 .field span,
@@ -804,8 +806,8 @@ button {
 }
 
 .preview-sticky {
-  position: sticky;
-  top: 98px;
+  position: static;
+  top: auto;
   display: grid;
   gap: 16px;
   padding: 24px;

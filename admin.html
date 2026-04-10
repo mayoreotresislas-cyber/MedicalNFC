@@ -21,7 +21,7 @@
     <div class="builder-shell admin-shell">
       <header class="builder-topbar">
         <a class="brand" href="/">
-          <span class="brand-mark">+</span>
+          <span class="brand-mark" aria-hidden="true"></span>
           <span>
             <strong>MyMedicalNFC.com</strong>
             <small>Panel administrativo</small>
@@ -72,13 +72,17 @@
             <section class="form-section">
               <div class="section-heading">
                 <p class="section-kicker">Acceso</p>
-                <h2>Clave administrativa</h2>
+                <h2>Acceso administrativo</h2>
               </div>
 
               <form class="field-grid two-up" data-admin-auth-form>
                 <label class="field">
-                  <span>Token de administrador</span>
-                  <input name="admin_token" type="password" placeholder="Ingresa tu clave privada" />
+                  <span>Usuario</span>
+                  <input name="admin_username" type="text" placeholder="admin" autocomplete="username" />
+                </label>
+                <label class="field">
+                  <span>Contrasena</span>
+                  <input name="admin_password" type="password" placeholder="Ingresa tu acceso privado" autocomplete="current-password" />
                 </label>
                 <button class="button button-primary admin-auth-button" type="submit">Guardar acceso y cargar panel</button>
               </form>
@@ -145,8 +149,8 @@
 
             <section class="form-section latest-result" data-latest-result hidden>
               <div class="section-heading">
-                <p class="section-kicker">Ultimo resultado</p>
-                <h2>Link listo para compartir</h2>
+                <p class="section-kicker">Listo para compartir</p>
+                <h2>Enlace generado</h2>
               </div>
 
               <div class="admin-result-card">

@@ -6,14 +6,14 @@ const setupTranslations = {
     heroKicker: "Medical form",
     heroTitle: "Fill the medical form for one person.",
     heroText:
-      "Add the emergency information once, review the live preview, accept the agreements, and generate the secure link that will be shared with the NFC administrator.",
+      "Add the emergency information once, review the live preview, accept the agreements, and generate the secure link that will be used for the NFC profile.",
     heroPoint1: "Clear step-by-step flow",
     heroPoint2: "Multilingual preview",
     heroPoint3: "Fast family workflow",
     heroCardLabel: "What you will do",
     heroCard1: "Fill the health profile for one person.",
     heroCard2: "Review the emergency preview before saving.",
-    heroCard3: "The secure profile link is emailed to the NFC administrator.",
+    heroCard3: "The secure profile link can be sent to the NFC administrator and to the profile owner.",
     step1: "1. Identity",
     step2: "2. Medical details",
     step3: "3. Contacts",
@@ -32,9 +32,11 @@ const setupTranslations = {
     fieldGender: "Gender",
     fieldBirthDate: "Birthday",
     fieldSlug: "Profile ID",
-    fieldProfileLanguage: "Original language of the medical information",
+    fieldProfileLanguage: "Preferred language",
     fieldBloodType: "Blood type",
     fieldAge: "Age",
+    fieldClientEmail: "Email",
+    fieldClientPhone: "Mobile phone",
     fieldWeight: "Weight",
     fieldHeight: "Height",
     fieldOrganDonor: "Organ donor",
@@ -57,7 +59,8 @@ const setupTranslations = {
     fieldCountryCode: "Country code",
     fieldContactPhone: "Phone",
     fieldRecordUrl: "Generated profile link",
-    generatedUrlLabel: "When you generate the profile, the secure link is sent to the administrator email used for NFC recording.",
+    generatedUrlLabel:
+      "When you generate the profile, the secure link is sent to the NFC administrator and, if an email was provided, also to the profile owner.",
     updatePolicyTitle: "Future profile changes",
     updatePolicyText:
       "If you need this profile reopened later for remote changes, that service has an additional cost. The online profile can be updated remotely, but the physical NFC information is only changed when the administrator has the chip in hand.",
@@ -101,10 +104,10 @@ const setupTranslations = {
     genderNonBinary: "Non-binary",
     genderPreferNot: "Prefer not to say",
     savingTitle: "Generating profile...",
-    savingText: "Please wait while we store the profile and notify the NFC administrator.",
+    savingText: "Please wait while we store the profile and prepare the secure link notifications.",
     successKicker: "Saved",
     successTitle: "Profile generated successfully",
-    successText: "The profile was generated correctly and the secure link was sent to the administrator email for NFC recording.",
+    successText: "The profile was generated correctly and the secure link is ready to copy, email, or record on the NFC.",
     errorKicker: "Error",
     errorTitle: "We could not generate the profile",
     errorText: "The profile could not be saved. Review the technical message below and try again.",
@@ -131,7 +134,7 @@ const setupTranslations = {
     statusTranslateErrorTitle: "Automatic translation failed",
     statusTranslateErrorMessage: "We could not generate the selected language right now.",
     statusEmailWarningTitle: "Profile generated, email warning",
-    statusEmailWarningMessage: "The profile was generated, but the email notification could not be sent.",
+    statusEmailWarningMessage: "The profile was generated, but one or more email notifications could not be sent.",
     statusLoadedTitle: "Profile loaded",
     statusLoadedMessage: "Existing data for {slug} is now in the form.",
     statusLoadErrorTitle: "Could not load the profile",
@@ -172,14 +175,14 @@ const setupTranslations = {
     heroKicker: "Formulario medico",
     heroTitle: "Llena el formulario medico para una persona.",
     heroText:
-      "Agrega la informacion de emergencia una sola vez, revisa el preview en vivo, acepta los acuerdos y genera el enlace seguro que se compartira con el administrador del NFC.",
+      "Agrega la informacion de emergencia una sola vez, revisa el preview en vivo, acepta los acuerdos y genera el enlace seguro que se usara para el perfil NFC.",
     heroPoint1: "Flujo claro paso a paso",
     heroPoint2: "Preview multilenguaje",
     heroPoint3: "Flujo agil para familias",
     heroCardLabel: "Lo que vas a hacer",
     heroCard1: "Llena el perfil de salud de una persona.",
     heroCard2: "Revisa el preview de emergencia antes de guardar.",
-    heroCard3: "El enlace seguro del perfil se envia al administrador del NFC.",
+    heroCard3: "El enlace seguro del perfil puede enviarse al administrador del NFC y tambien al titular del perfil.",
     step1: "1. Identidad",
     step2: "2. Informacion medica",
     step3: "3. Contactos",
@@ -198,9 +201,11 @@ const setupTranslations = {
     fieldGender: "Genero",
     fieldBirthDate: "Fecha de nacimiento",
     fieldSlug: "ID del perfil",
-    fieldProfileLanguage: "Idioma original de la informacion medica",
+    fieldProfileLanguage: "Idioma preferido",
     fieldBloodType: "Tipo de sangre",
     fieldAge: "Edad",
+    fieldClientEmail: "Correo electronico",
+    fieldClientPhone: "Telefono movil",
     fieldWeight: "Peso",
     fieldHeight: "Estatura",
     fieldOrganDonor: "Donador de organos",
@@ -223,7 +228,8 @@ const setupTranslations = {
     fieldCountryCode: "Codigo de pais",
     fieldContactPhone: "Telefono",
     fieldRecordUrl: "Enlace generado del perfil",
-    generatedUrlLabel: "Cuando generas el perfil, el enlace seguro se envia al correo del administrador que programa los NFC.",
+    generatedUrlLabel:
+      "Cuando generas el perfil, el enlace seguro se envia al administrador que programa los NFC y, si agregaste correo, tambien al titular del perfil.",
     updatePolicyTitle: "Cambios futuros del perfil",
     updatePolicyText:
       "Si mas adelante necesitas reabrir este perfil para hacer cambios a distancia, ese servicio tiene un costo adicional. El perfil en linea se puede actualizar remotamente, pero la informacion fisica del NFC solo cambia cuando el administrador tiene el chip en la mano.",
@@ -267,10 +273,10 @@ const setupTranslations = {
     genderNonBinary: "No binario",
     genderPreferNot: "Prefiero no decirlo",
     savingTitle: "Generando perfil...",
-    savingText: "Espera un momento mientras guardamos el perfil y notificamos al administrador del NFC.",
+    savingText: "Espera un momento mientras guardamos el perfil y preparamos los avisos del enlace seguro.",
     successKicker: "Guardado",
     successTitle: "Perfil generado con exito",
-    successText: "El perfil se genero correctamente y el enlace seguro fue enviado al correo del administrador para grabar el NFC.",
+    successText: "El perfil se genero correctamente y el enlace seguro ya esta listo para copiar, enviar o grabar en el NFC.",
     errorKicker: "Error",
     errorTitle: "No pudimos generar el perfil",
     errorText: "No se pudo guardar el perfil. Revisa el mensaje tecnico de abajo e intenta de nuevo.",
@@ -298,7 +304,7 @@ const setupTranslations = {
     statusTranslateErrorTitle: "Fallo la traduccion automatica",
     statusTranslateErrorMessage: "No pudimos generar el idioma seleccionado en este momento.",
     statusEmailWarningTitle: "Perfil generado, aviso de correo",
-    statusEmailWarningMessage: "El perfil se genero, pero no se pudo enviar el correo de notificacion.",
+    statusEmailWarningMessage: "El perfil se genero, pero no se pudieron enviar uno o mas correos de notificacion.",
     statusLoadedTitle: "Perfil cargado",
     statusLoadedMessage: "Los datos existentes de {slug} ya estan en el formulario.",
     statusLoadErrorTitle: "No se pudo cargar el perfil",
@@ -409,6 +415,13 @@ const countryCodes = [
   { value: "+1", label: "+1 USA / Canada" },
   { value: "+34", label: "+34 Espana" },
   { value: "+52", label: "+52 Mexico" },
+  { value: "+81", label: "+81 Japan" },
+  { value: "+82", label: "+82 South Korea" },
+  { value: "+86", label: "+86 China" },
+  { value: "+49", label: "+49 Germany" },
+  { value: "+33", label: "+33 France" },
+  { value: "+39", label: "+39 Italy" },
+  { value: "+351", label: "+351 Portugal" },
   { value: "+54", label: "+54 Argentina" },
   { value: "+56", label: "+56 Chile" },
   { value: "+57", label: "+57 Colombia" },
@@ -423,28 +436,275 @@ const countryCodes = [
   { value: "+505", label: "+505 Nicaragua" }
 ];
 
+const insuranceOptions = [
+  "Aetna",
+  "Alignment Health",
+  "Ambetter",
+  "Anthem",
+  "Blue Cross Blue Shield",
+  "Cambia",
+  "Centene",
+  "Cigna",
+  "CVS Health / Aetna",
+  "Health Net",
+  "Health Plan of Nevada",
+  "Hometown Health",
+  "Humana",
+  "Kaiser Permanente",
+  "Medicaid",
+  "Medicare",
+  "Molina Healthcare",
+  "Oscar Health",
+  "Prominence Health Plan",
+  "SelectHealth",
+  "Self-pay / No insurance",
+  "TRICARE",
+  "UnitedHealthcare",
+  "VA Community Care",
+  "Other"
+];
+
+const locationCatalog = {
+  "United States": {
+    states: {
+      Nevada: ["Reno", "Sparks", "Las Vegas", "Henderson", "Carson City", "Fernley", "Elko"],
+      California: ["Los Angeles", "San Diego", "San Jose", "San Francisco", "Sacramento", "Fresno"],
+      Texas: ["Houston", "Dallas", "Austin", "San Antonio", "Fort Worth", "El Paso"],
+      Florida: ["Miami", "Orlando", "Tampa", "Jacksonville", "Fort Lauderdale", "Naples"],
+      Arizona: ["Phoenix", "Tucson", "Mesa", "Scottsdale", "Chandler", "Glendale"],
+      "New York": ["New York City", "Buffalo", "Rochester", "Albany", "Syracuse", "Yonkers"]
+    }
+  },
+  Mexico: {
+    states: {
+      "Baja California": ["Tijuana", "Mexicali", "Ensenada", "Rosarito"],
+      "Ciudad de Mexico": ["Benito Juarez", "Coyoacan", "Iztapalapa", "Miguel Hidalgo"],
+      Jalisco: ["Guadalajara", "Zapopan", "Tlaquepaque", "Tonalá"],
+      "Nuevo Leon": ["Monterrey", "San Nicolas", "Guadalupe", "Apodaca"],
+      Sonora: ["Hermosillo", "Nogales", "Ciudad Obregon", "San Luis Rio Colorado"]
+    }
+  },
+  Canada: {
+    states: {
+      Ontario: ["Toronto", "Ottawa", "Mississauga", "Hamilton", "London"],
+      Quebec: ["Montreal", "Quebec City", "Laval", "Gatineau"],
+      Alberta: ["Calgary", "Edmonton", "Red Deer", "Lethbridge"],
+      "British Columbia": ["Vancouver", "Victoria", "Surrey", "Burnaby"]
+    }
+  },
+  Spain: {
+    states: {
+      Madrid: ["Madrid", "Alcobendas", "Getafe", "Leganes"],
+      Catalonia: ["Barcelona", "Girona", "Tarragona", "Lleida"],
+      Andalusia: ["Seville", "Malaga", "Granada", "Cordoba"],
+      Valencia: ["Valencia", "Alicante", "Castellon", "Elche"]
+    }
+  },
+  Japan: {
+    states: {
+      Tokyo: ["Shinjuku", "Shibuya", "Minato", "Setagaya"],
+      Osaka: ["Osaka", "Sakai", "Higashiosaka", "Toyonaka"],
+      Kanagawa: ["Yokohama", "Kawasaki", "Sagamihara", "Yokosuka"]
+    }
+  },
+  "South Korea": {
+    states: {
+      Seoul: ["Gangnam", "Jongno", "Songpa", "Mapo"],
+      Gyeonggi: ["Suwon", "Seongnam", "Yongin", "Bucheon"],
+      Busan: ["Haeundae", "Suyeong", "Dongnae", "Busanjin"]
+    }
+  },
+  China: {
+    states: {
+      Beijing: ["Chaoyang", "Haidian", "Dongcheng", "Xicheng"],
+      Shanghai: ["Pudong", "Minhang", "Jingan", "Huangpu"],
+      Guangdong: ["Guangzhou", "Shenzhen", "Dongguan", "Foshan"]
+    }
+  },
+  France: {
+    states: {
+      "Ile-de-France": ["Paris", "Boulogne-Billancourt", "Versailles", "Saint-Denis"],
+      Provence: ["Marseille", "Nice", "Toulon", "Aix-en-Provence"]
+    }
+  },
+  Germany: {
+    states: {
+      Bavaria: ["Munich", "Nuremberg", "Augsburg", "Regensburg"],
+      Berlin: ["Berlin"],
+      Hesse: ["Frankfurt", "Wiesbaden", "Darmstadt", "Kassel"]
+    }
+  },
+  Italy: {
+    states: {
+      Lazio: ["Rome", "Latina", "Frosinone", "Viterbo"],
+      Lombardy: ["Milan", "Bergamo", "Brescia", "Monza"],
+      Tuscany: ["Florence", "Pisa", "Siena", "Livorno"]
+    }
+  },
+  Portugal: {
+    states: {
+      Lisbon: ["Lisbon", "Sintra", "Cascais", "Amadora"],
+      Porto: ["Porto", "Gaia", "Matosinhos", "Maia"]
+    }
+  }
+};
+
 const medicalFieldKeys = ["conditions", "allergies", "food_allergies", "medications", "devices", "notes"];
 const multiEntryFields = ["conditions", "allergies", "food_allergies", "medications", "devices"];
 const multiEntrySuggestions = {
   conditions: {
-    en: ["Type 1 Diabetes", "Type 2 Diabetes", "Epilepsy", "Asthma", "Hypertension", "Heart disease"],
-    es: ["Diabetes tipo 1", "Diabetes tipo 2", "Epilepsia", "Asma", "Hipertension", "Cardiopatia"]
+    en: [
+      "Type 1 Diabetes",
+      "Type 2 Diabetes",
+      "Epilepsy",
+      "Asthma",
+      "Hypertension",
+      "Heart disease",
+      "Coronary artery disease",
+      "Arrhythmia",
+      "Heart failure",
+      "COPD",
+      "Chronic kidney disease",
+      "Hypothyroidism",
+      "Hyperthyroidism",
+      "Autism",
+      "Dementia",
+      "Alzheimer's disease",
+      "Stroke history",
+      "Anxiety disorder",
+      "Depression",
+      "Bleeding disorder"
+    ],
+    es: [
+      "Diabetes tipo 1",
+      "Diabetes tipo 2",
+      "Epilepsia",
+      "Asma",
+      "Hipertension",
+      "Cardiopatia",
+      "Enfermedad coronaria",
+      "Arritmia",
+      "Insuficiencia cardiaca",
+      "EPOC",
+      "Enfermedad renal cronica",
+      "Hipotiroidismo",
+      "Hipertiroidismo",
+      "Autismo",
+      "Demencia",
+      "Alzheimer",
+      "Antecedente de derrame cerebral",
+      "Trastorno de ansiedad",
+      "Depresion",
+      "Trastorno de coagulacion"
+    ]
   },
   allergies: {
-    en: ["Penicillin", "Sulfa drugs", "Latex", "Aspirin", "Ibuprofen", "Contrast dye"],
-    es: ["Penicilina", "Sulfas", "Latex", "Aspirina", "Ibuprofeno", "Medio de contraste"]
+    en: [
+      "Penicillin",
+      "Sulfa drugs",
+      "Latex",
+      "Aspirin",
+      "Ibuprofen",
+      "Contrast dye",
+      "Codeine",
+      "Morphine",
+      "Cephalosporins",
+      "Amoxicillin",
+      "Acetaminophen",
+      "Heparin",
+      "Adhesive tape",
+      "Iodine",
+      "Chlorhexidine"
+    ],
+    es: [
+      "Penicilina",
+      "Sulfas",
+      "Latex",
+      "Aspirina",
+      "Ibuprofeno",
+      "Medio de contraste",
+      "Codeina",
+      "Morfina",
+      "Cefalosporinas",
+      "Amoxicilina",
+      "Acetaminofen",
+      "Heparina",
+      "Cinta adhesiva",
+      "Yodo",
+      "Clorhexidina"
+    ]
   },
   food_allergies: {
-    en: ["Peanuts", "Shellfish", "Dairy", "Eggs", "Soy", "Tree nuts"],
-    es: ["Cacahuates", "Mariscos", "Lacteos", "Huevos", "Soya", "Nueces"]
+    en: ["Peanuts", "Shellfish", "Dairy", "Eggs", "Soy", "Tree nuts", "Wheat", "Fish", "Sesame", "Strawberries"],
+    es: ["Cacahuates", "Mariscos", "Lacteos", "Huevos", "Soya", "Nueces", "Trigo", "Pescado", "Sesamo", "Fresas"]
   },
   medications: {
-    en: ["Insulin glargine 12 units nightly", "Metformin 500 mg twice daily", "EpiPen 0.3 mg as needed", "Levothyroxine 50 mcg daily"],
-    es: ["Insulina glargina 12 unidades por la noche", "Metformina 500 mg dos veces al dia", "EpiPen 0.3 mg segun sea necesario", "Levotiroxina 50 mcg al dia"]
+    en: [
+      "Insulin glargine 12 units nightly",
+      "Metformin 500 mg twice daily",
+      "EpiPen 0.3 mg as needed",
+      "Levothyroxine 50 mcg daily",
+      "Lisinopril 10 mg daily",
+      "Losartan 50 mg daily",
+      "Amlodipine 5 mg daily",
+      "Albuterol inhaler 2 puffs as needed",
+      "Levetiracetam 500 mg twice daily",
+      "Warfarin 5 mg daily",
+      "Apixaban 5 mg twice daily",
+      "Clopidogrel 75 mg daily",
+      "Atorvastatin 20 mg nightly",
+      "Sertraline 50 mg daily",
+      "Omeprazole 20 mg daily"
+    ],
+    es: [
+      "Insulina glargina 12 unidades por la noche",
+      "Metformina 500 mg dos veces al dia",
+      "EpiPen 0.3 mg segun sea necesario",
+      "Levotiroxina 50 mcg al dia",
+      "Lisinopril 10 mg al dia",
+      "Losartan 50 mg al dia",
+      "Amlodipino 5 mg al dia",
+      "Inhalador de albuterol 2 disparos segun sea necesario",
+      "Levetiracetam 500 mg dos veces al dia",
+      "Warfarina 5 mg al dia",
+      "Apixaban 5 mg dos veces al dia",
+      "Clopidogrel 75 mg al dia",
+      "Atorvastatina 20 mg por la noche",
+      "Sertralina 50 mg al dia",
+      "Omeprazol 20 mg al dia"
+    ]
   },
   devices: {
-    en: ["Insulin pump", "Pacemaker", "CPAP machine", "Hearing aid", "Wheelchair", "Glucose monitor"],
-    es: ["Bomba de insulina", "Marcapasos", "Maquina CPAP", "Aparato auditivo", "Silla de ruedas", "Monitor de glucosa"]
+    en: [
+      "Insulin pump",
+      "Pacemaker",
+      "CPAP machine",
+      "Hearing aid",
+      "Wheelchair",
+      "Glucose monitor",
+      "Oxygen concentrator",
+      "Defibrillator implant",
+      "Port-a-cath",
+      "Gastrostomy tube",
+      "Colostomy bag",
+      "Walker",
+      "Prosthetic limb"
+    ],
+    es: [
+      "Bomba de insulina",
+      "Marcapasos",
+      "Maquina CPAP",
+      "Aparato auditivo",
+      "Silla de ruedas",
+      "Monitor de glucosa",
+      "Concentrador de oxigeno",
+      "Desfibrilador implantado",
+      "Port-a-cath",
+      "Sonda de gastrostomia",
+      "Bolsa de colostomia",
+      "Andadera",
+      "Protesis"
+    ]
   }
 };
 const config = window.NFC_MEDICO_CONFIG || {};
@@ -472,6 +732,10 @@ const legalContentNode = document.querySelector("[data-legal-content]");
 const interfaceSelect = document.querySelector("[data-lang-select]");
 const helperFields = document.querySelectorAll("[data-clear-helper]");
 const countryCodeSelects = document.querySelectorAll("[data-country-code]");
+const insuranceSelect = document.querySelector("[data-insurance-select]");
+const countrySelect = document.querySelector("[data-country-select]");
+const stateSelect = document.querySelector("[data-state-select]");
+const citySelect = document.querySelector("[data-city-select]");
 const activationGate = document.querySelector("[data-activation-gate]");
 const activationBuilder = document.querySelector("[data-activation-builder]");
 const tokenEntryForm = document.querySelector("[data-token-entry-form]");
@@ -520,7 +784,7 @@ function detectInitialLanguage() {
 }
 
 function isActivationMode() {
-  return pageMode === "activate";
+  return pageMode === "activate" || Boolean(getRequestedActivationToken());
 }
 
 function extractActivationToken(value, allowPlain = true) {
@@ -797,9 +1061,69 @@ function getClient() {
 
 function populateCountryCodes() {
   countryCodeSelects.forEach((select) => {
-    select.innerHTML = countryCodes.map((option) => `<option value="${option.value}">${option.label}</option>`).join("");
+    select.innerHTML = countryCodes
+      .map((option) => `<option value="${option.value}" title="${option.label}">${option.value}</option>`)
+      .join("");
     select.value = "+1";
   });
+}
+
+function populateInsuranceOptions() {
+  if (!insuranceSelect) {
+    return;
+  }
+
+  insuranceSelect.innerHTML = [`<option value="">${getSetupCopy(state.uiLang).fieldInsurance || "Insurance"}</option>`]
+    .concat(insuranceOptions.map((option) => `<option value="${option}">${option}</option>`))
+    .join("");
+}
+
+function populateLocationCountries() {
+  if (!countrySelect) {
+    return;
+  }
+
+  const copy = getSetupCopy(state.uiLang);
+  const countries = Object.keys(locationCatalog).sort((a, b) => a.localeCompare(b));
+  countrySelect.innerHTML = [`<option value="">${copy.fieldCountry || "Country"}</option>`]
+    .concat(countries.map((country) => `<option value="${country}">${country}</option>`))
+    .join("");
+}
+
+function populateStates(country, selectedState = "") {
+  if (!stateSelect) {
+    return;
+  }
+  const copy = getSetupCopy(state.uiLang);
+  const states = country && locationCatalog[country]?.states ? Object.keys(locationCatalog[country].states) : [];
+  stateSelect.innerHTML = [`<option value="">${copy.fieldState || "State / Region"}</option>`]
+    .concat(states.map((stateName) => `<option value="${stateName}">${stateName}</option>`))
+    .join("");
+  stateSelect.value = states.includes(selectedState) ? selectedState : "";
+}
+
+function populateCities(country, stateName, selectedCity = "") {
+  if (!citySelect) {
+    return;
+  }
+  const copy = getSetupCopy(state.uiLang);
+  const cities = country && stateName && locationCatalog[country]?.states?.[stateName] ? locationCatalog[country].states[stateName] : [];
+  citySelect.innerHTML = [`<option value="">${copy.fieldCity || "City"}</option>`]
+    .concat(cities.map((cityName) => `<option value="${cityName}">${cityName}</option>`))
+    .join("");
+  citySelect.value = cities.includes(selectedCity) ? selectedCity : "";
+}
+
+function syncLocationSelects({ country, stateRegion, city } = {}) {
+  if (!countrySelect || !stateSelect || !citySelect) {
+    return;
+  }
+
+  if (country) {
+    countrySelect.value = Object.prototype.hasOwnProperty.call(locationCatalog, country) ? country : "";
+  }
+  populateStates(countrySelect.value, stateRegion);
+  populateCities(countrySelect.value, stateSelect.value, city);
 }
 
 function setupHelperPlaceholders() {
@@ -829,8 +1153,9 @@ function clearDraftFields(preserveContacts = false) {
   form.elements.full_record_url.value = "";
   form.elements.full_name.value = "";
   form.elements.public_slug.value = "";
+  form.elements.family_group.value = "";
   form.elements.blood_type.value = "";
-  form.elements.default_language.value = "en";
+  form.elements.default_language.value = normalizeProfileLanguage(state.uiLang || "en");
   form.elements.gender.value = "";
   form.elements.weight_unit.value = "kg";
   form.elements.height_unit.value = "cm";
@@ -839,6 +1164,16 @@ function clearDraftFields(preserveContacts = false) {
   countryCodeSelects.forEach((select) => {
     select.value = "+1";
   });
+  if (form.elements.client_phone) {
+    form.elements.client_phone.value = "";
+  }
+  if (form.elements.client_email) {
+    form.elements.client_email.value = "";
+  }
+  if (insuranceSelect) {
+    insuranceSelect.value = "";
+  }
+  syncLocationSelects({ country: "", stateRegion: "", city: "" });
 
   if (contacts) {
     applyFamilyTemplate(contacts);
@@ -964,6 +1299,17 @@ function parsePhone(phone) {
 function normalizePhoneDisplay(phone) {
   const parsed = parsePhone(phone);
   return buildPhone(parsed.countryCode, parsed.localNumber);
+}
+
+function formatPhoneInput(value) {
+  const normalized = cleanText(value);
+  if (!normalized) {
+    return "";
+  }
+  if (normalized.startsWith("+")) {
+    return normalizePhoneDisplay(normalized);
+  }
+  return `+1 ${formatLocalPhone(normalized)}`.trim();
 }
 
 function getSuggestionLanguage() {
@@ -1157,6 +1503,7 @@ function getFamilyTemplate() {
 
 function saveFamilyTemplate(raw) {
   const template = {
+    family_group: raw.family_group || raw.public_slug,
     default_language: raw.default_language,
     insurance: raw.insurance,
     doctor: raw.doctor,
@@ -1200,6 +1547,7 @@ function getFormState() {
     first_name: firstName,
     last_name: lastName,
     full_name: fullName,
+    family_group: cleanText(form.elements.family_group.value),
     public_slug: slugify(form.elements.public_slug.value),
     default_language: normalizeProfileLanguage(form.elements.default_language.value),
     gender: cleanText(form.elements.gender.value),
@@ -1213,6 +1561,8 @@ function getFormState() {
     height_value: cleanText(form.elements.height_value.value),
     height_unit: cleanText(form.elements.height_unit.value || "cm"),
     organ_donor: cleanText(form.elements.organ_donor.value),
+    client_email: cleanText(form.elements.client_email.value),
+    client_phone: formatPhoneInput(form.elements.client_phone.value),
     insurance: cleanText(form.elements.insurance.value),
     doctor: cleanText(form.elements.doctor.value),
     clinic: cleanText(form.elements.clinic.value),
@@ -1510,7 +1860,7 @@ async function translateFieldsForSave(sourceLanguage, targetLanguage, fields) {
   }
 }
 
-async function notifyAdmin(profileName, slug, profileUrl) {
+async function notifyAdmin(profileName, slug, profileUrl, clientEmail = "", profileLanguage = "en") {
   if (!config.notificationFunctionName || !hasSupabaseConfig()) {
     return false;
   }
@@ -1519,7 +1869,9 @@ async function notifyAdmin(profileName, slug, profileUrl) {
     await invokeFunction(config.notificationFunctionName, {
       profileName,
       slug,
-      profileUrl
+      profileUrl,
+      clientEmail,
+      profileLanguage
     });
     return true;
   } catch (error) {
@@ -1565,6 +1917,7 @@ function buildPayload(raw, sourceFields, englishFields, spanishFields) {
     full_name: raw.full_name,
     first_name: raw.first_name || null,
     last_name: raw.last_name || null,
+    family_group: raw.family_group || raw.public_slug || null,
     workflow_status: "ready_to_program",
     gender: raw.gender || null,
     birth_date: raw.birth_date || null,
@@ -1573,6 +1926,8 @@ function buildPayload(raw, sourceFields, englishFields, spanishFields) {
     weight: raw.weight || null,
     height: raw.height || null,
     organ_donor: raw.organ_donor === "true" ? true : raw.organ_donor === "false" ? false : null,
+    client_email: raw.client_email || null,
+    client_phone: raw.client_phone || null,
     insurance: raw.insurance || null,
     doctor: raw.doctor || null,
     clinic: raw.clinic || null,
@@ -1651,6 +2006,16 @@ function setInterfaceLanguage(lang) {
   applyInterfaceCopy(getSetupCopy(state.uiLang));
   interfaceSelect.value = state.uiLang;
   syncFlagSelect(interfaceSelect);
+  const currentCountry = countrySelect?.value || "";
+  const currentState = stateSelect?.value || "";
+  const currentCity = citySelect?.value || "";
+  const currentInsurance = insuranceSelect?.value || "";
+  populateInsuranceOptions();
+  if (insuranceSelect) {
+    insuranceSelect.value = currentInsurance;
+  }
+  populateLocationCountries();
+  syncLocationSelects({ country: currentCountry, stateRegion: currentState, city: currentCity });
 
   ensureSetupCopy(normalized).then((copy) => {
     if (state.uiLang !== normalized) {
@@ -1658,6 +2023,16 @@ function setInterfaceLanguage(lang) {
     }
 
     applyInterfaceCopy(copy);
+    const selectedInsurance = insuranceSelect?.value || "";
+    const selectedCountry = countrySelect?.value || "";
+    const selectedState = stateSelect?.value || "";
+    const selectedCity = citySelect?.value || "";
+    populateInsuranceOptions();
+    if (insuranceSelect) {
+      insuranceSelect.value = selectedInsurance;
+    }
+    populateLocationCountries();
+    syncLocationSelects({ country: selectedCountry, stateRegion: selectedState, city: selectedCity });
     renderPreview();
   });
 }
@@ -1861,12 +2236,15 @@ function populateProfileIntoForm(data) {
     first_name: cleanText(data.first_name) || nameParts.firstName,
     last_name: cleanText(data.last_name) || nameParts.lastName,
     full_name: cleanText(data.full_name),
+    family_group: cleanText(data.family_group),
     public_slug: cleanText(data.public_slug),
     default_language: normalizeProfileLanguage(data.default_language || "en"),
     gender: cleanText(data.gender),
     birth_date: cleanText(data.birth_date),
     blood_type: cleanText(data.blood_type),
     age: cleanText(data.age),
+    client_email: cleanText(data.client_email),
+    client_phone: normalizePhoneDisplay(cleanText(data.client_phone)),
     weight_value: weight.value,
     weight_unit: weight.unit || "kg",
     height_value: height.value,
@@ -1898,6 +2276,11 @@ function populateProfileIntoForm(data) {
 
   form.elements.full_name.value = buildFullName(form.elements.first_name.value, form.elements.last_name.value, data.full_name);
   form.elements.public_slug.value = cleanText(data.public_slug);
+  syncLocationSelects({
+    country: cleanText(data.country),
+    stateRegion: cleanText(data.state_region),
+    city: cleanText(data.city)
+  });
   state.slugTouched = true;
 }
 
@@ -1995,7 +2378,7 @@ async function saveProfile(event) {
       }
 
       saveFamilyTemplate(raw);
-      const emailOk = await notifyAdmin(raw.full_name, raw.public_slug, url);
+      const emailOk = await notifyAdmin(raw.full_name, raw.public_slug, url, raw.client_email, raw.default_language);
 
       openSuccessModal(url, state.pendingMode);
       if (state.pendingMode === "save" && !new URLSearchParams(window.location.search).get("slug")) {
@@ -2091,12 +2474,34 @@ function bindEvents() {
     renderPreview();
   });
 
+  if (countrySelect && stateSelect && citySelect) {
+    countrySelect.addEventListener("change", () => {
+      populateStates(countrySelect.value);
+      populateCities(countrySelect.value, "");
+      renderPreview();
+    });
+
+    stateSelect.addEventListener("change", () => {
+      populateCities(countrySelect.value, stateSelect.value);
+      renderPreview();
+    });
+
+    citySelect.addEventListener("change", renderPreview);
+  }
+
   ["emergency_contact_1_phone_local", "emergency_contact_2_phone_local"].forEach((name) => {
     form.elements[name].addEventListener("blur", () => {
       form.elements[name].value = formatLocalPhone(form.elements[name].value);
       renderPreview();
     });
   });
+
+  if (form.elements.client_phone) {
+    form.elements.client_phone.addEventListener("blur", () => {
+      form.elements.client_phone.value = formatPhoneInput(form.elements.client_phone.value);
+      renderPreview();
+    });
+  }
 
   form.addEventListener("submit", saveProfile);
   saveProfileButton.addEventListener("click", () => {
@@ -2132,6 +2537,9 @@ function bindEvents() {
 
 async function init() {
   populateCountryCodes();
+  populateInsuranceOptions();
+  populateLocationCountries();
+  syncLocationSelects({ country: "", stateRegion: "", city: "" });
   initFlagSelects();
   setupHelperPlaceholders();
   initMultiEntryFields();

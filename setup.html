@@ -20,7 +20,7 @@
     <div class="builder-shell">
       <header class="builder-topbar">
         <a class="brand" href="/">
-          <span class="brand-mark">+</span>
+          <span class="brand-mark" aria-hidden="true"></span>
           <span>
             <strong>MyMedicalNFC.com</strong>
             <small data-i18n="brandTagline">Medical form</small>
@@ -29,6 +29,7 @@
 
         <div class="topbar-actions">
           <a class="nav-link nav-link-primary" href="/" data-i18n="publicLandingLink">What is this?</a>
+          <a class="nav-link" href="/admin">Admin</a>
           <label class="language-dropdown">
             <span data-i18n="interfaceLanguage">Interface language</span>
             <select class="native-language-select" data-lang-select data-flag-menu>
@@ -117,10 +118,11 @@
                 </div>
                 <input name="full_name" type="hidden" value="" />
                 <input name="public_slug" type="hidden" value="" />
+                <input name="family_group" type="hidden" value="" />
 
                 <div class="field-grid four-up">
                   <label class="field">
-                    <span data-i18n="fieldProfileLanguage">Original language of the medical information</span>
+                    <span data-i18n="fieldProfileLanguage">Preferred language</span>
                     <select class="native-language-select" name="default_language" data-flag-menu>
                       <option value="en">🇺🇸 EN - English</option>
                       <option value="es">🇪🇸 ES - Espanol</option>
@@ -163,12 +165,9 @@
                   </label>
                   <label class="field">
                     <span data-i18n="fieldInsurance">Insurance</span>
-                    <input
-                      name="insurance"
-                      type="text"
-                      placeholder="Insurance provider"
-                      data-clear-helper
-                    />
+                    <select name="insurance" data-insurance-select>
+                      <option value="">Select insurance</option>
+                    </select>
                   </label>
                 </div>
 
@@ -182,6 +181,16 @@
                       max="120"
                       placeholder="42"
                       inputmode="numeric"
+                      data-clear-helper
+                    />
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldClientEmail">Email</span>
+                    <input
+                      name="client_email"
+                      type="email"
+                      placeholder="person@email.com"
+                      autocomplete="email"
                       data-clear-helper
                     />
                   </label>
@@ -202,6 +211,16 @@
                         <option value="lb">lb</option>
                       </select>
                     </div>
+                  </label>
+                  <label class="field">
+                    <span data-i18n="fieldClientPhone">Mobile phone</span>
+                    <input
+                      name="client_phone"
+                      type="tel"
+                      placeholder="+1 555-555-5555"
+                      inputmode="tel"
+                      data-clear-helper
+                    />
                   </label>
                   <label class="field">
                     <span data-i18n="fieldHeight">Height</span>
@@ -235,15 +254,21 @@
                 <div class="field-grid four-up">
                   <label class="field">
                     <span data-i18n="fieldCountry">Country</span>
-                    <input name="country" type="text" placeholder="Country" data-clear-helper />
+                    <select name="country" data-country-select>
+                      <option value="">Select country</option>
+                    </select>
                   </label>
                   <label class="field">
                     <span data-i18n="fieldState">State / Region</span>
-                    <input name="state_region" type="text" placeholder="State or region" data-clear-helper />
+                    <select name="state_region" data-state-select>
+                      <option value="">Select state / region</option>
+                    </select>
                   </label>
                   <label class="field">
                     <span data-i18n="fieldCity">City</span>
-                    <input name="city" type="text" placeholder="City" data-clear-helper />
+                    <select name="city" data-city-select>
+                      <option value="">Select city</option>
+                    </select>
                   </label>
                   <label class="field">
                     <span data-i18n="fieldPostalCode">ZIP / Postal code</span>
