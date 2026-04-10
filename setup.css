@@ -451,6 +451,10 @@ button {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
+.metrics-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .contact-grid {
   grid-template-columns: minmax(0, 1.2fr) 160px minmax(0, 1fr);
 }
@@ -466,7 +470,7 @@ button {
 }
 
 .field-group.compact {
-  grid-template-columns: minmax(0, 1fr) 110px;
+  grid-template-columns: minmax(0, 1.8fr) 132px;
 }
 
 .field span,
@@ -498,6 +502,94 @@ button {
 .field textarea {
   resize: vertical;
   min-height: 98px;
+}
+
+.entry-source {
+  display: none !important;
+}
+
+.entry-builder {
+  display: grid;
+  gap: 12px;
+}
+
+.entry-composer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+}
+
+.entry-input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(24, 19, 16, 0.1);
+  background: rgba(255, 255, 255, 0.98);
+  color: var(--text);
+}
+
+.entry-input:focus {
+  border-color: rgba(199, 59, 47, 0.46);
+  box-shadow: 0 0 0 4px rgba(199, 59, 47, 0.08);
+  outline: none;
+}
+
+.entry-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.entry-suggestion {
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(24, 19, 16, 0.05);
+  color: var(--text);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.entry-hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.entry-list {
+  display: grid;
+  gap: 8px;
+}
+
+.entry-item,
+.entry-empty {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(24, 19, 16, 0.05);
+}
+
+.entry-empty {
+  justify-content: flex-start;
+  color: var(--muted);
+}
+
+.entry-item span {
+  white-space: pre-line;
+  line-height: 1.5;
+}
+
+.entry-item button {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: rgba(24, 19, 16, 0.08);
+  color: var(--text);
+  cursor: pointer;
 }
 
 .contact-block {
@@ -829,6 +921,7 @@ button {
   margin: 0;
   font-size: 1rem;
   font-weight: 700;
+  white-space: pre-line;
 }
 
 .preview-notes {
@@ -1007,6 +1100,10 @@ button {
   .legal-links {
     grid-template-columns: 1fr;
   }
+
+  .entry-composer {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 920px) {
@@ -1015,6 +1112,7 @@ button {
   .two-up,
   .three-up,
   .four-up,
+  .metrics-grid,
   .contact-grid,
   .url-actions,
   .action-buttons,

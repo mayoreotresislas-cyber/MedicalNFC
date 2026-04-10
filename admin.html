@@ -29,6 +29,7 @@
         </a>
 
         <div class="topbar-actions">
+          <a class="nav-link" href="/setup.html">Formulario directo</a>
           <a class="nav-link" href="/activate">Activacion privada</a>
           <a class="nav-link nav-link-primary" href="/">Landing publica</a>
         </div>
@@ -40,13 +41,13 @@
             <p class="eyebrow">Admin workflow</p>
             <h1>Genera, envia y administra perfiles medicos NFC.</h1>
             <p class="hero-copy">
-              Desde aqui puedes crear el link privado del cliente, reenviarlo por correo o SMS, reabrir perfiles,
-              archivarlos, borrarlos y controlar cuales ya estan listos para grabarse en version hibrida.
+              Desde aqui puedes generar links privados, compartirlos por correo o SMS, abrir el formulario directo sin
+              preactivacion, reabrir perfiles, archivarlos, borrarlos y controlar cuales ya estan listos para grabarse.
             </p>
             <div class="hero-points">
               <span>Link privado del cliente</span>
+              <span>Formulario directo sin preactivacion</span>
               <span>URL publica final para NFC</span>
-              <span>Resumen offline para version hibrida</span>
             </div>
           </div>
 
@@ -56,7 +57,7 @@
               <li>Genera el acceso privado del cliente.</li>
               <li>Envialo por correo o SMS.</li>
               <li>Espera a que complete el perfil.</li>
-              <li>Graba el NFC cuando quede listo para programar.</li>
+              <li>O abre el formulario directo si vas a capturar el perfil en ese momento.</li>
             </ol>
           </div>
         </section>
@@ -96,13 +97,6 @@
                     <input name="full_name" type="text" placeholder="Erik Lopez" />
                   </label>
                   <label class="field">
-                    <span>Etiqueta interna</span>
-                    <input name="pending_label" type="text" placeholder="Familia Lopez / Pulsera roja" />
-                  </label>
-                </div>
-
-                <div class="field-grid three-up">
-                  <label class="field">
                     <span>Idioma esperado del cliente</span>
                     <select name="default_language">
                       <option value="es">ES - Espanol</option>
@@ -116,28 +110,25 @@
                       <option value="zh">ZH - Chinese</option>
                     </select>
                   </label>
-                  <label class="field">
-                    <span>Referencia del chip o pieza</span>
-                    <input name="chip_reference" type="text" placeholder="Pulsera A-014 / NFC lote 2" />
-                  </label>
-                  <label class="field">
-                    <span>Correo del cliente</span>
-                    <input name="client_email" type="email" placeholder="cliente@correo.com" />
-                  </label>
                 </div>
 
                 <div class="field-grid two-up">
                   <label class="field">
-                    <span>Telefono movil del cliente</span>
-                    <input name="client_phone" type="tel" placeholder="+1 775 555 0101" />
+                    <span>Correo del cliente</span>
+                    <input name="client_email" type="email" placeholder="cliente@correo.com" />
                   </label>
-                  <div class="field admin-tip">
+                  <label class="field">
+                    <span>Telefono movil del cliente</span>
+                    <input name="client_phone" type="tel" placeholder="+1 775-555-0101" />
+                  </label>
+                </div>
+
+                <div class="field admin-tip">
                     <span>Entrega del link</span>
                     <p>
                       Puedes generarlo primero, copiarlo y abrir un correo o SMS preparado desde el panel. Si necesitas
                       reenviarlo despues, usa la accion <strong>Nuevo link privado</strong> dentro del perfil.
                     </p>
-                  </div>
                 </div>
 
                 <div class="action-panel">
@@ -235,7 +226,7 @@
                   <input
                     name="profile_search"
                     type="search"
-                    placeholder="Nombre, slug, correo, telefono o referencia"
+                    placeholder="Nombre, slug, correo o telefono"
                     data-profile-search
                   />
                 </label>

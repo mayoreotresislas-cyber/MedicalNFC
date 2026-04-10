@@ -331,7 +331,8 @@ body.profile-mode .flag-select-label {
 
 .hero,
 .info-layout,
-.profile-grid {
+.profile-grid,
+.benefit-showcase {
   display: grid;
   gap: 24px;
 }
@@ -379,6 +380,7 @@ body.profile-mode .flag-select-label {
 .hero-panel,
 .panel,
 .screen-card,
+.benefit-card,
 .footer-note {
   border: 1px solid var(--line);
   border-radius: calc(var(--radius) + 2px);
@@ -388,6 +390,41 @@ body.profile-mode .flag-select-label {
 .hero-panel,
 .panel {
   padding: 24px;
+}
+
+.benefit-showcase {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 24px;
+}
+
+.benefit-card {
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.benefit-card h3 {
+  margin: 14px 0 10px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.2rem;
+}
+
+.benefit-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.benefit-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #fff4ef, #ffd2c3);
+  color: var(--accent-dark);
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.08em;
 }
 
 .hero-panel {
@@ -559,6 +596,7 @@ dd {
   margin: 0;
   font-size: 1.04rem;
   font-weight: 700;
+  white-space: pre-line;
 }
 
 .notice-box {
@@ -627,6 +665,11 @@ dd {
   background: rgba(255, 255, 255, 0.07);
 }
 
+.contact-card.is-disabled {
+  pointer-events: none;
+  opacity: 0.72;
+}
+
 .record-link {
   margin-top: 16px;
   padding: 16px 18px;
@@ -671,7 +714,8 @@ dd {
 @media (max-width: 980px) {
   .hero,
   .info-layout,
-  .profile-grid {
+  .profile-grid,
+  .benefit-showcase {
     grid-template-columns: 1fr;
   }
 

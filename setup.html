@@ -99,7 +99,7 @@
                     <input
                       name="first_name"
                       type="text"
-                      placeholder="John"
+                      placeholder="Enter first name"
                       autocomplete="off"
                       data-clear-helper
                     />
@@ -109,7 +109,7 @@
                     <input
                       name="last_name"
                       type="text"
-                      placeholder="Doe"
+                      placeholder="Enter last name"
                       autocomplete="off"
                       data-clear-helper
                     />
@@ -166,13 +166,13 @@
                     <input
                       name="insurance"
                       type="text"
-                      placeholder="BlueCross"
+                      placeholder="Insurance provider"
                       data-clear-helper
                     />
                   </label>
                 </div>
 
-                <div class="field-grid four-up">
+                <div class="field-grid metrics-grid">
                   <label class="field">
                     <span data-i18n="fieldAge">Age</span>
                     <input
@@ -193,7 +193,7 @@
                         type="number"
                         min="0"
                         step="0.1"
-                        placeholder="68"
+                        placeholder="Enter weight"
                         inputmode="decimal"
                         data-clear-helper
                       />
@@ -211,7 +211,7 @@
                         type="number"
                         min="0"
                         step="0.1"
-                        placeholder="172"
+                        placeholder="Enter height"
                         inputmode="decimal"
                         data-clear-helper
                       />
@@ -235,19 +235,19 @@
                 <div class="field-grid four-up">
                   <label class="field">
                     <span data-i18n="fieldCountry">Country</span>
-                    <input name="country" type="text" placeholder="United States" data-clear-helper />
+                    <input name="country" type="text" placeholder="Country" data-clear-helper />
                   </label>
                   <label class="field">
                     <span data-i18n="fieldState">State / Region</span>
-                    <input name="state_region" type="text" placeholder="Nevada" data-clear-helper />
+                    <input name="state_region" type="text" placeholder="State or region" data-clear-helper />
                   </label>
                   <label class="field">
                     <span data-i18n="fieldCity">City</span>
-                    <input name="city" type="text" placeholder="Reno" data-clear-helper />
+                    <input name="city" type="text" placeholder="City" data-clear-helper />
                   </label>
                   <label class="field">
                     <span data-i18n="fieldPostalCode">ZIP / Postal code</span>
-                    <input name="postal_code" type="text" placeholder="89512" data-clear-helper />
+                    <input name="postal_code" type="text" placeholder="ZIP or postal code" data-clear-helper />
                   </label>
                 </div>
 
@@ -257,7 +257,7 @@
                     <input
                       name="doctor"
                       type="text"
-                      placeholder="Dr. Smith"
+                      placeholder="Doctor name"
                       data-clear-helper
                     />
                   </label>
@@ -266,7 +266,7 @@
                     <input
                       name="clinic"
                       type="text"
-                      placeholder="XYZ Medical Center"
+                      placeholder="Clinic or hospital"
                       data-clear-helper
                     />
                   </label>
@@ -280,49 +280,54 @@
                 </div>
 
                 <div class="field-grid">
-                  <label class="field">
+                  <label class="field field-multi">
                     <span data-i18n="fieldConditions">Conditions</span>
                     <textarea
                       name="conditions"
                       rows="3"
-                      placeholder="Type 1 Diabetes&#10;Epilepsy&#10;Hypertension"
+                      placeholder="One condition per line"
                       data-clear-helper
+                      data-entry-source="conditions"
                     ></textarea>
                   </label>
-                  <label class="field">
+                  <label class="field field-multi">
                     <span data-i18n="fieldAllergies">Medical allergies</span>
                     <textarea
                       name="allergies"
                       rows="3"
-                      placeholder="Penicillin&#10;Sulfa drugs&#10;Latex"
+                      placeholder="One medical allergy per line"
                       data-clear-helper
+                      data-entry-source="allergies"
                     ></textarea>
                   </label>
-                  <label class="field">
+                  <label class="field field-multi">
                     <span data-i18n="fieldFoodAllergies">Food allergies</span>
                     <textarea
                       name="food_allergies"
                       rows="3"
-                      placeholder="Peanuts&#10;Shellfish&#10;Dairy"
+                      placeholder="One food allergy per line"
                       data-clear-helper
+                      data-entry-source="food_allergies"
                     ></textarea>
                   </label>
-                  <label class="field">
+                  <label class="field field-multi">
                     <span data-i18n="fieldMedications">Medications and doses</span>
                     <textarea
                       name="medications"
                       rows="4"
-                      placeholder="Insulin glargine 12 units nightly&#10;Metformin 500 mg twice daily"
+                      placeholder="One medication and dose per line"
                       data-clear-helper
+                      data-entry-source="medications"
                     ></textarea>
                   </label>
-                  <label class="field">
+                  <label class="field field-multi">
                     <span data-i18n="fieldDevices">Medical devices</span>
                     <textarea
                       name="devices"
                       rows="3"
-                      placeholder="Insulin Pump"
+                      placeholder="One medical device per line"
                       data-clear-helper
+                      data-entry-source="devices"
                     ></textarea>
                   </label>
                   <label class="field">
@@ -330,7 +335,7 @@
                     <textarea
                       name="notes"
                       rows="4"
-                      placeholder="Patient uses insulin&#10;Risk of hypoglycemia&#10;May require immediate glucose"
+                      placeholder="Add extra notes for first responders"
                       data-clear-helper
                     ></textarea>
                   </label>
@@ -351,7 +356,7 @@
                       <input
                         name="emergency_contact_1_name"
                         type="text"
-                        placeholder="Jane Doe"
+                        placeholder="Emergency contact name"
                         data-clear-helper
                       />
                     </label>
@@ -364,7 +369,7 @@
                       <input
                         name="emergency_contact_1_phone_local"
                         type="tel"
-                        placeholder="555 123 4567"
+                        placeholder="555-555-5555"
                         inputmode="tel"
                         data-clear-helper
                       />
@@ -380,7 +385,7 @@
                       <input
                         name="emergency_contact_2_name"
                         type="text"
-                        placeholder="Mike Doe"
+                        placeholder="Second contact name"
                         data-clear-helper
                       />
                     </label>
@@ -393,7 +398,7 @@
                       <input
                         name="emergency_contact_2_phone_local"
                         type="tel"
-                        placeholder="555 987 6543"
+                        placeholder="555-555-5555"
                         inputmode="tel"
                         data-clear-helper
                       />
@@ -417,20 +422,6 @@
                   </div>
                 </div>
 
-                <div class="action-panel">
-                  <p class="action-copy" data-i18n="generatedUrlLabel">
-                    When you generate the profile, the secure link is sent to the administrator email used for NFC recording.
-                  </p>
-                  <div class="action-buttons">
-                    <button class="button button-primary" type="submit" data-i18n="saveProfile">
-                      Generate profile
-                    </button>
-                    <button class="button button-secondary" type="button" data-action="save-family" data-i18n="saveFamily">
-                      Generate another family member
-                    </button>
-                  </div>
-                </div>
-
                 <div class="service-note consent-note">
                   <p class="service-note-title" data-i18n="agreementsTitle">Before generating the profile</p>
                   <label class="consent-check">
@@ -443,6 +434,20 @@
                     <button type="button" class="text-link-button" data-legal-open="terms" data-i18n="legalTermsLink">View service terms</button>
                     <button type="button" class="text-link-button" data-legal-open="privacy" data-i18n="legalPrivacyLink">View privacy & consent</button>
                     <button type="button" class="text-link-button" data-legal-open="disclaimer" data-i18n="legalDisclaimerLink">View emergency disclaimer</button>
+                  </div>
+                </div>
+
+                <div class="action-panel">
+                  <p class="action-copy" data-i18n="generatedUrlLabel">
+                    When you generate the profile, the secure link is sent to the administrator email used for NFC recording.
+                  </p>
+                  <div class="action-buttons">
+                    <button class="button button-primary" type="submit" data-i18n="saveProfile">
+                      Generate profile
+                    </button>
+                    <button class="button button-secondary" type="button" data-action="save-family" data-i18n="saveFamily">
+                      Generate another family member
+                    </button>
                   </div>
                 </div>
 
@@ -620,8 +625,8 @@
           x
         </button>
         <p class="success-kicker" data-i18n="errorKicker">Error</p>
-        <h2 id="error-title" data-i18n="errorTitle">We could not generate the profile</h2>
-        <p class="success-copy" data-i18n="errorText">
+        <h2 id="error-title" data-i18n="errorTitle" data-error-title>We could not generate the profile</h2>
+        <p class="success-copy" data-i18n="errorText" data-error-text>
           The profile could not be saved. Review the technical message below and try again.
         </p>
         <div class="success-url-box error-detail-box" data-error-detail>Unknown error</div>

@@ -1,35 +1,46 @@
 const uiTranslations = {
   en: {
     brandTagline: "Medical profile access",
-    primaryBuilderAction: "Open Activation Form",
+    primaryBuilderAction: "Create Profile",
     languageLabel: "Language",
-    overviewKicker: "Medical form",
-    overviewTitle: "This page explains the medical form that will be linked to the NFC.",
+    overviewKicker: "Medical NFC",
+    overviewTitle: "A medical NFC that speaks for you when every second matters.",
     overviewText:
-      "This page explains the medical form that is completed before the NFC is programmed. Use the private activation link for your profile to add emergency details, medical information, family contacts, and the language that should appear when the profile is scanned.",
-    overviewPrimary: "Open Private Activation",
-    whatYouWillFill: "What you will fill",
-    fillItem1: "Basic identity, blood type, age, height, and weight",
-    fillItem2: "Conditions, medical allergies, food allergies, medications, and devices",
-    fillItem3: "Emergency contacts for family or caregivers",
-    fillItem4: "Optional link to the complete medical record",
+      "MyMedicalNFC.com connects a bracelet, tag, card, or keychain to a private medical profile that can be opened in seconds. It can carry critical conditions, allergies, medications and doses, devices, emergency contacts, and additional health details in a cleaner format than a traditional engraved tag.",
+    overviewPrimary: "Create profile now",
+    overviewSecondary: "Open private activation",
+    whatYouWillFill: "What this medical NFC can carry",
+    fillItem1: "Name, blood type, age, weight, height, and organ donor status",
+    fillItem2: "Conditions, medical allergies, food allergies, medications, doses, and devices",
+    fillItem3: "Emergency contacts for family, caregivers, or parents",
+    fillItem4: "Doctor, clinic, insurance, location details, and optional full record link",
+    benefit1Title: "Instant emergency access",
+    benefit1Text: "First responders can see more than a name and one condition when time is critical.",
+    benefit2Title: "Real medication detail",
+    benefit2Text: "Store medications with doses, allergies, and devices in a format that is easier to read.",
+    benefit3Title: "Multilingual profile",
+    benefit3Text: "The medical page can be viewed in multiple languages for travel, family, and caregivers.",
+    benefit4Title: "Useful beyond the hospital",
+    benefit4Text: "Helpful for school, sports, senior care, daily life, road trips, and outdoor activities.",
     howItWorksKicker: "How it works",
-    howItWorksTitle: "What happens after the form is completed",
-    howStep1: "Complete the medical profile form.",
-    howStep2: "Save the profile and generate the secure URL.",
-    howStep3: "The administrator receives that URL by email.",
-    howStep4: "That URL is the one recorded in the NFC tag.",
-    importantKicker: "Important",
-    importantTitle: "The medical data is not written directly to the NFC chip",
-    importantText:
-      "The chip stores only a secure web address. That keeps the information easier to update and better organized for future changes.",
+    howItWorksTitle: "A simple flow from setup to emergency access",
+    howStep1: "Create the medical profile directly or send a private activation link to the client.",
+    howStep2: "Complete the health information once and review the emergency page preview.",
+    howStep3: "The secure link becomes the medical page connected to the bracelet, keychain, or card.",
+    howStep4: "When the NFC is scanned, the profile opens with emergency details ready to read.",
+    useCasesKicker: "Ideal for",
+    useCasesTitle: "A strong fit for families, seniors, chronic conditions, and active lifestyles",
+    useCase1: "Diabetes, epilepsy, heart conditions, severe allergies, and medication-dependent patients",
+    useCase2: "Children, older adults, caregivers, and family members who need faster emergency context",
+    useCase3: "Athletes, travelers, drivers, hikers, and anyone who wants critical information always attached",
+    useCase4: "People who want something cleaner, more complete, and more useful than a basic engraved bracelet",
     serviceKicker: "Future changes",
-    serviceTitle: "Remote profile updates can be requested later",
+    serviceTitle: "The profile can be reopened later if medical information changes",
     serviceText:
-      "If you want to reopen a saved profile to edit it online later, that service has an additional cost.",
-    serviceItem1: "The online medical profile can be updated remotely.",
-    serviceItem2: "The physical NFC information does not change until the administrator has the chip in hand.",
-    serviceItem3: "Ask for a reopen request whenever the medical information changes.",
+      "If you want online access reopened later for remote edits, that service may have an additional cost.",
+    serviceItem1: "Useful when medications, doses, diagnoses, or emergency contacts change.",
+    serviceItem2: "The online page can be updated first, even if the physical NFC piece is not in hand yet.",
+    serviceItem3: "The physical NFC is only reprogrammed when the administrator has the bracelet, tag, or keychain.",
     pendingKicker: "Pending profile",
     pendingTitle: "This NFC profile is still waiting for activation",
     pendingText:
@@ -94,35 +105,46 @@ const uiTranslations = {
   },
   es: {
     brandTagline: "Acceso al perfil medico",
-    primaryBuilderAction: "Abrir activacion privada",
+    primaryBuilderAction: "Crear perfil",
     languageLabel: "Idioma",
-    overviewKicker: "Formulario medico",
-    overviewTitle: "Esta pagina explica el formulario medico que estara ligado al NFC.",
+    overviewKicker: "Medical NFC",
+    overviewTitle: "Un Medical NFC que habla por ti cuando cada segundo importa.",
     overviewText:
-      "Esta pagina explica el formulario medico que se completa antes de grabar el NFC. Usa el enlace privado de activacion de tu perfil para capturar la informacion de emergencia, los datos medicos, los contactos familiares y el idioma en que se vera el perfil al escanearlo.",
-    overviewPrimary: "Abrir activacion privada",
-    whatYouWillFill: "Lo que vas a llenar",
-    fillItem1: "Identidad basica, tipo de sangre, edad, estatura y peso",
-    fillItem2: "Condiciones, alergias medicas, alergias alimentarias, medicamentos y dispositivos",
-    fillItem3: "Contactos de emergencia para familia o cuidadores",
-    fillItem4: "Enlace opcional al expediente medico completo",
+      "MyMedicalNFC.com conecta una pulsera, llavero, tarjeta o placa a un perfil medico privado que puede abrirse en segundos. Puede llevar condiciones criticas, alergias, medicamentos con dosis, dispositivos, contactos de emergencia y datos adicionales de salud en un formato mucho mas util que una placa grabada tradicional.",
+    overviewPrimary: "Crear perfil ahora",
+    overviewSecondary: "Abrir activacion privada",
+    whatYouWillFill: "Lo que puede llevar este Medical NFC",
+    fillItem1: "Nombre, tipo de sangre, edad, peso, estatura y estado de donador de organos",
+    fillItem2: "Condiciones, alergias medicas, alergias alimentarias, medicamentos, dosis y dispositivos",
+    fillItem3: "Contactos de emergencia para familia, cuidadores o padres",
+    fillItem4: "Medico, clinica, seguro, datos de ubicacion y enlace opcional al expediente completo",
+    benefit1Title: "Acceso inmediato en emergencia",
+    benefit1Text: "Los rescatistas pueden ver mucho mas que un nombre y una condicion cuando el tiempo es critico.",
+    benefit2Title: "Detalle real de medicamentos",
+    benefit2Text: "Guarda medicamentos con dosis, alergias y dispositivos en un formato mucho mas claro.",
+    benefit3Title: "Perfil multilenguaje",
+    benefit3Text: "La pagina medica puede verse en varios idiomas para viajes, familia y cuidadores.",
+    benefit4Title: "Util para mas que el hospital",
+    benefit4Text: "Ayuda en escuela, deportes, cuidado senior, vida diaria, carretera y actividades al aire libre.",
     howItWorksKicker: "Como funciona",
-    howItWorksTitle: "Que sucede despues de completar el formulario",
-    howStep1: "Completa el formulario del perfil medico.",
-    howStep2: "Guarda el perfil y genera el URL seguro.",
-    howStep3: "El administrador recibe ese URL por correo.",
-    howStep4: "Ese URL es el que se graba en el chip NFC.",
-    importantKicker: "Importante",
-    importantTitle: "Los datos medicos no se escriben directamente en el chip NFC",
-    importantText:
-      "El chip guarda solo una direccion web segura. Eso hace que la informacion sea mas facil de actualizar y mejor organizada para cambios futuros.",
-    serviceKicker: "Cambios futuros",
-    serviceTitle: "Las actualizaciones remotas del perfil se pueden solicitar despues",
+    howItWorksTitle: "Un flujo simple desde el llenado hasta el acceso de emergencia",
+    howStep1: "Crea el perfil medico directamente o envia un enlace privado de activacion al cliente.",
+    howStep2: "Llena la informacion de salud una sola vez y revisa el preview de emergencia.",
+    howStep3: "El enlace seguro se convierte en la pagina medica ligada a la pulsera, tarjeta o llavero.",
+    howStep4: "Cuando se escanea el NFC, el perfil abre con la informacion de emergencia lista para leerse.",
+    useCasesKicker: "Ideal para",
+    useCasesTitle: "Muy fuerte para familias, adultos mayores, condiciones cronicas y estilos de vida activos",
+    useCase1: "Diabetes, epilepsia, cardiopatias, alergias severas y pacientes dependientes de medicamentos",
+    useCase2: "Ninos, adultos mayores, cuidadores y familiares que necesitan contexto rapido en una emergencia",
+    useCase3: "Deportistas, viajeros, conductores, senderistas y personas que quieren llevar informacion critica siempre encima",
+    useCase4: "Quien busca algo mas limpio, mas completo y mucho mas util que una placa grabada basica",
+    serviceKicker: "Gestion del perfil",
+    serviceTitle: "El perfil puede reabrirse despues si la informacion medica cambia",
     serviceText:
-      "Si mas adelante quieres reabrir un perfil guardado para editarlo en linea, ese servicio tiene un costo adicional.",
-    serviceItem1: "El perfil medico en linea se puede actualizar a distancia.",
-    serviceItem2: "La informacion fisica del NFC no cambia hasta que el administrador tenga el chip en la mano.",
-    serviceItem3: "Solicita la reapertura cuando cambie la informacion medica.",
+      "Si despues necesitas reabrir el acceso en linea para cambios remotos, ese servicio puede tener un costo adicional.",
+    serviceItem1: "Sirve cuando cambian medicamentos, dosis, diagnosticos o contactos de emergencia.",
+    serviceItem2: "La pagina en linea puede actualizarse primero, incluso si la pieza fisica aun no esta en mano.",
+    serviceItem3: "El NFC fisico solo se reprograma cuando el administrador tiene la pulsera, placa o llavero.",
     pendingKicker: "Perfil pendiente",
     pendingTitle: "Este perfil NFC todavia espera activacion",
     pendingText:
@@ -624,37 +646,35 @@ const languageVisuals = {
   zh: { label: "Chinese", flagClass: "flag-zh" }
 };
 
-const staticUiLanguages = new Set(Object.keys(uiTranslations));
+const staticUiLanguages = new Set(["en", "es"]);
 
 const demoProfile = {
   default_language: "en",
-  full_name: "John Doe",
-  age: "29",
-  weight: "68 kg / 150 lb",
-  height: "172 cm / 5'8\"",
-  organ_donor: true,
-  conditions_en: "Type 1 Diabetes",
-  conditions_es: "Diabetes Tipo 1",
-  allergies_en: "Penicillin",
-  allergies_es: "Penicilina",
-  food_allergies_en: "Peanuts",
-  food_allergies_es: "Cacahuates",
-  medications_en: "Insulin glargine 12 units nightly",
-  medications_es: "Insulina glargina 12 unidades por la noche",
-  devices_en: "Insulin Pump",
-  devices_es: "Bomba de insulina",
-  notes_en: "Patient uses insulin\nRisk of hypoglycemia\nMay require immediate glucose",
-  notes_es: "Usa insulina\nRiesgo de hipoglucemia\nPuede requerir glucosa inmediata",
-  blood_type: "O+",
-  doctor: "Dr. Smith",
-  clinic: "XYZ Medical Center",
-  insurance: "BlueCross",
-  emergency_contact_1_name: "Jane Doe",
-  emergency_contact_1_phone: "+1 (555) 123-4567",
-  emergency_contact_1_whatsapp: "15551234567",
-  emergency_contact_2_name: "Mike Doe",
-  emergency_contact_2_phone: "+1 (555) 987-6543",
-  emergency_contact_2_whatsapp: "15559876543"
+  full_name: "",
+  age: "",
+  weight: "",
+  height: "",
+  organ_donor: "",
+  conditions_en: "",
+  conditions_es: "",
+  allergies_en: "",
+  allergies_es: "",
+  food_allergies_en: "",
+  food_allergies_es: "",
+  medications_en: "",
+  medications_es: "",
+  devices_en: "",
+  devices_es: "",
+  notes_en: "",
+  notes_es: "",
+  blood_type: "",
+  doctor: "",
+  clinic: "",
+  insurance: "",
+  emergency_contact_1_name: "",
+  emergency_contact_1_phone: "",
+  emergency_contact_2_name: "",
+  emergency_contact_2_phone: ""
 };
 
 const config = window.NFC_MEDICO_CONFIG || {};
@@ -668,13 +688,13 @@ const runtimeTitle = document.querySelector("[data-runtime-title]");
 const runtimeMessage = document.querySelector("[data-runtime-message]");
 const recordLink = document.querySelector('[data-action="record-link"]');
 const callLink = document.querySelector('[data-action="call-primary"]');
-const whatsappLink = document.querySelector('[data-action="whatsapp-primary"]');
 const shareLocationButton = document.querySelector('[data-action="share-location"]');
 const requestChangesLink = document.querySelector('[data-action="request-changes"]');
 const overviewView = document.querySelector('[data-view="overview"]');
 const profileView = document.querySelector('[data-view="profile"]');
 const pendingPanel = document.querySelector("[data-pending-panel]");
 const profileGrid = document.querySelector(".profile-grid");
+const contactCards = document.querySelectorAll("[data-contact-card]");
 
 const state = {
   lang: detectInitialLanguage(),
@@ -880,12 +900,47 @@ function resolveNotes(record) {
     .filter(Boolean);
 }
 
-function sanitizeTel(phone) {
-  return cleanText(phone).replace(/[^\d+]/g, "");
+function digitsOnly(value) {
+  return cleanText(value).replace(/\D/g, "");
 }
 
-function sanitizeWhatsapp(phone) {
-  return cleanText(phone).replace(/\D/g, "");
+function formatLocalPhone(value) {
+  const digits = digitsOnly(value);
+  if (!digits) {
+    return "";
+  }
+  if (digits.length <= 3) {
+    return digits;
+  }
+  if (digits.length <= 6) {
+    return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+  }
+  if (digits.length <= 10) {
+    return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
+  }
+  return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6, 10)} ${digits.slice(10)}`;
+}
+
+function formatPhone(value, fallbackCode = "+1") {
+  const normalized = cleanText(value);
+  if (!normalized) {
+    return "";
+  }
+
+  if (normalized.startsWith("+")) {
+    const compact = normalized.replace(/[().\s-]+/g, "");
+    const match = compact.match(/^(\+\d{1,3})(\d+)$/);
+    if (match) {
+      return `${match[1]} ${formatLocalPhone(match[2])}`.trim();
+    }
+    return normalized;
+  }
+
+  return `${fallbackCode} ${formatLocalPhone(normalized)}`.trim();
+}
+
+function sanitizeTel(phone) {
+  return cleanText(phone).replace(/[^\d+]/g, "");
 }
 
 function hasSupabaseConfig() {
@@ -1093,9 +1148,9 @@ async function renderProfile() {
     city: cleanText(record.city) || "N/A",
     postalCode: cleanText(record.postal_code) || "N/A",
     contact1Name: cleanText(record.emergency_contact_1_name),
-    contact1Phone: cleanText(record.emergency_contact_1_phone),
+    contact1Phone: formatPhone(record.emergency_contact_1_phone),
     contact2Name: cleanText(record.emergency_contact_2_name),
-    contact2Phone: cleanText(record.emergency_contact_2_phone)
+    contact2Phone: formatPhone(record.emergency_contact_2_phone)
   };
 
   fieldNodes.forEach((node) => {
@@ -1108,14 +1163,16 @@ async function renderProfile() {
     .map((item) => item.replace(/^[-*]\s*/, "").trim())
     .filter(Boolean);
   noteNodes.forEach((node) => {
-    node.textContent = notes[Number(node.dataset.note)] || "";
+    const index = Number(node.dataset.note);
+    node.textContent = notes[index] || (index === 0 ? "-" : "");
   });
 
   callLink.href = values.contact1Phone ? `tel:${sanitizeTel(values.contact1Phone)}` : "#";
-  whatsappLink.hidden = !record.emergency_contact_1_whatsapp;
-  whatsappLink.href = record.emergency_contact_1_whatsapp
-    ? `https://wa.me/${sanitizeWhatsapp(record.emergency_contact_1_whatsapp)}`
-    : "#";
+  contactCards.forEach((card, index) => {
+    const phone = index === 0 ? values.contact1Phone : values.contact2Phone;
+    card.href = phone ? `tel:${sanitizeTel(phone)}` : "#";
+    card.classList.toggle("is-disabled", !phone);
+  });
 
   const hasRecord = Boolean(cleanText(record.full_record_url));
   recordLink.classList.toggle("is-hidden", !hasRecord);
@@ -1154,16 +1211,15 @@ async function loadProfile() {
   }
 
   overviewView.classList.add("is-hidden");
-  profileView.classList.remove("is-hidden");
+  profileView.classList.add("is-hidden");
   document.body.classList.add("profile-mode");
 
   if (!hasSupabaseConfig()) {
     state.profile = demoProfile;
     await renderProfile();
+    profileView.classList.remove("is-hidden");
     return;
   }
-
-  showStatus("loading", "statusLoadingTitle", "statusLoadingMessage");
 
   try {
     const { data, error } = await getClient()
@@ -1177,9 +1233,19 @@ async function loadProfile() {
     }
 
     state.profile = data;
+    const explicitLanguage = new URL(window.location.href).searchParams.get("lang");
+    if (!explicitLanguage) {
+      const profileLanguage = cleanText(data.default_language || "en").slice(0, 2).toLowerCase();
+      if (languageOptions[profileLanguage]) {
+        state.lang = profileLanguage;
+        root.lang = state.lang;
+        applyCopy();
+      }
+    }
     state.baseStatus = null;
     renderStatus();
     await renderProfile();
+    profileView.classList.remove("is-hidden");
   } catch (error) {
     console.warn("Profile load failed", error);
     showStatus("error", "statusErrorTitle", "statusErrorMessage");
@@ -1190,6 +1256,7 @@ async function loadProfile() {
       full_name: "Medical profile"
     };
     await renderProfile();
+    profileView.classList.remove("is-hidden");
   }
 }
 

@@ -38,6 +38,45 @@ function cleanText(value) {
   return String(value ?? "").replace(/\s+/g, " ").trim();
 }
 
+function digitsOnly(value) {
+  return cleanText(value).replace(/\D/g, "");
+}
+
+function formatLocalPhone(value) {
+  const digits = digitsOnly(value);
+  if (!digits) {
+    return "";
+  }
+  if (digits.length <= 3) {
+    return digits;
+  }
+  if (digits.length <= 6) {
+    return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+  }
+  if (digits.length <= 10) {
+    return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
+  }
+  return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6, 10)} ${digits.slice(10)}`;
+}
+
+function formatPhone(value, fallbackCode = "+1") {
+  const normalized = cleanText(value);
+  if (!normalized) {
+    return "";
+  }
+
+  if (normalized.startsWith("+")) {
+    const compact = normalized.replace(/[().\s-]+/g, "");
+    const match = compact.match(/^(\+\d{1,3})(\d+)$/);
+    if (match) {
+      return `${match[1]} ${formatLocalPhone(match[2])}`.trim();
+    }
+    return normalized;
+  }
+
+  return `${fallbackCode} ${formatLocalPhone(normalized)}`.trim();
+}
+
 function formatDate(value) {
   if (!value) {
     return "Sin fecha";
@@ -188,7 +227,7 @@ function renderLatestResult(result) {
   resultNodes.publicUrl.textContent = cleanText(result.profile?.public_url || result.publicUrl);
   resultNodes.activationUrl.textContent = cleanText(result.profile?.activation_url || result.activationUrl || result.activationToken);
   resultNodes.clientEmail.textContent = cleanText(result.profile?.client_email || result.clientEmail) || "-";
-  resultNodes.clientPhone.textContent = cleanText(result.profile?.client_phone || result.clientPhone) || "-";
+  resultNodes.clientPhone.textContent = formatPhone(result.profile?.client_phone || result.clientPhone) || "-";
 }
 
 function updateStats(profiles) {
@@ -215,12 +254,13 @@ function buildQueueCard(profile) {
   const hybridSummary = cleanText(profile.hybrid_summary);
   const canMarkProgrammed = ["ready_to_program", "active"].includes(profile.workflow_status);
   const reopenLabel = profile.workflow_status === "pending" ? "Nuevo link privado" : "Reabrir / nuevo link";
+  const secondaryLine = cleanText(profile.client_email) || formatPhone(profile.client_phone) || cleanText(profile.public_slug);
 
   wrapper.innerHTML = `
     <div class="queue-card-head">
       <div>
-        <h3>${cleanText(profile.full_name || profile.pending_label || profile.public_slug)}</h3>
-        <p>${cleanText(profile.chip_reference || profile.public_slug || "Sin referencia")}</p>
+        <h3>${cleanText(profile.full_name || profile.public_slug)}</h3>
+        <p>${secondaryLine || "Perfil medico NFC"}</p>
       </div>
       <span class="queue-chip ${statusClass}">${statusLabel}</span>
     </div>
@@ -241,7 +281,7 @@ function buildQueueCard(profile) {
         </div>
         <div class="queue-meta-row">
           <span>Telefono cliente</span>
-          <strong>${cleanText(profile.client_phone) || "Sin telefono"}</strong>
+          <strong>${formatPhone(profile.client_phone) || "Sin telefono"}</strong>
         </div>
         <div class="queue-meta-row">
           <span>Actualizado</span>
@@ -308,9 +348,7 @@ function getFilteredProfiles() {
 
     const haystack = [
       profile.full_name,
-      profile.pending_label,
       profile.public_slug,
-      profile.chip_reference,
       profile.client_email,
       profile.client_phone
     ]
@@ -371,11 +409,9 @@ provisionForm.addEventListener("submit", async (event) => {
     setStatus("loading", "Generando link", "Creando el perfil pendiente y el acceso privado del cliente.");
     const result = await invokeAdmin("provision", {
       fullName: provisionForm.elements.full_name.value,
-      pendingLabel: provisionForm.elements.pending_label.value,
       defaultLanguage: provisionForm.elements.default_language.value,
-      chipReference: provisionForm.elements.chip_reference.value,
       clientEmail: provisionForm.elements.client_email.value,
-      clientPhone: provisionForm.elements.client_phone.value
+      clientPhone: formatPhone(provisionForm.elements.client_phone.value)
     });
 
     renderLatestResult(result);
@@ -517,6 +553,9 @@ queueList.addEventListener("click", async (event) => {
 function init() {
   authForm.elements.admin_token.value = state.adminToken;
   syncProvisionDefaults();
+  provisionForm.elements.client_phone.addEventListener("blur", () => {
+    provisionForm.elements.client_phone.value = formatPhone(provisionForm.elements.client_phone.value);
+  });
 
   if (state.adminToken) {
     refreshQueue().catch((error) => {

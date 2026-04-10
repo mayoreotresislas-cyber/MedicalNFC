@@ -108,6 +108,8 @@ const setupTranslations = {
     errorKicker: "Error",
     errorTitle: "We could not generate the profile",
     errorText: "The profile could not be saved. Review the technical message below and try again.",
+    validationPopupText: "Please complete the required information before generating the profile.",
+    termsPopupText: "Review the legal links and accept the agreements before generating the profile.",
     closeError: "Close",
     closeSuccess: "Done",
     statusReadyTitle: "Ready to generate",
@@ -152,6 +154,10 @@ const setupTranslations = {
     bloodPlaceholder: "Select blood type",
     agreementsTitle: "Before generating the profile",
     agreementsAccept: "I accept the service terms, privacy consent, and emergency disclaimer.",
+    entryComposerPlaceholder: "Type one item and press Enter",
+    entryComposerHint: "Choose a suggestion or add your own. Each item is saved on its own line.",
+    entryComposerAdd: "Add",
+    entryComposerEmpty: "No items added yet.",
     legalTermsLink: "View service terms",
     legalPrivacyLink: "View privacy & consent",
     legalDisclaimerLink: "View emergency disclaimer",
@@ -268,6 +274,8 @@ const setupTranslations = {
     errorKicker: "Error",
     errorTitle: "No pudimos generar el perfil",
     errorText: "No se pudo guardar el perfil. Revisa el mensaje tecnico de abajo e intenta de nuevo.",
+    validationPopupText: "Completa la informacion obligatoria antes de generar el perfil.",
+    termsPopupText: "Revisa los enlaces legales y acepta los acuerdos antes de generar el perfil.",
     closeError: "Cerrar",
     closeSuccess: "Listo",
     statusReadyTitle: "Listo para generar",
@@ -313,6 +321,10 @@ const setupTranslations = {
     bloodPlaceholder: "Selecciona el tipo de sangre",
     agreementsTitle: "Antes de generar el perfil",
     agreementsAccept: "Acepto los terminos del servicio, el consentimiento de privacidad y el disclaimer de emergencia.",
+    entryComposerPlaceholder: "Escribe un elemento y presiona Enter",
+    entryComposerHint: "Selecciona una sugerencia o agrega la tuya. Cada elemento se guarda en su propio renglon.",
+    entryComposerAdd: "Agregar",
+    entryComposerEmpty: "Aun no hay elementos agregados.",
     legalTermsLink: "Ver terminos del servicio",
     legalPrivacyLink: "Ver privacidad y consentimiento",
     legalDisclaimerLink: "Ver disclaimer de emergencia",
@@ -412,6 +424,29 @@ const countryCodes = [
 ];
 
 const medicalFieldKeys = ["conditions", "allergies", "food_allergies", "medications", "devices", "notes"];
+const multiEntryFields = ["conditions", "allergies", "food_allergies", "medications", "devices"];
+const multiEntrySuggestions = {
+  conditions: {
+    en: ["Type 1 Diabetes", "Type 2 Diabetes", "Epilepsy", "Asthma", "Hypertension", "Heart disease"],
+    es: ["Diabetes tipo 1", "Diabetes tipo 2", "Epilepsia", "Asma", "Hipertension", "Cardiopatia"]
+  },
+  allergies: {
+    en: ["Penicillin", "Sulfa drugs", "Latex", "Aspirin", "Ibuprofen", "Contrast dye"],
+    es: ["Penicilina", "Sulfas", "Latex", "Aspirina", "Ibuprofeno", "Medio de contraste"]
+  },
+  food_allergies: {
+    en: ["Peanuts", "Shellfish", "Dairy", "Eggs", "Soy", "Tree nuts"],
+    es: ["Cacahuates", "Mariscos", "Lacteos", "Huevos", "Soya", "Nueces"]
+  },
+  medications: {
+    en: ["Insulin glargine 12 units nightly", "Metformin 500 mg twice daily", "EpiPen 0.3 mg as needed", "Levothyroxine 50 mcg daily"],
+    es: ["Insulina glargina 12 unidades por la noche", "Metformina 500 mg dos veces al dia", "EpiPen 0.3 mg segun sea necesario", "Levotiroxina 50 mcg al dia"]
+  },
+  devices: {
+    en: ["Insulin pump", "Pacemaker", "CPAP machine", "Hearing aid", "Wheelchair", "Glucose monitor"],
+    es: ["Bomba de insulina", "Marcapasos", "Maquina CPAP", "Aparato auditivo", "Silla de ruedas", "Monitor de glucosa"]
+  }
+};
 const config = window.NFC_MEDICO_CONFIG || {};
 const root = document.documentElement;
 const pageMode = document.body.dataset.pageMode || "setup";
@@ -427,6 +462,8 @@ const savingOverlay = document.querySelector("[data-saving-overlay]");
 const successModal = document.querySelector("[data-success-modal]");
 const successUrlNode = document.querySelector("[data-success-url]");
 const errorModal = document.querySelector("[data-error-modal]");
+const errorTitleNode = document.querySelector("[data-error-title]");
+const errorTextNode = document.querySelector("[data-error-text]");
 const errorDetailNode = document.querySelector("[data-error-detail]");
 const legalModal = document.querySelector("[data-legal-modal]");
 const legalTitleNode = document.querySelector("[data-legal-title]");
@@ -439,6 +476,7 @@ const activationGate = document.querySelector("[data-activation-gate]");
 const activationBuilder = document.querySelector("[data-activation-builder]");
 const tokenEntryForm = document.querySelector("[data-token-entry-form]");
 const tokenInput = document.querySelector("[data-token-input]");
+const multiEntrySources = document.querySelectorAll("[data-entry-source]");
 
 const state = {
   uiLang: detectInitialLanguage(),
@@ -467,7 +505,8 @@ const state = {
     pendingKey: "",
     pendingPromise: null,
     debounceTimer: null
-  }
+  },
+  multiEntryControllers: {}
 };
 
 function detectInitialLanguage() {
@@ -806,6 +845,7 @@ function clearDraftFields(preserveContacts = false) {
   }
 
   state.slugTouched = false;
+  syncAllMultiEntrySources();
 }
 
 function setBloodPlaceholder(copy = getSetupCopy()) {
@@ -873,34 +913,232 @@ function formatOrganDonorValue(value, copy = getSetupCopy()) {
   return "-";
 }
 
+function digitsOnly(value) {
+  return cleanText(value).replace(/\D/g, "");
+}
+
+function formatLocalPhone(value) {
+  const digits = digitsOnly(value);
+  if (!digits) {
+    return "";
+  }
+  if (digits.length <= 3) {
+    return digits;
+  }
+  if (digits.length <= 6) {
+    return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+  }
+  if (digits.length <= 10) {
+    return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
+  }
+  return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6, 10)} ${digits.slice(10)}`;
+}
+
 function buildPhone(code, local) {
   const prefix = cleanText(code || "+1");
-  const number = cleanText(local);
+  const number = formatLocalPhone(local);
   return number ? `${prefix} ${number}`.trim() : "";
 }
 
-function buildWhatsappNumber(code, local) {
-  return buildPhone(code, local).replace(/\D/g, "");
-}
-
 function parsePhone(phone) {
-  const normalized = cleanText(phone).replace(/\s+/g, " ").trim();
+  const normalized = cleanText(phone);
   if (!normalized) {
     return { countryCode: "+1", localNumber: "" };
   }
 
+  const compact = normalized.replace(/[().\s-]+/g, "");
   const match = [...countryCodes]
     .sort((left, right) => right.value.length - left.value.length)
-    .find((option) => normalized.startsWith(option.value));
+    .find((option) => compact.startsWith(option.value.replace("+", "")) || normalized.startsWith(option.value));
 
   if (!match) {
-    return { countryCode: "+1", localNumber: normalized };
+    return { countryCode: "+1", localNumber: formatLocalPhone(normalized) };
   }
 
   return {
     countryCode: match.value,
-    localNumber: normalized.slice(match.value.length).trim()
+    localNumber: formatLocalPhone(compact.slice(match.value.replace("+", "").length))
   };
+}
+
+function normalizePhoneDisplay(phone) {
+  const parsed = parsePhone(phone);
+  return buildPhone(parsed.countryCode, parsed.localNumber);
+}
+
+function getSuggestionLanguage() {
+  return normalizeProfileLanguage(form?.elements?.default_language?.value || "en") === "es" ? "es" : "en";
+}
+
+function parseMultiEntryValue(value) {
+  return String(value ?? "")
+    .split(/\r?\n+/)
+    .map((item) => item.replace(/^[-*]\s*/, "").trim())
+    .filter(Boolean);
+}
+
+function syncMultiEntryTextarea(controller, triggerInput = true) {
+  controller.textarea.value = controller.items.join("\n");
+  if (triggerInput) {
+    controller.textarea.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+}
+
+function renderMultiEntryList(controller) {
+  const copy = getSetupCopy(state.uiLang);
+  controller.list.innerHTML = "";
+
+  if (!controller.items.length) {
+    const empty = document.createElement("p");
+    empty.className = "entry-empty";
+    empty.textContent = copy.entryComposerEmpty || setupTranslations.en.entryComposerEmpty;
+    controller.list.appendChild(empty);
+    syncMultiEntryTextarea(controller);
+    return;
+  }
+
+  controller.items.forEach((item, index) => {
+    const row = document.createElement("div");
+    row.className = "entry-item";
+    row.innerHTML = `
+      <span>${item}</span>
+      <button type="button" data-remove-index="${index}">x</button>
+    `;
+    row.querySelector("button").addEventListener("click", () => {
+      controller.items.splice(index, 1);
+      renderMultiEntryList(controller);
+    });
+    controller.list.appendChild(row);
+  });
+
+  syncMultiEntryTextarea(controller);
+}
+
+function renderMultiEntrySuggestions(controller) {
+  const locale = getSuggestionLanguage();
+  const suggestions = multiEntrySuggestions[controller.name]?.[locale] || multiEntrySuggestions[controller.name]?.en || [];
+  controller.datalist.innerHTML = suggestions.map((item) => `<option value="${item}"></option>`).join("");
+  controller.quick.innerHTML = "";
+
+  suggestions.slice(0, 4).forEach((item) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "entry-suggestion";
+    button.textContent = item;
+    button.addEventListener("click", () => {
+      if (!controller.items.includes(item)) {
+        controller.items.push(item);
+        renderMultiEntryList(controller);
+      }
+      controller.input.value = "";
+      controller.input.focus();
+    });
+    controller.quick.appendChild(button);
+  });
+}
+
+function addMultiEntryItem(controller, value) {
+  const item = cleanText(value);
+  if (!item) {
+    return;
+  }
+  if (!controller.items.includes(item)) {
+    controller.items.push(item);
+    renderMultiEntryList(controller);
+  }
+  controller.input.value = "";
+}
+
+function refreshMultiEntryComponents() {
+  Object.values(state.multiEntryControllers).forEach((controller) => {
+    const copy = getSetupCopy(state.uiLang);
+    controller.input.placeholder = copy.entryComposerPlaceholder || setupTranslations.en.entryComposerPlaceholder;
+    controller.addButton.textContent = copy.entryComposerAdd || setupTranslations.en.entryComposerAdd;
+    controller.hint.textContent = copy.entryComposerHint || setupTranslations.en.entryComposerHint;
+    renderMultiEntrySuggestions(controller);
+    renderMultiEntryList(controller);
+  });
+}
+
+function syncAllMultiEntrySources() {
+  Object.values(state.multiEntryControllers).forEach((controller) => {
+    controller.items = parseMultiEntryValue(controller.textarea.value);
+    renderMultiEntryList(controller);
+  });
+}
+
+function initMultiEntryFields() {
+  multiEntrySources.forEach((textarea) => {
+    const name = cleanText(textarea.name);
+    if (!multiEntryFields.includes(name) || state.multiEntryControllers[name]) {
+      return;
+    }
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "entry-builder";
+
+    const composer = document.createElement("div");
+    composer.className = "entry-composer";
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.className = "entry-input";
+
+    const datalist = document.createElement("datalist");
+    datalist.id = `${name}-suggestions`;
+    input.setAttribute("list", datalist.id);
+
+    const addButton = document.createElement("button");
+    addButton.type = "button";
+    addButton.className = "button button-secondary entry-add-button";
+
+    composer.appendChild(input);
+    composer.appendChild(addButton);
+
+    const quick = document.createElement("div");
+    quick.className = "entry-suggestions";
+
+    const hint = document.createElement("p");
+    hint.className = "entry-hint";
+
+    const list = document.createElement("div");
+    list.className = "entry-list";
+
+    wrapper.appendChild(composer);
+    wrapper.appendChild(datalist);
+    wrapper.appendChild(quick);
+    wrapper.appendChild(hint);
+    wrapper.appendChild(list);
+
+    textarea.hidden = true;
+    textarea.classList.add("entry-source");
+    textarea.insertAdjacentElement("afterend", wrapper);
+
+    const controller = {
+      name,
+      textarea,
+      wrapper,
+      input,
+      datalist,
+      quick,
+      hint,
+      list,
+      addButton,
+      items: parseMultiEntryValue(textarea.value)
+    };
+
+    addButton.addEventListener("click", () => addMultiEntryItem(controller, input.value));
+    input.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        addMultiEntryItem(controller, input.value);
+      }
+    });
+
+    state.multiEntryControllers[name] = controller;
+  });
+
+  refreshMultiEntryComponents();
 }
 
 function getFamilyTemplate() {
@@ -938,6 +1176,11 @@ function applyFamilyTemplate(template) {
   Object.entries(template).forEach(([key, value]) => {
     if (form.elements[key]) {
       form.elements[key].value = value || "";
+    }
+  });
+  ["emergency_contact_1_phone_local", "emergency_contact_2_phone_local"].forEach((name) => {
+    if (form.elements[name]) {
+      form.elements[name].value = formatLocalPhone(form.elements[name].value);
     }
   });
 }
@@ -1157,6 +1400,7 @@ function applyInterfaceCopy(copy) {
   setBloodPlaceholder(copy);
   setOrganDonorOptions(copy);
   setGenderOptions(copy);
+  refreshMultiEntryComponents();
   renderStatus();
 }
 
@@ -1356,12 +1600,8 @@ function buildPayload(raw, sourceFields, englishFields, spanishFields) {
     notes_es: spanishFields.notes,
     emergency_contact_1_name: raw.emergency_contact_1_name || null,
     emergency_contact_1_phone: buildPhone(raw.emergency_contact_1_country_code, raw.emergency_contact_1_phone_local) || null,
-    emergency_contact_1_whatsapp:
-      buildWhatsappNumber(raw.emergency_contact_1_country_code, raw.emergency_contact_1_phone_local) || null,
     emergency_contact_2_name: raw.emergency_contact_2_name || null,
     emergency_contact_2_phone: buildPhone(raw.emergency_contact_2_country_code, raw.emergency_contact_2_phone_local) || null,
-    emergency_contact_2_whatsapp:
-      buildWhatsappNumber(raw.emergency_contact_2_country_code, raw.emergency_contact_2_phone_local) || null,
     full_record_url: raw.full_record_url || null,
     terms_accepted_at: now,
     terms_version: "2026-04-09",
@@ -1395,6 +1635,13 @@ function populateForm(values) {
       }
     }
   });
+
+  ["emergency_contact_1_phone_local", "emergency_contact_2_phone_local"].forEach((name) => {
+    if (form.elements[name]) {
+      form.elements[name].value = formatLocalPhone(form.elements[name].value);
+    }
+  });
+  syncAllMultiEntrySources();
 }
 
 function setInterfaceLanguage(lang) {
@@ -1492,7 +1739,7 @@ function startFamilyProfile() {
   clearDraftFields(true);
   applyFamilyTemplate(template);
   showStatus("success", "statusReadyTitle", "statusReadyMessage");
-  form.elements.full_name.focus();
+  form.elements.first_name.focus();
   closeSuccessModal();
   renderPreview();
 }
@@ -1521,7 +1768,16 @@ function closeSuccessModal() {
   successModal.classList.add("is-hidden");
 }
 
-function openErrorModal(detail) {
+function openErrorModal(detail, options = {}) {
+  const copy = getSetupCopy(state.uiLang);
+  const titleKey = options.titleKey || "errorTitle";
+  const textKey = options.textKey || "errorText";
+  if (errorTitleNode) {
+    errorTitleNode.textContent = copy[titleKey] || setupTranslations.en[titleKey] || copy.errorTitle || setupTranslations.en.errorTitle;
+  }
+  if (errorTextNode) {
+    errorTextNode.textContent = copy[textKey] || setupTranslations.en[textKey] || copy.errorText || setupTranslations.en.errorText;
+  }
   errorDetailNode.textContent = detail || "Unknown error";
   errorModal.classList.remove("is-hidden");
 }
@@ -1685,12 +1941,20 @@ async function saveProfile(event) {
 
   if (!raw.full_name) {
     flashStatus("warning", "statusValidationTitle", "statusValidationMessage");
+    openErrorModal(getSetupCopy(state.uiLang).statusValidationMessage, {
+      titleKey: "statusValidationTitle",
+      textKey: "validationPopupText"
+    });
     renderPreview();
     return;
   }
 
   if (!raw.terms_accepted) {
     flashStatus("warning", "statusTermsTitle", "statusTermsMessage");
+    openErrorModal(getSetupCopy(state.uiLang).statusTermsMessage, {
+      titleKey: "statusTermsTitle",
+      textKey: "termsPopupText"
+    });
     return;
   }
 
@@ -1734,6 +1998,10 @@ async function saveProfile(event) {
       const emailOk = await notifyAdmin(raw.full_name, raw.public_slug, url);
 
       openSuccessModal(url, state.pendingMode);
+      if (state.pendingMode === "save" && !new URLSearchParams(window.location.search).get("slug")) {
+        clearDraftFields(false);
+        renderPreview();
+      }
       if (translationDegraded) {
         showStatus("warning", "statusTranslateErrorTitle", "statusTranslateErrorMessage");
       } else if (emailOk) {
@@ -1819,7 +2087,15 @@ function bindEvents() {
   });
 
   form.elements.default_language.addEventListener("change", () => {
+    refreshMultiEntryComponents();
     renderPreview();
+  });
+
+  ["emergency_contact_1_phone_local", "emergency_contact_2_phone_local"].forEach((name) => {
+    form.elements[name].addEventListener("blur", () => {
+      form.elements[name].value = formatLocalPhone(form.elements[name].value);
+      renderPreview();
+    });
   });
 
   form.addEventListener("submit", saveProfile);
@@ -1858,6 +2134,7 @@ async function init() {
   populateCountryCodes();
   initFlagSelects();
   setupHelperPlaceholders();
+  initMultiEntryFields();
   clearDraftFields(false);
   bindEvents();
   setInterfaceLanguage(state.uiLang);

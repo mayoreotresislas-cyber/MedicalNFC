@@ -28,8 +28,8 @@
         </a>
 
         <div class="toolbar">
-          <a class="toolbar-link toolbar-link-primary" href="/activate" data-i18n="primaryBuilderAction">
-            Open Activation Form
+          <a class="toolbar-link toolbar-link-primary" href="/setup.html" data-i18n="primaryBuilderAction">
+            Create Profile
           </a>
           <label class="language-select-wrap">
             <span data-i18n="languageLabel">Language</span>
@@ -60,66 +60,91 @@
         <section class="overview-view" data-view="overview">
           <div class="hero">
             <div class="hero-copy">
-              <p class="eyebrow" data-i18n="overviewKicker">Medical form</p>
-              <h1 data-i18n="overviewTitle">This page explains the medical form that will be linked to the NFC.</h1>
+              <p class="eyebrow" data-i18n="overviewKicker">Medical NFC</p>
+              <h1 data-i18n="overviewTitle">A medical NFC that speaks for you when every second matters.</h1>
               <p class="hero-text" data-i18n="overviewText">
-                This page is for the person who will complete the medical information before the NFC is programmed.
-                You will add one person's emergency details, extra medical information, family contacts, and the
-                language that should appear when the profile is scanned.
+                MyMedicalNFC.com connects a bracelet, tag, card, or keychain to a private medical profile that can be
+                opened in seconds. It can carry critical conditions, allergies, medications and doses, devices,
+                emergency contacts, and additional health details in a cleaner format than a traditional engraved tag.
               </p>
 
               <div class="hero-actions">
-                <a class="button button-primary" href="/activate" data-i18n="overviewPrimary">
-                  Open Private Activation
+                <a class="button button-primary" href="/setup.html" data-i18n="overviewPrimary">
+                  Create profile now
+                </a>
+                <a class="button button-light" href="/activate" data-i18n="overviewSecondary">
+                  Open private activation
                 </a>
               </div>
             </div>
 
             <aside class="hero-panel">
-              <p class="panel-label" data-i18n="whatYouWillFill">What you will fill</p>
+              <p class="panel-label" data-i18n="whatYouWillFill">What this medical NFC can carry</p>
               <ul class="feature-list">
-                <li data-i18n="fillItem1">Basic identity and blood type</li>
-                <li data-i18n="fillItem2">Conditions, allergies, medications, and devices</li>
-                <li data-i18n="fillItem3">Emergency contacts for family or caregivers</li>
-                <li data-i18n="fillItem4">Optional link to the complete medical record</li>
+                <li data-i18n="fillItem1">Name, blood type, age, weight, height, and organ donor status</li>
+                <li data-i18n="fillItem2">Conditions, medical allergies, food allergies, medications, doses, and devices</li>
+                <li data-i18n="fillItem3">Emergency contacts for family, caregivers, or parents</li>
+                <li data-i18n="fillItem4">Doctor, clinic, insurance, location details, and optional full record link</li>
               </ul>
             </aside>
           </div>
 
+          <section class="benefit-showcase">
+            <article class="benefit-card">
+              <span class="benefit-icon">SOS</span>
+              <h3 data-i18n="benefit1Title">Instant emergency access</h3>
+              <p data-i18n="benefit1Text">First responders can see more than a name and one condition when time is critical.</p>
+            </article>
+            <article class="benefit-card">
+              <span class="benefit-icon">RX</span>
+              <h3 data-i18n="benefit2Title">Real medication detail</h3>
+              <p data-i18n="benefit2Text">Store medications with doses, allergies, and devices in a format that is easier to read.</p>
+            </article>
+            <article class="benefit-card">
+              <span class="benefit-icon">ML</span>
+              <h3 data-i18n="benefit3Title">Multilingual profile</h3>
+              <p data-i18n="benefit3Text">The medical page can be viewed in multiple languages for travel, family, and caregivers.</p>
+            </article>
+            <article class="benefit-card">
+              <span class="benefit-icon">24</span>
+              <h3 data-i18n="benefit4Title">Useful beyond the hospital</h3>
+              <p data-i18n="benefit4Text">Helpful for school, sports, senior care, daily life, road trips, and outdoor activities.</p>
+            </article>
+          </section>
+
           <section class="info-layout">
             <article class="panel panel-light">
               <p class="section-kicker" data-i18n="howItWorksKicker">How it works</p>
-              <h2 data-i18n="howItWorksTitle">A simple flow before the NFC is recorded</h2>
+              <h2 data-i18n="howItWorksTitle">A simple flow from setup to emergency access</h2>
               <ol class="flow-list">
-                <li data-i18n="howStep1">Complete the medical profile form.</li>
-                <li data-i18n="howStep2">Save the profile and generate the secure URL.</li>
-                <li data-i18n="howStep3">The administrator receives that URL by email.</li>
-                <li data-i18n="howStep4">That URL is the one recorded in the NFC tag.</li>
+                <li data-i18n="howStep1">Create the medical profile directly or send a private activation link to the client.</li>
+                <li data-i18n="howStep2">Complete the health information once and review the emergency page preview.</li>
+                <li data-i18n="howStep3">The secure link becomes the medical page connected to the bracelet, keychain, or card.</li>
+                <li data-i18n="howStep4">When the NFC is scanned, the profile opens with emergency details ready to read.</li>
               </ol>
             </article>
 
             <article class="panel panel-dark">
-              <p class="section-kicker" data-i18n="importantKicker">Important</p>
-              <h2 data-i18n="importantTitle">The medical data is not written directly to the NFC chip</h2>
-              <p data-i18n="importantText">
-                The chip stores only a secure web address. That keeps the information easier to update and better
-                organized for future changes.
-              </p>
-              <div class="url-box">https://medical-nfc.vercel.app/med/ABC123</div>
+              <p class="section-kicker" data-i18n="useCasesKicker">Ideal for</p>
+              <h2 data-i18n="useCasesTitle">A strong fit for families, seniors, chronic conditions, and active lifestyles</h2>
+              <ul class="feature-list service-list">
+                <li data-i18n="useCase1">Diabetes, epilepsy, heart conditions, severe allergies, and medication-dependent patients</li>
+                <li data-i18n="useCase2">Children, older adults, caregivers, and family members who need faster emergency context</li>
+                <li data-i18n="useCase3">Athletes, travelers, drivers, hikers, and anyone who wants critical information always attached</li>
+                <li data-i18n="useCase4">People who want something cleaner, more complete, and more useful than a basic engraved bracelet</li>
+              </ul>
             </article>
 
             <article class="panel panel-light service-panel">
-              <p class="section-kicker" data-i18n="serviceKicker">Future changes</p>
-              <h2 data-i18n="serviceTitle">Remote profile updates can be requested later</h2>
+              <p class="section-kicker" data-i18n="serviceKicker">Profile management</p>
+              <h2 data-i18n="serviceTitle">The profile can be reopened later if medical information changes</h2>
               <p data-i18n="serviceText">
-                If you want to reopen a saved profile to edit it online later, that service has an additional cost.
+                If you want online access reopened later for remote edits, that service may have an additional cost.
               </p>
               <ul class="feature-list service-list">
-                <li data-i18n="serviceItem1">The online medical profile can be updated remotely.</li>
-                <li data-i18n="serviceItem2">
-                  The physical NFC information does not change until the administrator has the chip in hand.
-                </li>
-                <li data-i18n="serviceItem3">Ask for a reopen request whenever the medical information changes.</li>
+                <li data-i18n="serviceItem1">Useful when medications, doses, diagnoses, or emergency contacts change.</li>
+                <li data-i18n="serviceItem2">The online page can be updated first, even if the physical NFC piece is not in hand yet.</li>
+                <li data-i18n="serviceItem3">The physical NFC is only reprogrammed when the administrator has the bracelet, tag, or keychain.</li>
               </ul>
             </article>
           </section>
@@ -129,7 +154,7 @@
           <div class="profile-header">
             <div>
               <p class="eyebrow" data-i18n="profileKicker">Medical profile</p>
-              <h1 data-field="name">John Doe</h1>
+              <h1 data-field="name">-</h1>
               <p class="profile-subtitle" data-i18n="profileSubtitle">
                 Emergency information shown from an NFC medical profile.
               </p>
@@ -157,51 +182,41 @@
               <dl class="medical-list">
                 <div>
                   <dt data-i18n="labelName">Name</dt>
-                  <dd data-field="name">John Doe</dd>
+                  <dd data-field="name">-</dd>
                 </div>
                 <div>
                   <dt data-i18n="labelConditions">Condition(s)</dt>
-                  <dd data-field="conditions">Type 1 Diabetes</dd>
+                  <dd data-field="conditions">-</dd>
                 </div>
                 <div>
                   <dt data-i18n="labelAllergies">Medical Allergies</dt>
-                  <dd data-field="allergies">Penicillin</dd>
+                  <dd data-field="allergies">-</dd>
                 </div>
                 <div>
                   <dt data-i18n="labelFoodAllergies">Food Allergies</dt>
-                  <dd data-field="foodAllergies">Peanuts</dd>
+                  <dd data-field="foodAllergies">-</dd>
                 </div>
                 <div>
                   <dt data-i18n="labelMedications">Medications / Doses</dt>
-                  <dd data-field="medications">Insulin glargine 12 units nightly</dd>
+                  <dd data-field="medications">-</dd>
                 </div>
                 <div>
                   <dt data-i18n="labelDevices">Medical Devices</dt>
-                  <dd data-field="devices">Insulin Pump</dd>
+                  <dd data-field="devices">-</dd>
                 </div>
               </dl>
 
               <div class="notice-box">
                 <p class="notice-title" data-i18n="importantNotes">Important Notes</p>
                 <ul class="notice-list">
-                  <li data-note="0">Patient uses insulin</li>
-                  <li data-note="1">Risk of hypoglycemia</li>
-                  <li data-note="2">May require immediate glucose</li>
+                  <li data-note="0">-</li>
+                  <li data-note="1"></li>
+                  <li data-note="2"></li>
                 </ul>
               </div>
 
               <div class="action-row">
                 <a class="button button-danger" href="#" data-action="call-primary" data-i18n="callButton">Call</a>
-                <a
-                  class="button button-light"
-                  href="#"
-                  target="_blank"
-                  rel="noreferrer"
-                  data-action="whatsapp-primary"
-                  data-i18n="whatsappButton"
-                >
-                  WhatsApp
-                </a>
                 <button class="button button-dark" type="button" data-action="share-location" data-i18n="shareLocation">
                   Share current location
                 </button>
@@ -219,59 +234,59 @@
               <dl class="medical-list detail-list">
                 <div>
                   <dt data-i18n="labelBloodType">Blood Type</dt>
-                  <dd data-field="bloodType">O+</dd>
+                  <dd data-field="bloodType">-</dd>
                 </div>
                 <div>
                   <dt data-i18n="labelGender">Gender</dt>
-                  <dd data-field="gender">Male</dd>
+                  <dd data-field="gender">-</dd>
                 </div>
                 <div>
                   <dt data-i18n="labelBirthDate">Birthday</dt>
-                  <dd data-field="birthDate">1997-02-01</dd>
+                  <dd data-field="birthDate">-</dd>
                 </div>
                 <div>
                   <dt data-i18n="labelAge">Age</dt>
-                  <dd data-field="age">29</dd>
+                  <dd data-field="age">-</dd>
                 </div>
                 <div>
                   <dt data-i18n="labelWeight">Weight</dt>
-                  <dd data-field="weight">68 kg / 150 lb</dd>
+                  <dd data-field="weight">-</dd>
                 </div>
                 <div>
                   <dt data-i18n="labelHeight">Height</dt>
-                  <dd data-field="height">172 cm / 5'8"</dd>
+                  <dd data-field="height">-</dd>
                 </div>
                 <div>
                   <dt data-i18n="labelOrganDonor">Organ donor</dt>
-                  <dd data-field="organDonor">Yes</dd>
+                  <dd data-field="organDonor">-</dd>
                 </div>
                 <div>
                   <dt data-i18n="labelDoctor">Doctor</dt>
-                  <dd data-field="doctor">Dr. Smith</dd>
+                  <dd data-field="doctor">-</dd>
                 </div>
                 <div>
                   <dt data-i18n="labelClinic">Clinic</dt>
-                  <dd data-field="clinic">XYZ Medical Center</dd>
+                  <dd data-field="clinic">-</dd>
                 </div>
                 <div>
                   <dt data-i18n="labelInsurance">Insurance</dt>
-                  <dd data-field="insurance">BlueCross</dd>
+                  <dd data-field="insurance">-</dd>
                 </div>
                 <div>
                   <dt data-i18n="labelCountry">Country</dt>
-                  <dd data-field="country">United States</dd>
+                  <dd data-field="country">-</dd>
                 </div>
                 <div>
                   <dt data-i18n="labelState">State / Region</dt>
-                  <dd data-field="stateRegion">Nevada</dd>
+                  <dd data-field="stateRegion">-</dd>
                 </div>
                 <div>
                   <dt data-i18n="labelCity">City</dt>
-                  <dd data-field="city">Reno</dd>
+                  <dd data-field="city">-</dd>
                 </div>
                 <div>
                   <dt data-i18n="labelPostalCode">ZIP / Postal code</dt>
-                  <dd data-field="postalCode">89512</dd>
+                  <dd data-field="postalCode">-</dd>
                 </div>
               </dl>
 
@@ -279,13 +294,13 @@
                 <h3 data-i18n="contactsTitle">Emergency Contacts</h3>
                 <a class="contact-card" href="#" data-contact-card="1">
                   <span class="contact-index" data-i18n="contact1Label">Contact 1</span>
-                  <strong data-field="contact1Name">Jane Doe</strong>
-                  <span data-field="contact1Phone">+1 (555) 123-4567</span>
+                  <strong data-field="contact1Name">-</strong>
+                  <span data-field="contact1Phone">-</span>
                 </a>
                 <a class="contact-card" href="#" data-contact-card="2">
                   <span class="contact-index" data-i18n="contact2Label">Contact 2</span>
-                  <strong data-field="contact2Name">Mike Doe</strong>
-                  <span data-field="contact2Phone">+1 (555) 987-6543</span>
+                  <strong data-field="contact2Name">-</strong>
+                  <span data-field="contact2Phone">-</span>
                 </a>
               </div>
 
