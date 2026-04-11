@@ -15,14 +15,14 @@ nfc_t = 1.0;
 bottom_solid = 2.2;
 
 hole_d = 5.0;
-hole_x = 5.8;
-hole_y = 35.0;
+hole_x = 5.7;
+hole_y = 35.2;
 
 relief_h = 0.62;
 join_eps = 0.04;
 text_bold = 0.085;
 
-// Leave the internal art untouched; only the outer paw changes.
+// Internal art stays fixed; only the outer paw silhouette is refined.
 design_cy = 15.8;
 front_cross_y = 12.7;
 front_waves_y = 17.9;
@@ -126,32 +126,51 @@ module emboss_bottom() {
 }
 
 module main_pad_2d() {
-    // Larger and more icon-like central paw pad with a clear top hump
-    // and a visible lower center curve, matching the reference silhouette.
+    // Rebuilt with a lower shoulder line and deeper bottom notch so the
+    // silhouette reads as a real pet paw pad instead of a rounded blob.
     difference() {
-        offset(r = 0.8)
-            offset(delta = -0.8)
-                union() {
-                    hull() {
-                        translate([-11.8, 6.0]) scale([1.24, 1.02]) circle(r = 7.4);
-                        translate([11.8, 6.0]) scale([1.24, 1.02]) circle(r = 7.4);
-                        translate([0, 19.4]) scale([0.96, 1.14]) circle(r = 6.9);
-                    }
+        offset(r = 1.0)
+            offset(delta = -1.0)
+                polygon(points = [
+                    [-17.2, 7.0],
+                    [-16.2, 11.0],
+                    [-13.9, 14.8],
+                    [-10.6, 17.6],
+                    [-6.5, 19.3],
+                    [-2.3, 19.8],
+                    [0.0, 18.9],
+                    [2.3, 19.8],
+                    [6.5, 19.3],
+                    [10.6, 17.6],
+                    [13.9, 14.8],
+                    [16.2, 11.0],
+                    [17.2, 7.0],
+                    [16.0, 2.8],
+                    [12.5, 0.0],
+                    [7.6, -1.4],
+                    [2.2, -1.7],
+                    [0.0, -0.6],
+                    [-2.2, -1.7],
+                    [-7.6, -1.4],
+                    [-12.5, 0.0],
+                    [-16.0, 2.8]
+                ]);
 
-                    hull() {
-                        translate([-12.6, 11.8]) scale([1.08, 0.96]) circle(r = 6.5);
-                        translate([-4.4, 22.6]) scale([0.90, 1.00]) circle(r = 5.8);
-                    }
+        // Bottom center notch.
+        translate([0, -1.55])
+            scale([1.16, 0.44])
+                circle(r = 7.4);
 
-                    hull() {
-                        translate([12.6, 11.8]) scale([1.08, 0.96]) circle(r = 6.5);
-                        translate([4.4, 22.6]) scale([0.90, 1.00]) circle(r = 5.8);
-                    }
-                }
+        // Small shoulder dips to separate the upper pad from the toes.
+        translate([-7.2, 20.4])
+            rotate(-8)
+                scale([1.25, 0.62])
+                    circle(r = 2.45);
 
-        translate([0, -1.05])
-            scale([1.06, 0.43])
-                circle(r = 6.9);
+        translate([7.2, 20.4])
+            rotate(8)
+                scale([1.25, 0.62])
+                    circle(r = 2.45);
     }
 }
 
@@ -159,11 +178,12 @@ module paw_2d() {
     union() {
         main_pad_2d();
 
-        // Toes overlap the pad directly so the silhouette reads as a true paw.
-        translate([-16.6, 23.2]) rotate(8) scale([0.82, 1.26]) circle(r = 5.0);
-        translate([-5.8, 29.0]) rotate(-2) scale([0.84, 1.58]) circle(r = 5.0);
-        translate([5.8, 29.3]) rotate(2) scale([0.84, 1.70]) circle(r = 5.0);
-        translate([16.6, 23.4]) rotate(-8) scale([0.82, 1.26]) circle(r = 5.0);
+        // Toe pads tuned to feel more like a real dog/cat paw:
+        // outer toes are lower and rounder, inner toes taller and tighter.
+        translate([-18.0, 24.8]) rotate(9) scale([0.86, 1.30]) circle(r = 4.7);
+        translate([-6.4, 31.3]) rotate(-3) scale([0.86, 1.76]) circle(r = 4.45);
+        translate([6.2, 31.7]) rotate(3) scale([0.94, 1.90]) circle(r = 4.55);
+        translate([18.0, 25.1]) rotate(-9) scale([0.86, 1.30]) circle(r = 4.7);
     }
 }
 
