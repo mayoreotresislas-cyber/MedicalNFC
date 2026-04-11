@@ -275,3 +275,86 @@
     grid-template-columns: 1fr;
   }
 }
+
+.admin-two-actions {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.admin-table-wrap {
+  overflow: auto;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.admin-table {
+  width: 100%;
+  min-width: 1080px;
+  border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  vertical-align: top;
+}
+
+.admin-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: rgba(18, 18, 18, 0.94);
+  text-align: left;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(247, 243, 239, 0.72);
+}
+
+.admin-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.admin-empty-row td {
+  text-align: center;
+  color: var(--muted-light);
+}
+
+.admin-profile-cell,
+.admin-contact-cell {
+  display: grid;
+  gap: 6px;
+}
+
+.admin-profile-cell strong {
+  color: #ffffff;
+}
+
+.admin-profile-cell span,
+.admin-contact-cell span {
+  color: var(--muted-light);
+  line-height: 1.5;
+}
+
+.admin-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.admin-row-actions .button {
+  min-height: 38px;
+  padding-inline: 12px;
+}
+
+.admin-result-modal {
+  width: min(760px, calc(100% - 32px));
+}
+
+@media (max-width: 920px) {
+  .admin-two-actions {
+    grid-template-columns: 1fr;
+  }
+}

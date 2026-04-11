@@ -6,7 +6,7 @@
     <title>MyMedicalNFC.com | Admin</title>
     <meta
       name="description"
-      content="Panel administrativo para crear enlaces privados, reenviar activaciones, reabrir perfiles y administrar estados de grabado NFC."
+      content="Administrative workspace to create private activation links, share them, reopen profiles, and manage NFC profile states."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -24,40 +24,48 @@
           <span class="brand-mark" aria-hidden="true"></span>
           <span>
             <strong>MyMedicalNFC.com</strong>
-            <small>Panel administrativo</small>
+            <small data-i18n="brandTagline">Admin workspace</small>
           </span>
         </a>
 
         <div class="topbar-actions">
-          <a class="nav-link" href="/setup.html">Formulario directo</a>
-          <a class="nav-link" href="/activate">Activacion privada</a>
-          <a class="nav-link nav-link-primary" href="/">Landing publica</a>
+          <a class="nav-link" href="/setup.html" data-i18n="directSetupLink">Direct setup</a>
+          <a class="nav-link" href="/activate" data-i18n="activationLink">Private activation</a>
+          <a class="nav-link nav-link-primary" href="/" data-i18n="publicLandingLink">Public landing</a>
+          <label class="language-dropdown">
+            <span data-i18n="interfaceLanguage">Interface language</span>
+            <select class="native-language-select" data-lang-select data-flag-menu>
+              <option value="en">EN</option>
+              <option value="es">ES</option>
+            </select>
+          </label>
         </div>
       </header>
 
       <main class="admin-main">
         <section class="hero admin-hero">
           <div>
-            <p class="eyebrow">Admin workflow</p>
-            <h1>Genera, envia y administra perfiles medicos NFC.</h1>
-            <p class="hero-copy">
-              Desde aqui puedes generar links privados, compartirlos por correo o SMS, abrir el formulario directo sin
-              preactivacion, reabrir perfiles, archivarlos, borrarlos y controlar cuales ya estan listos para grabarse.
+            <p class="eyebrow" data-i18n="heroKicker">Admin workflow</p>
+            <h1 data-i18n="heroTitle">Create, send, reopen, and manage medical NFC profiles.</h1>
+            <p class="hero-copy" data-i18n="heroText">
+              From this workspace you can generate private activation links, share them by email or SMS, open direct
+              setup without preactivation, and control which profiles are pending, ready to program, active, reopened,
+              or archived.
             </p>
             <div class="hero-points">
-              <span>Link privado del cliente</span>
-              <span>Formulario directo sin preactivacion</span>
-              <span>URL publica final para NFC</span>
+              <span data-i18n="heroPoint1">Private customer link</span>
+              <span data-i18n="heroPoint2">Direct form without preactivation</span>
+              <span data-i18n="heroPoint3">Public NFC URL ready to record</span>
             </div>
           </div>
 
           <div class="hero-card">
-            <p class="hero-card-label">Flujo recomendado</p>
+            <p class="hero-card-label" data-i18n="flowLabel">Recommended flow</p>
             <ol>
-              <li>Genera el acceso privado del cliente.</li>
-              <li>Envialo por correo o SMS.</li>
-              <li>Espera a que complete el perfil.</li>
-              <li>O abre el formulario directo si vas a capturar el perfil en ese momento.</li>
+              <li data-i18n="flowStep1">Generate the private activation link.</li>
+              <li data-i18n="flowStep2">Send it by email or SMS.</li>
+              <li data-i18n="flowStep3">Wait for the client to complete the medical profile.</li>
+              <li data-i18n="flowStep4">Record the public URL into the NFC tag once the profile is ready.</li>
             </ol>
           </div>
         </section>
@@ -65,124 +73,120 @@
         <div class="admin-grid">
           <section class="form-panel">
             <div class="status-banner" data-admin-status hidden>
-              <strong data-admin-status-title>Panel listo</strong>
-              <p data-admin-status-message>Ingresa tu clave de administrador para comenzar.</p>
+              <strong data-admin-status-title>Workspace ready</strong>
+              <p data-admin-status-message>Save your administrator access to begin.</p>
             </div>
 
             <section class="form-section">
               <div class="section-heading">
-                <p class="section-kicker">Acceso</p>
-                <h2>Acceso administrativo</h2>
+                <p class="section-kicker" data-i18n="accessKicker">Access</p>
+                <h2 data-i18n="accessTitle">Administrator login</h2>
               </div>
 
               <form class="field-grid two-up" data-admin-auth-form>
                 <label class="field">
-                  <span>Usuario</span>
-                  <input name="admin_username" type="text" placeholder="admin" autocomplete="username" />
+                  <span data-i18n="fieldUsername">Username</span>
+                  <input
+                    name="admin_username"
+                    type="text"
+                    placeholder="admin"
+                    autocomplete="username"
+                    data-i18n-placeholder="usernamePlaceholder"
+                  />
                 </label>
                 <label class="field">
-                  <span>Contrasena</span>
-                  <input name="admin_password" type="password" placeholder="Ingresa tu acceso privado" autocomplete="current-password" />
+                  <span data-i18n="fieldPassword">Password</span>
+                  <input
+                    name="admin_password"
+                    type="password"
+                    placeholder="Enter your private admin access"
+                    autocomplete="current-password"
+                    data-i18n-placeholder="passwordPlaceholder"
+                  />
                 </label>
-                <button class="button button-primary admin-auth-button" type="submit">Guardar acceso y cargar panel</button>
+                <button class="button button-primary admin-auth-button" type="submit" data-i18n="saveAccessButton">
+                  Save access and load workspace
+                </button>
               </form>
             </section>
 
             <section class="form-section">
               <div class="section-heading">
-                <p class="section-kicker">Provision</p>
-                <h2>Crear acceso privado para un nuevo cliente</h2>
+                <p class="section-kicker" data-i18n="provisionKicker">Provision</p>
+                <h2 data-i18n="provisionTitle">Create a private activation link for a new client</h2>
               </div>
 
               <form class="profile-form" data-provision-form>
                 <div class="field-grid two-up">
                   <label class="field">
-                    <span>Nombre del cliente o perfil</span>
-                    <input name="full_name" type="text" placeholder="Erik Lopez" />
+                    <span data-i18n="fieldProfileName">Client or profile name</span>
+                    <input
+                      name="full_name"
+                      type="text"
+                      placeholder="Erik Lopez"
+                      data-i18n-placeholder="profileNamePlaceholder"
+                    />
                   </label>
                   <label class="field">
-                    <span>Idioma esperado del cliente</span>
-                    <select name="default_language">
-                      <option value="es">ES - Espanol</option>
-                      <option value="en">EN - English</option>
-                      <option value="fr">FR - Francais</option>
-                      <option value="pt">PT - Portugues</option>
-                      <option value="de">DE - Deutsch</option>
-                      <option value="it">IT - Italiano</option>
-                      <option value="ja">JA - Japanese</option>
-                      <option value="ko">KO - Korean</option>
-                      <option value="zh">ZH - Chinese</option>
+                    <span data-i18n="fieldExpectedLanguage">Preferred client language</span>
+                    <select name="default_language" class="native-language-select" data-flag-menu>
+                      <option value="es">ES</option>
+                      <option value="en">EN</option>
+                      <option value="fr">FR</option>
+                      <option value="pt">PT</option>
+                      <option value="de">DE</option>
+                      <option value="it">IT</option>
+                      <option value="ja">JA</option>
+                      <option value="ko">KO</option>
+                      <option value="zh">ZH</option>
                     </select>
                   </label>
                 </div>
 
                 <div class="field-grid two-up">
                   <label class="field">
-                    <span>Correo del cliente</span>
-                    <input name="client_email" type="email" placeholder="cliente@correo.com" />
+                    <span data-i18n="fieldClientEmail">Client email</span>
+                    <input
+                      name="client_email"
+                      type="email"
+                      placeholder="client@email.com"
+                      data-i18n-placeholder="clientEmailPlaceholder"
+                    />
                   </label>
                   <label class="field">
-                    <span>Telefono movil del cliente</span>
-                    <input name="client_phone" type="tel" placeholder="+1 775-555-0101" />
+                    <span data-i18n="fieldClientPhone">Client mobile phone</span>
+                    <input
+                      name="client_phone"
+                      type="tel"
+                      placeholder="+1 775-555-0101"
+                      data-i18n-placeholder="clientPhonePlaceholder"
+                    />
                   </label>
                 </div>
 
                 <div class="field admin-tip">
-                    <span>Entrega del link</span>
-                    <p>
-                      Puedes generarlo primero, copiarlo y abrir un correo o SMS preparado desde el panel. Si necesitas
-                      reenviarlo despues, usa la accion <strong>Nuevo link privado</strong> dentro del perfil.
-                    </p>
+                  <span data-i18n="deliveryLabel">Delivery options</span>
+                  <p data-i18n="deliveryText">
+                    Generate the private link first, then copy it or open a prepared email or SMS from this panel. If
+                    you need to send a fresh link later, use the profile actions in the management table.
+                  </p>
                 </div>
 
                 <div class="action-panel">
-                  <p class="action-copy">
-                    Este paso solo preregistra el perfil y genera un acceso privado. El cliente llena la informacion
-                    despues y el NFC se graba cuando el perfil quede listo.
+                  <p class="action-copy" data-i18n="provisionText">
+                    This step preregisters the profile and creates the private access link. The client fills the
+                    information later and the NFC is recorded when the profile is ready.
                   </p>
-                  <div class="action-buttons admin-single-action">
-                    <button class="button button-primary" type="submit">Generar link privado</button>
+                  <div class="action-buttons admin-two-actions">
+                    <button class="button button-primary" type="submit" data-i18n="generateLinkButton">
+                      Generate private link
+                    </button>
+                    <a class="button button-secondary" href="/setup.html" data-i18n="directSetupButton">
+                      Open direct setup
+                    </a>
                   </div>
                 </div>
               </form>
-            </section>
-
-            <section class="form-section latest-result" data-latest-result hidden>
-              <div class="section-heading">
-                <p class="section-kicker">Listo para compartir</p>
-                <h2>Enlace generado</h2>
-              </div>
-
-              <div class="admin-result-card">
-                <div class="admin-result-row">
-                  <span>Slug publico</span>
-                  <strong data-result-slug>-</strong>
-                </div>
-                <div class="admin-result-row">
-                  <span>URL publica para grabar el NFC</span>
-                  <div class="readonly-link-box" data-result-public-url>-</div>
-                </div>
-                <div class="admin-result-row">
-                  <span>Link privado para llenar el formulario</span>
-                  <div class="readonly-link-box" data-result-activation-url>-</div>
-                </div>
-                <div class="admin-result-row admin-result-row-inline">
-                  <div>
-                    <span>Correo del cliente</span>
-                    <strong data-result-client-email>-</strong>
-                  </div>
-                  <div>
-                    <span>Telefono del cliente</span>
-                    <strong data-result-client-phone>-</strong>
-                  </div>
-                </div>
-                <div class="admin-result-actions">
-                  <button class="button button-secondary" type="button" data-copy-result="public">Copiar URL publica</button>
-                  <button class="button button-primary" type="button" data-copy-result="activation">Copiar link privado</button>
-                  <button class="button button-secondary" type="button" data-share-result="email">Enviar por correo</button>
-                  <button class="button button-secondary" type="button" data-share-result="sms">Enviar por SMS</button>
-                </div>
-              </div>
             </section>
           </section>
 
@@ -190,61 +194,130 @@
             <div class="preview-sticky">
               <div class="preview-header">
                 <div>
-                  <p class="section-kicker">Workspace</p>
-                  <h2>Perfiles, estados y acciones</h2>
+                  <p class="section-kicker" data-i18n="managementKicker">Management</p>
+                  <h2 data-i18n="managementTitle">Profiles, states, and actions</h2>
                 </div>
-                <button class="button button-secondary admin-refresh" type="button" data-refresh-queue>Actualizar</button>
+                <button class="button button-secondary admin-refresh" type="button" data-refresh-queue data-i18n="refreshButton">
+                  Refresh
+                </button>
               </div>
 
-              <div class="admin-stats" data-admin-stats>
+              <div class="admin-stats">
                 <article class="admin-stat-card">
-                  <span>Total</span>
+                  <span data-i18n="statAll">Total</span>
                   <strong data-stat="all">0</strong>
                 </article>
                 <article class="admin-stat-card">
-                  <span>Pendientes</span>
+                  <span data-i18n="statPending">Pending</span>
                   <strong data-stat="pending">0</strong>
                 </article>
                 <article class="admin-stat-card">
-                  <span>Listos</span>
+                  <span data-i18n="statReady">Ready</span>
                   <strong data-stat="ready_to_program">0</strong>
                 </article>
                 <article class="admin-stat-card">
-                  <span>Activos</span>
+                  <span data-i18n="statActive">Active</span>
                   <strong data-stat="active">0</strong>
                 </article>
               </div>
 
               <div class="admin-filter-bar">
                 <div class="queue-legend admin-filters">
-                  <button class="queue-chip filter-chip is-active" type="button" data-filter-status="all">Todos</button>
-                  <button class="queue-chip pending filter-chip" type="button" data-filter-status="pending">Pendientes</button>
-                  <button class="queue-chip ready filter-chip" type="button" data-filter-status="ready_to_program">Listos</button>
-                  <button class="queue-chip active filter-chip" type="button" data-filter-status="active">Activos</button>
-                  <button class="queue-chip update filter-chip" type="button" data-filter-status="update_requested">Reapertura</button>
-                  <button class="queue-chip archived filter-chip" type="button" data-filter-status="archived">Archivados</button>
+                  <button class="queue-chip filter-chip is-active" type="button" data-filter-status="all" data-i18n="filterAll">All</button>
+                  <button class="queue-chip pending filter-chip" type="button" data-filter-status="pending" data-i18n="filterPending">Pending</button>
+                  <button class="queue-chip ready filter-chip" type="button" data-filter-status="ready_to_program" data-i18n="filterReady">Ready</button>
+                  <button class="queue-chip active filter-chip" type="button" data-filter-status="active" data-i18n="filterActive">Active</button>
+                  <button class="queue-chip update filter-chip" type="button" data-filter-status="update_requested" data-i18n="filterUpdate">Reopened</button>
+                  <button class="queue-chip archived filter-chip" type="button" data-filter-status="archived" data-i18n="filterArchived">Archived</button>
                 </div>
 
                 <label class="field admin-search-field">
-                  <span>Buscar perfil</span>
+                  <span data-i18n="searchLabel">Search profile</span>
                   <input
                     name="profile_search"
                     type="search"
-                    placeholder="Nombre, slug, correo o telefono"
+                    placeholder="Name, slug, email, phone, or family group"
                     data-profile-search
+                    data-i18n-placeholder="searchPlaceholder"
                   />
                 </label>
               </div>
 
-              <div class="queue-list" data-queue-list>
-                <article class="queue-empty">
-                  <p>No hay perfiles cargados todavia.</p>
-                </article>
+              <div class="admin-table-wrap">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th data-i18n="tableProfile">Profile</th>
+                      <th data-i18n="tableStatus">Status</th>
+                      <th data-i18n="tableLanguage">Language</th>
+                      <th data-i18n="tableFamily">Family group</th>
+                      <th data-i18n="tableContact">Contact</th>
+                      <th data-i18n="tableUpdated">Updated</th>
+                      <th data-i18n="tableActions">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody data-queue-list>
+                    <tr class="admin-empty-row">
+                      <td colspan="7" data-i18n="emptyState">No profiles loaded yet.</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </aside>
         </div>
       </main>
+    </div>
+
+    <div class="success-modal is-hidden" data-result-modal>
+      <div class="success-backdrop" data-action="close-result"></div>
+      <div class="success-card admin-result-modal" role="dialog" aria-modal="true" aria-labelledby="result-title">
+        <button class="success-close" type="button" data-action="close-result" aria-label="Close">x</button>
+        <p class="success-kicker" data-i18n="resultKicker">Ready to share</p>
+        <h2 id="result-title" data-i18n="resultTitle">Private activation link created</h2>
+        <p class="success-copy" data-i18n="resultText">
+          The profile was preregistered correctly. You can now copy the links or open an email or SMS for the client.
+        </p>
+
+        <div class="admin-result-card">
+          <div class="admin-result-row">
+            <span data-i18n="resultSlug">Public slug</span>
+            <strong data-result-slug>-</strong>
+          </div>
+          <div class="admin-result-row">
+            <span data-i18n="resultPublicUrl">Public NFC URL</span>
+            <div class="readonly-link-box" data-result-public-url>-</div>
+          </div>
+          <div class="admin-result-row">
+            <span data-i18n="resultActivationUrl">Private activation link</span>
+            <div class="readonly-link-box" data-result-activation-url>-</div>
+          </div>
+          <div class="admin-result-row admin-result-row-inline">
+            <div>
+              <span data-i18n="resultClientEmail">Client email</span>
+              <strong data-result-client-email>-</strong>
+            </div>
+            <div>
+              <span data-i18n="resultClientPhone">Client phone</span>
+              <strong data-result-client-phone>-</strong>
+            </div>
+          </div>
+          <div class="admin-result-actions">
+            <button class="button button-secondary" type="button" data-copy-result="public" data-i18n="copyPublicButton">
+              Copy public URL
+            </button>
+            <button class="button button-primary" type="button" data-copy-result="activation" data-i18n="copyActivationButton">
+              Copy private link
+            </button>
+            <button class="button button-secondary" type="button" data-share-result="email" data-i18n="sendEmailButton">
+              Open email
+            </button>
+            <button class="button button-secondary" type="button" data-share-result="sms" data-i18n="sendSmsButton">
+              Open SMS
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script src="/config.js"></script>

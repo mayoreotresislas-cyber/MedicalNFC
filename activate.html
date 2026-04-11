@@ -33,7 +33,7 @@
           <a class="nav-link nav-link-primary" href="/" data-i18n="publicLandingLink">Public landing</a>
           <label class="language-dropdown">
             <span data-i18n="interfaceLanguage">Interface language</span>
-            <select data-lang-select>
+            <select class="native-language-select" data-lang-select data-flag-menu>
               <option value="en">EN</option>
               <option value="es">ES</option>
               <option value="fr">FR</option>
@@ -54,8 +54,8 @@
             <p class="eyebrow" data-i18n="heroKicker">Activation required</p>
             <h1 data-i18n="heroTitle">Validate your private activation link before opening the medical form.</h1>
             <p class="hero-copy" data-i18n="heroText">
-              If you already received an NFC tag or keychain assigned to you, you must activate that private link first.
-              Otherwise your information will not be connected to that NFC tag.
+              If you already received an NFC tag or keychain assigned to you, you must activate that private link
+              first. Otherwise your information will not be connected to that NFC tag.
             </p>
 
             <div class="hero-points">
@@ -99,6 +99,7 @@
                 placeholder="https://medical-nfc.vercel.app/activate/nfcm_..."
                 autocomplete="off"
                 data-token-input
+                data-i18n-placeholder="tokenPlaceholder"
               />
             </label>
             <button class="button button-primary" type="submit" data-i18n="validateButton">

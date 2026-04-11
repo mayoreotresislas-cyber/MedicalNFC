@@ -71,6 +71,105 @@ function extractTextPayload(payload: Record<string, unknown>) {
   return "";
 }
 
+async function requestResponsesTranslation(
+  openAiKey: string,
+  model: string,
+  prompt: string,
+  fields: StringFields,
+  fieldKeys: string[]
+) {
+  const response = await fetch("https://api.openai.com/v1/responses", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${openAiKey}`
+    },
+    body: JSON.stringify({
+      model,
+      max_output_tokens: Math.max(500, fieldKeys.length * 120),
+      input: [
+        {
+          role: "system",
+          content: [{ type: "input_text", text: prompt }]
+        },
+        {
+          role: "user",
+          content: [{ type: "input_text", text: JSON.stringify(fields) }]
+        }
+      ],
+      text: {
+        format: {
+          type: "json_schema",
+          name: "translated_fields",
+          strict: true,
+          schema: buildSchema(fieldKeys)
+        }
+      }
+    })
+  });
+
+  if (!response.ok) {
+    throw new Error(await response.text());
+  }
+
+  const payload = (await response.json()) as Record<string, unknown>;
+  const textPayload = extractTextPayload(payload);
+  if (!textPayload) {
+    throw new Error("Responses API returned an empty translation payload");
+  }
+
+  return normalizeFieldMap(JSON.parse(textPayload), fieldKeys);
+}
+
+async function requestChatTranslation(
+  openAiKey: string,
+  model: string,
+  prompt: string,
+  fields: StringFields,
+  fieldKeys: string[]
+) {
+  const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${openAiKey}`
+    },
+    body: JSON.stringify({
+      model,
+      temperature: 0.1,
+      response_format: {
+        type: "json_object"
+      },
+      messages: [
+        {
+          role: "system",
+          content: `${prompt} Return a JSON object with exactly these keys: ${fieldKeys.join(", ")}.`
+        },
+        {
+          role: "user",
+          content: JSON.stringify(fields)
+        }
+      ]
+    })
+  });
+
+  if (!response.ok) {
+    throw new Error(await response.text());
+  }
+
+  const payload = (await response.json()) as Record<string, unknown>;
+  const content = String(
+    ((payload.choices as Array<Record<string, unknown>> | undefined)?.[0]?.message as Record<string, unknown> | undefined)
+      ?.content ?? ""
+  ).trim();
+
+  if (!content) {
+    throw new Error("Chat Completions API returned an empty translation payload");
+  }
+
+  return normalizeFieldMap(JSON.parse(content), fieldKeys);
+}
+
 Deno.serve(async (request) => {
   if (request.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -82,6 +181,7 @@ Deno.serve(async (request) => {
 
   const openAiKey = Deno.env.get("OPENAI_API_KEY");
   const model = Deno.env.get("OPENAI_TRANSLATION_MODEL") || "gpt-5-mini";
+  const fallbackModel = Deno.env.get("OPENAI_TRANSLATION_FALLBACK_MODEL") || "gpt-4.1-mini";
 
   if (!openAiKey) {
     return json({ error: "OPENAI_API_KEY is missing" }, 500);
@@ -107,44 +207,25 @@ Deno.serve(async (request) => {
       "Preserve line breaks inside each field."
     ].join(" ");
 
-    const response = await fetch("https://api.openai.com/v1/responses", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${openAiKey}`
-      },
-      body: JSON.stringify({
-        model,
-        max_output_tokens: Math.max(500, fieldKeys.length * 120),
-        input: [
+    let translated: StringFields;
+    try {
+      translated = await requestResponsesTranslation(openAiKey, model, prompt, fields, fieldKeys);
+    } catch (responsesError) {
+      console.warn("Responses translation failed, retrying with chat completions", responsesError);
+      try {
+        translated = await requestChatTranslation(openAiKey, fallbackModel, prompt, fields, fieldKeys);
+      } catch (chatError) {
+        return json(
           {
-            role: "system",
-            content: [{ type: "input_text", text: prompt }]
+            error: "OpenAI translation request failed",
+            details: `responses: ${
+              responsesError instanceof Error ? responsesError.message : "unknown"
+            } | chat: ${chatError instanceof Error ? chatError.message : "unknown"}`
           },
-          {
-            role: "user",
-            content: [{ type: "input_text", text: JSON.stringify(fields) }]
-          }
-        ],
-        text: {
-          format: {
-            type: "json_schema",
-            name: "translated_fields",
-            strict: true,
-            schema: buildSchema(fieldKeys)
-          }
-        }
-      })
-    });
-
-    if (!response.ok) {
-      const details = await response.text();
-      return json({ error: "OpenAI translation request failed", details }, 502);
+          502
+        );
+      }
     }
-
-    const payload = (await response.json()) as Record<string, unknown>;
-    const textPayload = extractTextPayload(payload);
-    const translated = normalizeFieldMap(textPayload ? JSON.parse(textPayload) : {}, fieldKeys);
 
     return json({
       sourceLanguage,
