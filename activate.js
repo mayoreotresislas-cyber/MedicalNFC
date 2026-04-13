@@ -115,8 +115,28 @@ const state = {
   pendingCopy: {}
 };
 
+const ACTIVATION_COPY_CACHE_VERSION = "2026-04-13";
+const ACTIVATION_COPY_CACHE_PREFIX = `nfc-medico-activation-ui:${ACTIVATION_COPY_CACHE_VERSION}`;
+
 function cleanText(value) {
   return String(value ?? "").trim();
+}
+
+function readCachedCopy(lang) {
+  try {
+    const raw = window.localStorage.getItem(`${ACTIVATION_COPY_CACHE_PREFIX}:${cleanText(lang)}`);
+    return raw ? JSON.parse(raw) : null;
+  } catch (_error) {
+    return null;
+  }
+}
+
+function writeCachedCopy(lang, value) {
+  try {
+    window.localStorage.setItem(`${ACTIVATION_COPY_CACHE_PREFIX}:${cleanText(lang)}`, JSON.stringify(value));
+  } catch (_error) {
+    // Ignore storage errors.
+  }
 }
 
 function hasSupabaseConfig() {
@@ -170,6 +190,12 @@ async function ensureActivationCopy(lang) {
     return state.copyCache[normalized];
   }
 
+  const storedCopy = readCachedCopy(normalized);
+  if (storedCopy) {
+    state.copyCache[normalized] = storedCopy;
+    return storedCopy;
+  }
+
   if (state.pendingCopy[normalized]) {
     return state.pendingCopy[normalized];
   }
@@ -190,6 +216,7 @@ async function ensureActivationCopy(lang) {
         ...fields
       };
       state.copyCache[normalized] = translated;
+      writeCachedCopy(normalized, translated);
       delete state.pendingCopy[normalized];
       return translated;
     })

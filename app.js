@@ -123,7 +123,40 @@ const uiTranslations = {
     statusLocationCopiedTitle: "Location ready",
     statusLocationCopiedMessage: "A link with your current location is ready to share.",
     statusLocationErrorTitle: "Location unavailable",
-    statusLocationErrorMessage: "The browser could not access your current location."
+    statusLocationErrorMessage: "The browser could not access your current location.",
+    requestModalKicker: "Profile support",
+    requestModalTitle: "Request profile reopening or changes",
+    requestModalText:
+      "Send your request here so the administrator can review the profile, reopen online access if needed, and contact you with the next step.",
+    requestNameLabel: "Your name",
+    requestNamePlaceholder: "Enter your full name",
+    requestEmailLabel: "Email",
+    requestEmailPlaceholder: "name@email.com",
+    requestPhoneLabel: "Phone",
+    requestPhonePlaceholder: "+1 555-555-5555",
+    requestReasonLabel: "What do you need?",
+    requestReasonReopen: "Reopen profile",
+    requestReasonMedication: "Update medications",
+    requestReasonContacts: "Update emergency contacts",
+    requestReasonMedical: "Correct medical information",
+    requestReasonOther: "Other change",
+    requestDetailsLabel: "Describe the change you need",
+    requestDetailsPlaceholder: "Tell us what needs to be reopened or updated in the profile.",
+    requestHelperText:
+      "Include at least one contact method so the administrator can reply with the reopening steps or approval details.",
+    requestSubmitButton: "Send request",
+    requestSubmittingButton: "Sending...",
+    requestCancelButton: "Cancel",
+    requestCloseButton: "Close request form",
+    requestStatusValidationTitle: "Missing information",
+    requestStatusValidationMessage: "Add your name, one contact method, and the requested changes.",
+    requestStatusSuccessTitle: "Request sent",
+    requestStatusSuccessMessage:
+      "We received your message. The administrator will review the profile and contact you soon.",
+    requestReferenceLabel: "Reference",
+    requestStatusErrorTitle: "Request could not be sent",
+    requestStatusErrorMessage:
+      "We could not send the profile change request right now. Please try again in a moment."
   },
   es: {
     brandTagline: "Acceso al perfil medico",
@@ -249,7 +282,40 @@ const uiTranslations = {
     statusLocationCopiedTitle: "Ubicacion lista",
     statusLocationCopiedMessage: "Se preparo un enlace con tu ubicacion actual para compartirlo.",
     statusLocationErrorTitle: "Ubicacion no disponible",
-    statusLocationErrorMessage: "El navegador no pudo acceder a tu ubicacion actual."
+    statusLocationErrorMessage: "El navegador no pudo acceder a tu ubicacion actual.",
+    requestModalKicker: "Soporte del perfil",
+    requestModalTitle: "Solicitar reapertura o cambios del perfil",
+    requestModalText:
+      "Envia tu solicitud aqui para que el administrador revise el perfil, reabra el acceso en linea si hace falta y te contacte con el siguiente paso.",
+    requestNameLabel: "Tu nombre",
+    requestNamePlaceholder: "Escribe tu nombre completo",
+    requestEmailLabel: "Correo electronico",
+    requestEmailPlaceholder: "nombre@correo.com",
+    requestPhoneLabel: "Telefono",
+    requestPhonePlaceholder: "+1 555-555-5555",
+    requestReasonLabel: "Que necesitas?",
+    requestReasonReopen: "Reabrir perfil",
+    requestReasonMedication: "Actualizar medicamentos",
+    requestReasonContacts: "Actualizar contactos de emergencia",
+    requestReasonMedical: "Corregir informacion medica",
+    requestReasonOther: "Otro cambio",
+    requestDetailsLabel: "Describe el cambio que necesitas",
+    requestDetailsPlaceholder: "Explica que informacion se debe reabrir o actualizar en el perfil.",
+    requestHelperText:
+      "Incluye al menos un medio de contacto para que el administrador pueda responderte con los pasos de reapertura o aprobacion.",
+    requestSubmitButton: "Enviar solicitud",
+    requestSubmittingButton: "Enviando...",
+    requestCancelButton: "Cancelar",
+    requestCloseButton: "Cerrar formulario de solicitud",
+    requestStatusValidationTitle: "Falta informacion",
+    requestStatusValidationMessage: "Agrega tu nombre, un medio de contacto y los cambios solicitados.",
+    requestStatusSuccessTitle: "Solicitud enviada",
+    requestStatusSuccessMessage:
+      "Ya recibimos tu mensaje. El administrador revisara el perfil y se pondra en contacto contigo pronto.",
+    requestReferenceLabel: "Folio",
+    requestStatusErrorTitle: "No se pudo enviar la solicitud",
+    requestStatusErrorMessage:
+      "No pudimos enviar la solicitud de cambio del perfil en este momento. Intenta nuevamente en un momento."
   },
   fr: {
     brandTagline: "Formulaire medical et acces au profil",
@@ -725,6 +791,8 @@ const config = window.NFC_MEDICO_CONFIG || {};
 const root = document.documentElement;
 const languageSelect = document.querySelector("[data-language-select]");
 const textNodes = document.querySelectorAll("[data-i18n]");
+const placeholderNodes = document.querySelectorAll("[data-i18n-placeholder]");
+const ariaNodes = document.querySelectorAll("[data-i18n-aria-label]");
 const fieldNodes = document.querySelectorAll("[data-field]");
 const noteNodes = document.querySelectorAll("[data-note]");
 const runtimeStatus = document.querySelector("[data-runtime-status]");
@@ -739,6 +807,17 @@ const profileView = document.querySelector('[data-view="profile"]');
 const pendingPanel = document.querySelector("[data-pending-panel]");
 const profileGrid = document.querySelector(".profile-grid");
 const contactCards = document.querySelectorAll("[data-contact-card]");
+const requestModal = document.querySelector("[data-request-modal]");
+const requestForm = document.querySelector("[data-request-form]");
+const requestStatus = document.querySelector("[data-request-status]");
+const requestStatusTitle = document.querySelector("[data-request-status-title]");
+const requestStatusMessage = document.querySelector("[data-request-status-message]");
+const requestSubmitButton = document.querySelector("[data-request-submit]");
+const requestReasonSelect = document.querySelector("[data-request-reason-select]");
+
+const UI_COPY_CACHE_VERSION = "2026-04-13";
+const UI_COPY_CACHE_PREFIX = `nfc-medico-public-ui:${UI_COPY_CACHE_VERSION}`;
+const FIELD_TRANSLATION_CACHE_PREFIX = `nfc-medico-public-fields:${UI_COPY_CACHE_VERSION}`;
 
 const state = {
   lang: detectInitialLanguage(),
@@ -752,7 +831,8 @@ const state = {
   uiCopyPending: {},
   translationCache: {},
   baseStatus: null,
-  statusTimer: null
+  statusTimer: null,
+  requestSubmitting: false
 };
 
 function detectInitialLanguage() {
@@ -888,6 +968,119 @@ function cleanText(value) {
   }
 
   return String(value).trim();
+}
+
+function readCachedJson(key) {
+  try {
+    const raw = window.localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : null;
+  } catch (_error) {
+    return null;
+  }
+}
+
+function writeCachedJson(key, value) {
+  try {
+    window.localStorage.setItem(key, JSON.stringify(value));
+  } catch (_error) {
+    // Ignore storage errors.
+  }
+}
+
+function getUiCopyCacheKey(lang) {
+  return `${UI_COPY_CACHE_PREFIX}:${cleanText(lang).slice(0, 2).toLowerCase()}`;
+}
+
+function getFieldTranslationCacheKey(cacheKey) {
+  return `${FIELD_TRANSLATION_CACHE_PREFIX}:${cacheKey}`;
+}
+
+function updateRequestReasonOptions(copy = getCopy()) {
+  if (!requestReasonSelect) {
+    return;
+  }
+
+  const labels = [
+    copy.requestReasonReopen || uiTranslations.en.requestReasonReopen,
+    copy.requestReasonMedication || uiTranslations.en.requestReasonMedication,
+    copy.requestReasonContacts || uiTranslations.en.requestReasonContacts,
+    copy.requestReasonMedical || uiTranslations.en.requestReasonMedical,
+    copy.requestReasonOther || uiTranslations.en.requestReasonOther
+  ];
+
+  Array.from(requestReasonSelect.options).forEach((option, index) => {
+    if (labels[index]) {
+      option.textContent = labels[index];
+    }
+  });
+}
+
+function setRequestStatus(type, title, message) {
+  if (!requestStatus || !requestStatusTitle || !requestStatusMessage) {
+    return;
+  }
+
+  requestStatus.hidden = false;
+  requestStatus.classList.remove("is-hidden");
+  requestStatus.dataset.state = type;
+  requestStatusTitle.textContent = title;
+  requestStatusMessage.textContent = message;
+}
+
+function resetRequestStatus() {
+  if (!requestStatus) {
+    return;
+  }
+
+  requestStatus.hidden = true;
+  requestStatus.classList.add("is-hidden");
+  requestStatus.dataset.state = "";
+}
+
+function setRequestSubmitting(isSubmitting) {
+  state.requestSubmitting = isSubmitting;
+  if (!requestSubmitButton) {
+    return;
+  }
+
+  const copy = getCopy();
+  requestSubmitButton.disabled = isSubmitting;
+  requestSubmitButton.textContent = isSubmitting
+    ? copy.requestSubmittingButton || uiTranslations.en.requestSubmittingButton
+    : copy.requestSubmitButton || uiTranslations.en.requestSubmitButton;
+}
+
+function openRequestModal() {
+  if (!requestModal || !requestForm) {
+    return;
+  }
+
+  if (!cleanText(state.profile?.public_slug || state.identifier)) {
+    return;
+  }
+
+  resetRequestStatus();
+  requestModal.classList.remove("is-hidden");
+  requestModal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+
+  if (!cleanText(requestForm.elements.requester_name?.value)) {
+    requestForm.elements.requester_name.value =
+      cleanText(state.profile?.full_name) || cleanText(state.profile?.first_name) || "";
+  }
+  requestForm.elements.request_reason.value = requestForm.elements.request_reason.value || "reopen_profile";
+  requestForm.elements.request_details.focus();
+}
+
+function closeRequestModal() {
+  if (!requestModal || !requestForm) {
+    return;
+  }
+
+  requestModal.classList.add("is-hidden");
+  requestModal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
+  setRequestSubmitting(false);
 }
 
 function formatOrganDonorValue(value, copy = getCopy()) {
@@ -1030,6 +1223,12 @@ async function ensureUiCopy(lang) {
     return state.uiCopyCache[lang];
   }
 
+  const storedCopy = readCachedJson(getUiCopyCacheKey(lang));
+  if (storedCopy) {
+    state.uiCopyCache[lang] = storedCopy;
+    return storedCopy;
+  }
+
   if (state.uiCopyPending[lang]) {
     return state.uiCopyPending[lang];
   }
@@ -1047,6 +1246,7 @@ async function ensureUiCopy(lang) {
         ...fields
       };
       state.uiCopyCache[lang] = translated;
+      writeCachedJson(getUiCopyCacheKey(lang), translated);
       delete state.uiCopyPending[lang];
       return translated;
     })
@@ -1078,6 +1278,10 @@ function detectIdentifier() {
 }
 
 function renderStatus(status = state.baseStatus) {
+  if (!runtimeStatus || !runtimeTitle || !runtimeMessage) {
+    return;
+  }
+
   if (!status || status.type === "loading") {
     runtimeStatus.hidden = true;
     return;
@@ -1107,8 +1311,18 @@ function applyCopy() {
     const key = node.dataset.i18n;
     node.textContent = copy[key] || uiTranslations.en[key] || "";
   });
+  placeholderNodes.forEach((node) => {
+    const key = node.dataset.i18nPlaceholder;
+    node.setAttribute("placeholder", copy[key] || uiTranslations.en[key] || "");
+  });
+  ariaNodes.forEach((node) => {
+    const key = node.dataset.i18nAriaLabel;
+    node.setAttribute("aria-label", copy[key] || uiTranslations.en[key] || "");
+  });
   languageSelect.value = state.lang;
   syncFlagSelect(languageSelect);
+  updateRequestReasonOptions(copy);
+  setRequestSubmitting(state.requestSubmitting);
   renderStatus();
 
   if (!staticUiLanguages.has(state.lang) && !state.uiCopyCache[state.lang]) {
@@ -1139,6 +1353,12 @@ async function translateFields(record, targetLanguage) {
     return state.translationCache[cacheKey];
   }
 
+  const storedTranslation = readCachedJson(getFieldTranslationCacheKey(cacheKey));
+  if (storedTranslation) {
+    state.translationCache[cacheKey] = storedTranslation;
+    return storedTranslation;
+  }
+
   const sourceFields = {
     conditions: resolveField(record, "conditions"),
     allergies: resolveField(record, "allergies"),
@@ -1155,6 +1375,7 @@ async function translateFields(record, targetLanguage) {
   try {
     const translated = await requestTranslation(sourceLanguage, targetLanguage, sourceFields);
     state.translationCache[cacheKey] = translated;
+    writeCachedJson(getFieldTranslationCacheKey(cacheKey), translated);
     return translated;
   } catch (error) {
     console.warn("Public translation failed", error);
@@ -1224,17 +1445,7 @@ async function renderProfile() {
     recordLink.href = record.full_record_url;
   }
 
-  const supportEmail = cleanText(config.supportEmail) || "support@mymedicalnfc.com";
-  const changeSubject = encodeURIComponent(`MyMedicalNFC.com | Request profile changes | ${cleanText(record.public_slug)}`);
-  const changeBody = encodeURIComponent(
-    [
-      `Hello, I want to request a profile change for: ${cleanText(record.full_name) || cleanText(record.public_slug)}`,
-      `Public profile URL: ${window.location.href}`,
-      "",
-      "Please let me know the reopening cost and next step."
-    ].join("\n")
-  );
-  requestChangesLink.href = `mailto:${supportEmail}?subject=${changeSubject}&body=${changeBody}`;
+  requestChangesLink?.toggleAttribute("disabled", false);
 
   if (isPending) {
     showStatus("warning", "statusPendingTitle", "statusPendingMessage");
@@ -1249,6 +1460,7 @@ async function loadProfile() {
     document.body.classList.remove("profile-mode");
     overviewView.classList.remove("is-hidden");
     profileView.classList.add("is-hidden");
+    requestChangesLink?.classList.add("is-hidden");
     state.baseStatus = null;
     renderStatus();
     return;
@@ -1256,6 +1468,7 @@ async function loadProfile() {
 
   overviewView.classList.add("is-hidden");
   profileView.classList.add("is-hidden");
+  requestChangesLink?.classList.remove("is-hidden");
   document.body.classList.add("profile-mode");
 
   if (!hasSupabaseConfig()) {
@@ -1335,6 +1548,92 @@ async function handleShareLocation() {
   }
 }
 
+async function requestProfileChanges(payload) {
+  const response = await fetch(`${config.supabaseUrl}/functions/v1/${config.supportFunctionName}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      apikey: config.supabaseAnonKey,
+      Authorization: `Bearer ${config.supabaseAnonKey}`
+    },
+    body: JSON.stringify({
+      action: "requestProfileChanges",
+      ...payload
+    })
+  });
+
+  const result = await response.json().catch(() => null);
+  if (!response.ok) {
+    throw new Error(cleanText(result?.details || result?.error || "Support request failed"));
+  }
+
+  return result;
+}
+
+async function handleRequestFormSubmit(event) {
+  event.preventDefault();
+  if (!requestForm) {
+    return;
+  }
+
+  const formData = new FormData(requestForm);
+  const payload = {
+    publicSlug: cleanText(state.profile?.public_slug || state.identifier),
+    requesterName: cleanText(formData.get("requester_name")),
+    requesterEmail: cleanText(formData.get("requester_email")),
+    requesterPhone: cleanText(formData.get("requester_phone")),
+    preferredLanguage: state.lang,
+    requestReason: cleanText(formData.get("request_reason")),
+    requestDetails: cleanText(formData.get("request_details")),
+    pageUrl: window.location.href
+  };
+
+  if (!payload.requesterName || (!payload.requesterEmail && !payload.requesterPhone) || !payload.requestDetails) {
+    setRequestStatus(
+      "error",
+      getCopy().requestStatusValidationTitle || uiTranslations.en.requestStatusValidationTitle,
+      getCopy().requestStatusValidationMessage || uiTranslations.en.requestStatusValidationMessage
+    );
+    return;
+  }
+
+  if (!config.supportFunctionName || !config.supabaseUrl || !config.supabaseAnonKey) {
+    setRequestStatus(
+      "error",
+      getCopy().requestStatusErrorTitle || uiTranslations.en.requestStatusErrorTitle,
+      getCopy().requestStatusErrorMessage || uiTranslations.en.requestStatusErrorMessage
+    );
+    return;
+  }
+
+  try {
+    setRequestSubmitting(true);
+    const result = await requestProfileChanges(payload);
+    state.profile.workflow_status = cleanText(result?.workflowStatus) || state.profile.workflow_status;
+    const reference = cleanText(result?.requestReference);
+    const successMessage = reference
+      ? `${getCopy().requestStatusSuccessMessage || uiTranslations.en.requestStatusSuccessMessage} ${
+          getCopy().requestReferenceLabel || uiTranslations.en.requestReferenceLabel
+        }: ${reference}.`
+      : getCopy().requestStatusSuccessMessage || uiTranslations.en.requestStatusSuccessMessage;
+    setRequestStatus(
+      "success",
+      getCopy().requestStatusSuccessTitle || uiTranslations.en.requestStatusSuccessTitle,
+      successMessage
+    );
+    requestForm.reset();
+    requestForm.elements.request_reason.value = "reopen_profile";
+  } catch (error) {
+    setRequestStatus(
+      "error",
+      getCopy().requestStatusErrorTitle || uiTranslations.en.requestStatusErrorTitle,
+      cleanText(error.message) || getCopy().requestStatusErrorMessage || uiTranslations.en.requestStatusErrorMessage
+    );
+  } finally {
+    setRequestSubmitting(false);
+  }
+}
+
 languageSelect.addEventListener("change", async (event) => {
   state.lang = event.target.value;
   root.lang = state.lang;
@@ -1348,7 +1647,22 @@ languageSelect.addEventListener("change", async (event) => {
   window.history.replaceState({}, "", url);
 });
 
-shareLocationButton.addEventListener("click", handleShareLocation);
+shareLocationButton?.addEventListener("click", handleShareLocation);
+requestChangesLink?.addEventListener("click", (event) => {
+  event.preventDefault();
+  openRequestModal();
+});
+requestForm?.addEventListener("submit", handleRequestFormSubmit);
+document.addEventListener("click", (event) => {
+  if (event.target.closest('[data-action="close-request-modal"]')) {
+    closeRequestModal();
+  }
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && requestModal && !requestModal.classList.contains("is-hidden")) {
+    closeRequestModal();
+  }
+});
 
 initFlagSelects();
 applyCopy();

@@ -93,7 +93,7 @@ const copyMap = {
     refreshTitle: "Workspace updated",
     refreshMessage: "The profile list is already synchronized.",
     loadErrorTitle: "Could not load workspace",
-    provisionTitle: "Private link created",
+    provisionSuccessTitle: "Private link created",
     provisionMessage: "The activation link is ready to copy or send.",
     reopenTitle: "New private link ready",
     reopenMessage: "A fresh activation link was created for this profile.",
@@ -214,7 +214,7 @@ const copyMap = {
     refreshTitle: "Workspace actualizado",
     refreshMessage: "La lista de perfiles ya esta sincronizada.",
     loadErrorTitle: "No se pudo cargar el workspace",
-    provisionTitle: "Link privado generado",
+    provisionSuccessTitle: "Link privado generado",
     provisionMessage: "El enlace de activacion ya esta listo para copiar o enviarse.",
     reopenTitle: "Nuevo link privado listo",
     reopenMessage: "Se creo un enlace nuevo para este perfil.",
@@ -257,6 +257,54 @@ const copyMap = {
   }
 };
 
+const staticLanguages = new Set(["en", "es"]);
+const ADMIN_COPY_CACHE_VERSION = "2026-04-13";
+const ADMIN_COPY_CACHE_PREFIX = `nfc-medico-admin-ui:${ADMIN_COPY_CACHE_VERSION}`;
+
+function flattenCopyMap(source, prefix = "", target = {}) {
+  Object.entries(source).forEach(([key, value]) => {
+    const nextKey = prefix ? `${prefix}__${key}` : key;
+    if (value && typeof value === "object" && !Array.isArray(value)) {
+      flattenCopyMap(value, nextKey, target);
+      return;
+    }
+
+    target[nextKey] = cleanText(value);
+  });
+
+  return target;
+}
+
+function setNestedValue(target, path, value) {
+  const segments = [...path];
+  const last = segments.pop();
+  if (!last) {
+    return;
+  }
+
+  let pointer = target;
+  segments.forEach((segment) => {
+    if (!pointer[segment] || typeof pointer[segment] !== "object") {
+      pointer[segment] = {};
+    }
+    pointer = pointer[segment];
+  });
+
+  pointer[last] = value;
+}
+
+function inflateCopyMap(flatSource) {
+  const inflated = JSON.parse(JSON.stringify(copyMap.en));
+  Object.entries(flatSource || {}).forEach(([key, value]) => {
+    setNestedValue(inflated, key.split("__"), cleanText(value));
+  });
+  return inflated;
+}
+
+const flatAdminEnglishCopy = flattenCopyMap(copyMap.en);
+const textNodes = document.querySelectorAll("[data-i18n]");
+const placeholderNodes = document.querySelectorAll("[data-i18n-placeholder]");
+
 const authForm = document.querySelector("[data-admin-auth-form]");
 const provisionForm = document.querySelector("[data-provision-form]");
 const queueList = document.querySelector("[data-queue-list]");
@@ -286,6 +334,11 @@ const statNodes = {
 
 const state = {
   lang: detectInitialLanguage(),
+  copyCache: {
+    en: copyMap.en,
+    es: copyMap.es
+  },
+  copyPending: {},
   adminUsername: window.localStorage.getItem("nfc-medico-admin-username") || "admin",
   adminPassword:
     window.localStorage.getItem("nfc-medico-admin-password") || window.localStorage.getItem("nfc-medico-admin-token") || "",
@@ -300,16 +353,111 @@ function cleanText(value) {
 }
 
 function copy() {
-  return copyMap[state.lang] || copyMap.en;
+  if (staticLanguages.has(state.lang)) {
+    return copyMap[state.lang] || copyMap.en;
+  }
+
+  return state.copyCache[state.lang] || copyMap.en;
 }
 
 function detectInitialLanguage() {
   const requested = new URLSearchParams(window.location.search).get("lang");
-  if (requested === "es") {
-    return "es";
+  if (requested && languageOptions[requested]) {
+    return requested;
   }
   const browserCode = navigator.language?.slice(0, 2).toLowerCase();
-  return browserCode === "es" ? "es" : "en";
+  return languageOptions[browserCode] ? browserCode : "en";
+}
+
+function readCachedAdminCopy(lang) {
+  try {
+    const raw = window.localStorage.getItem(`${ADMIN_COPY_CACHE_PREFIX}:${cleanText(lang)}`);
+    return raw ? JSON.parse(raw) : null;
+  } catch (_error) {
+    return null;
+  }
+}
+
+function writeCachedAdminCopy(lang, value) {
+  try {
+    window.localStorage.setItem(`${ADMIN_COPY_CACHE_PREFIX}:${cleanText(lang)}`, JSON.stringify(value));
+  } catch (_error) {
+    // Ignore storage errors.
+  }
+}
+
+function canTranslateAdminCopy() {
+  return Boolean(config.supabaseUrl && config.supabaseAnonKey && config.translationFunctionName);
+}
+
+async function requestTranslation(sourceLanguage, targetLanguage, fields) {
+  const response = await fetch(`${config.supabaseUrl}/functions/v1/${config.translationFunctionName}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      apikey: config.supabaseAnonKey,
+      Authorization: `Bearer ${config.supabaseAnonKey}`
+    },
+    body: JSON.stringify({
+      sourceLanguage,
+      targetLanguage,
+      fields
+    })
+  });
+
+  const payload = await response.json().catch(() => null);
+  if (!response.ok) {
+    throw new Error(cleanText(payload?.details || payload?.error || "Translation failed"));
+  }
+
+  return payload?.fields || fields;
+}
+
+async function ensureAdminCopy(lang) {
+  const normalized = cleanText(lang).slice(0, 2).toLowerCase();
+  if (staticLanguages.has(normalized)) {
+    return copyMap[normalized] || copyMap.en;
+  }
+
+  if (state.copyCache[normalized]) {
+    return state.copyCache[normalized];
+  }
+
+  const storedCopy = readCachedAdminCopy(normalized);
+  if (storedCopy) {
+    state.copyCache[normalized] = storedCopy;
+    return storedCopy;
+  }
+
+  if (state.copyPending[normalized]) {
+    return state.copyPending[normalized];
+  }
+
+  if (!canTranslateAdminCopy()) {
+    state.copyCache[normalized] = copyMap.en;
+    return state.copyCache[normalized];
+  }
+
+  const request = requestTranslation("en", normalized, flatAdminEnglishCopy)
+    .then((fields) => {
+      const translated = inflateCopyMap({
+        ...flatAdminEnglishCopy,
+        ...(fields || {})
+      });
+      state.copyCache[normalized] = translated;
+      writeCachedAdminCopy(normalized, translated);
+      delete state.copyPending[normalized];
+      return translated;
+    })
+    .catch((error) => {
+      console.warn(`Admin interface translation failed for ${normalized}`, error);
+      delete state.copyPending[normalized];
+      state.copyCache[normalized] = copyMap.en;
+      return state.copyCache[normalized];
+    });
+
+  state.copyPending[normalized] = request;
+  return request;
 }
 
 function buildLanguageMarkup(value) {
@@ -332,22 +480,33 @@ function syncFlagSelect(select) {
   });
 }
 
-function applyStaticCopy() {
+function applyCopy() {
   const current = copy();
   document.documentElement.lang = state.lang;
   langSelect.value = state.lang;
-  document.querySelectorAll("[data-i18n]").forEach((node) => {
+  textNodes.forEach((node) => {
     const key = node.dataset.i18n;
     if (current[key]) {
       node.textContent = current[key];
     }
   });
-  document.querySelectorAll("[data-i18n-placeholder]").forEach((node) => {
+  placeholderNodes.forEach((node) => {
     const key = node.dataset.i18nPlaceholder;
     if (current[key]) {
       node.setAttribute("placeholder", current[key]);
     }
   });
+  syncFlagSelect(langSelect);
+
+  if (!staticLanguages.has(state.lang) && !state.copyCache[state.lang]) {
+    const activeLang = state.lang;
+    ensureAdminCopy(activeLang).then(() => {
+      if (state.lang === activeLang) {
+        applyCopy();
+        renderQueue();
+      }
+    });
+  }
 }
 
 function closeFlagSelectMenus() {
@@ -667,7 +826,7 @@ provisionForm.addEventListener("submit", async (event) => {
     });
     openResultModal(result);
     syncProvisionDefaults();
-    setStatus("success", copy().provisionTitle, copy().provisionMessage);
+    setStatus("success", copy().provisionSuccessTitle, copy().provisionMessage);
     await refreshQueue();
   } catch (error) {
     setStatus("error", copy().operationFailed, cleanText(error.message));
@@ -696,8 +855,8 @@ searchInput.addEventListener("input", () => {
 });
 
 langSelect.addEventListener("change", () => {
-  state.lang = langSelect.value === "es" ? "es" : "en";
-  applyStaticCopy();
+  state.lang = languageOptions[langSelect.value] ? langSelect.value : "en";
+  applyCopy();
   syncFlagSelect(langSelect);
   const url = new URL(window.location.href);
   url.searchParams.set("lang", state.lang);
@@ -815,7 +974,7 @@ function init() {
   provisionForm.elements.client_phone.addEventListener("blur", () => {
     provisionForm.elements.client_phone.value = formatPhone(provisionForm.elements.client_phone.value);
   });
-  applyStaticCopy();
+  applyCopy();
   syncFlagSelect(langSelect);
 
   if (state.adminPassword) {

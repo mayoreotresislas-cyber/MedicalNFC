@@ -20,6 +20,7 @@ window.NFC_MEDICO_CONFIG = {
   notificationFunctionName: "notify-profile-created",
   activationFunctionName: "medical-activation",
   adminFunctionName: "medical-admin",
+  supportFunctionName: "medical-profile-support",
   siteBaseUrl: "https://medical-nfc.vercel.app/med/{slug}",
   activationBaseUrl: "https://medical-nfc.vercel.app/activate/{token}",
   adminBaseUrl: "https://medical-nfc.vercel.app/admin",

@@ -140,6 +140,28 @@ create index if not exists medical_profile_activation_tokens_profile_idx
 create index if not exists medical_profile_activation_tokens_hash_idx
   on public.medical_profile_activation_tokens (token_hash);
 
+create table if not exists public.medical_profile_change_requests (
+  id uuid primary key default gen_random_uuid(),
+  profile_id uuid not null references public.medical_profiles(id) on delete cascade,
+  public_slug text not null,
+  requester_name text not null,
+  requester_email text,
+  requester_phone text,
+  preferred_language text not null default 'en' check (preferred_language in ('en', 'es', 'fr', 'pt', 'de', 'it', 'ja', 'ko', 'zh')),
+  request_reason text not null,
+  request_details text,
+  page_url text,
+  status text not null default 'open' check (status in ('open', 'reviewing', 'resolved', 'closed')),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists medical_profile_change_requests_slug_idx
+  on public.medical_profile_change_requests (public_slug, created_at desc);
+
+create index if not exists medical_profile_change_requests_status_idx
+  on public.medical_profile_change_requests (status, created_at desc);
+
 create or replace function public.set_current_timestamp_updated_at()
 returns trigger
 language plpgsql
@@ -153,6 +175,12 @@ $$;
 drop trigger if exists trg_medical_profiles_updated_at on public.medical_profiles;
 create trigger trg_medical_profiles_updated_at
 before update on public.medical_profiles
+for each row
+execute function public.set_current_timestamp_updated_at();
+
+drop trigger if exists trg_medical_profile_change_requests_updated_at on public.medical_profile_change_requests;
+create trigger trg_medical_profile_change_requests_updated_at
+before update on public.medical_profile_change_requests
 for each row
 execute function public.set_current_timestamp_updated_at();
 
@@ -215,6 +243,7 @@ where is_public = true;
 
 alter table public.medical_profiles enable row level security;
 alter table public.medical_profile_activation_tokens enable row level security;
+alter table public.medical_profile_change_requests enable row level security;
 
 drop policy if exists "public read medical profiles" on public.medical_profiles;
 create policy "public read medical profiles"

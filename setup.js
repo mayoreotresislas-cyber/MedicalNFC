@@ -773,6 +773,9 @@ const state = {
   multiEntryControllers: {}
 };
 
+const SETUP_COPY_CACHE_VERSION = "2026-04-13";
+const SETUP_COPY_CACHE_PREFIX = `nfc-medico-setup-ui:${SETUP_COPY_CACHE_VERSION}`;
+
 function detectInitialLanguage() {
   const requested = new URLSearchParams(window.location.search).get("lang");
   if (requested && languageOptions[requested]) {
@@ -781,6 +784,23 @@ function detectInitialLanguage() {
 
   const browserCode = navigator.language?.slice(0, 2).toLowerCase();
   return languageOptions[browserCode] ? browserCode : "en";
+}
+
+function readCachedSetupCopy(lang) {
+  try {
+    const raw = window.localStorage.getItem(`${SETUP_COPY_CACHE_PREFIX}:${cleanText(lang)}`);
+    return raw ? JSON.parse(raw) : null;
+  } catch (_error) {
+    return null;
+  }
+}
+
+function writeCachedSetupCopy(lang, value) {
+  try {
+    window.localStorage.setItem(`${SETUP_COPY_CACHE_PREFIX}:${cleanText(lang)}`, JSON.stringify(value));
+  } catch (_error) {
+    // Ignore storage errors.
+  }
 }
 
 function isActivationMode() {
@@ -1764,6 +1784,12 @@ async function ensureSetupCopy(lang) {
     return state.uiCopyCache[normalized];
   }
 
+  const storedCopy = readCachedSetupCopy(normalized);
+  if (storedCopy) {
+    state.uiCopyCache[normalized] = storedCopy;
+    return storedCopy;
+  }
+
   if (state.uiCopyPending[normalized]) {
     return state.uiCopyPending[normalized];
   }
@@ -1788,6 +1814,7 @@ async function ensureSetupCopy(lang) {
         ...(payload?.fields || {})
       };
       state.uiCopyCache[normalized] = translated;
+      writeCachedSetupCopy(normalized, translated);
       delete state.uiCopyPending[normalized];
       return translated;
     })
