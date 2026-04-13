@@ -36,6 +36,7 @@ const copyMap = {
     fieldUsername: "Username",
     fieldPassword: "Password",
     saveAccessButton: "Save access and load workspace",
+    logoutButton: "Logout",
     provisionKicker: "Provision",
     provisionTitle: "Create a private activation link for a new client",
     fieldProfileName: "Client or profile name",
@@ -88,6 +89,8 @@ const copyMap = {
       "Save your username and password to use this panel. If you still use the previous private key, you can enter it as the password.",
     passwordMissingTitle: "Password required",
     passwordMissingMessage: "Enter your administrator access before continuing.",
+    loggedOutTitle: "Logged out",
+    loggedOutMessage: "Administrator access was removed from this browser.",
     loadingTitle: "Loading profiles",
     loadingMessage: "Checking pending, ready, active, reopened, and archived profiles.",
     refreshTitle: "Workspace updated",
@@ -157,6 +160,7 @@ const copyMap = {
     fieldUsername: "Usuario",
     fieldPassword: "Contrasena",
     saveAccessButton: "Guardar acceso y cargar workspace",
+    logoutButton: "Cerrar sesion",
     provisionKicker: "Provision",
     provisionTitle: "Crear enlace privado de activacion para un nuevo cliente",
     fieldProfileName: "Nombre del cliente o perfil",
@@ -209,6 +213,8 @@ const copyMap = {
       "Guarda tu usuario y contrasena para usar este panel. Si aun usas la clave privada anterior, puedes escribirla como contrasena.",
     passwordMissingTitle: "Falta la contrasena",
     passwordMissingMessage: "Ingresa tu acceso administrativo antes de continuar.",
+    loggedOutTitle: "Sesion cerrada",
+    loggedOutMessage: "El acceso administrativo fue borrado de este navegador.",
     loadingTitle: "Cargando perfiles",
     loadingMessage: "Buscando perfiles pendientes, listos, activos, reabiertos y archivados.",
     refreshTitle: "Workspace actualizado",
@@ -309,6 +315,7 @@ const authForm = document.querySelector("[data-admin-auth-form]");
 const provisionForm = document.querySelector("[data-provision-form]");
 const queueList = document.querySelector("[data-queue-list]");
 const protectedSections = document.querySelectorAll("[data-admin-protected]");
+const logoutButton = document.querySelector('[data-action="admin-logout"]');
 const statusBanner = document.querySelector("[data-admin-status]");
 const statusTitle = document.querySelector("[data-admin-status-title]");
 const statusMessage = document.querySelector("[data-admin-status-message]");
@@ -599,8 +606,11 @@ function setStatus(type, title, message) {
 function setAuthenticatedUi(isAuthenticated) {
   state.isAuthenticated = isAuthenticated;
   protectedSections.forEach((section) => {
-    section.classList.toggle("is-hidden", !isAuthenticated);
+    section.hidden = !isAuthenticated;
   });
+  if (logoutButton) {
+    logoutButton.hidden = !isAuthenticated;
+  }
 }
 
 function digitsOnly(value) {
@@ -724,6 +734,35 @@ function openResultModal(result) {
 
 function closeResultModal() {
   resultModal.classList.add("is-hidden");
+}
+
+function resetAdminSession(showStatus = false) {
+  state.adminPassword = "";
+  state.latest = null;
+  state.profiles = [];
+  state.search = "";
+  state.filterStatus = "all";
+
+  window.localStorage.removeItem("nfc-medico-admin-password");
+  window.localStorage.removeItem("nfc-medico-admin-token");
+
+  authForm.elements.admin_password.value = "";
+  searchInput.value = "";
+  updateStats([]);
+  renderQueue();
+  closeResultModal();
+  setAuthenticatedUi(false);
+
+  filterButtons.forEach((button) => {
+    const isActive = (button.dataset.filterStatus || "all") === "all";
+    button.classList.toggle("is-active", isActive);
+  });
+
+  if (showStatus) {
+    setStatus("success", copy().loggedOutTitle, copy().loggedOutMessage);
+  } else {
+    statusBanner.hidden = true;
+  }
 }
 
 function updateStats(profiles) {
@@ -905,6 +944,11 @@ resultModal.addEventListener("click", async (event) => {
   }
 });
 
+logoutButton?.addEventListener("click", () => {
+  resetAdminSession(true);
+  authForm.elements.admin_password.focus();
+});
+
 queueList.addEventListener("click", async (event) => {
   const trigger = event.target.closest("[data-action]");
   if (!trigger) return;
@@ -990,13 +1034,7 @@ function init() {
   });
   applyCopy();
   syncFlagSelect(langSelect);
-
-  if (state.adminPassword) {
-    refreshQueue().catch((error) => {
-      setAuthenticatedUi(false);
-      setStatus("error", copy().loadErrorTitle, cleanText(error.message));
-    });
-  }
+  resetAdminSession(false);
 }
 
 init();
