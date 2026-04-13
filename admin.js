@@ -308,6 +308,7 @@ const placeholderNodes = document.querySelectorAll("[data-i18n-placeholder]");
 const authForm = document.querySelector("[data-admin-auth-form]");
 const provisionForm = document.querySelector("[data-provision-form]");
 const queueList = document.querySelector("[data-queue-list]");
+const protectedSections = document.querySelectorAll("[data-admin-protected]");
 const statusBanner = document.querySelector("[data-admin-status]");
 const statusTitle = document.querySelector("[data-admin-status-title]");
 const statusMessage = document.querySelector("[data-admin-status-message]");
@@ -342,6 +343,7 @@ const state = {
   adminUsername: window.localStorage.getItem("nfc-medico-admin-username") || "admin",
   adminPassword:
     window.localStorage.getItem("nfc-medico-admin-password") || window.localStorage.getItem("nfc-medico-admin-token") || "",
+  isAuthenticated: false,
   latest: null,
   profiles: [],
   filterStatus: "all",
@@ -594,6 +596,13 @@ function setStatus(type, title, message) {
   statusMessage.textContent = message;
 }
 
+function setAuthenticatedUi(isAuthenticated) {
+  state.isAuthenticated = isAuthenticated;
+  protectedSections.forEach((section) => {
+    section.classList.toggle("is-hidden", !isAuthenticated);
+  });
+}
+
 function digitsOnly(value) {
   return cleanText(value).replace(/\D/g, "");
 }
@@ -694,11 +703,13 @@ async function copyText(value, message) {
   setStatus("success", copy().copiedTitle, message);
 }
 
-function syncProvisionDefaults() {
+function syncProvisionDefaults(shouldFocus = true) {
   provisionForm.reset();
   provisionForm.elements.default_language.value = languageOptions[state.lang] ? state.lang : "es";
   syncFlagSelect(provisionForm.elements.default_language);
-  provisionForm.elements.full_name.focus();
+  if (shouldFocus) {
+    provisionForm.elements.full_name.focus();
+  }
 }
 
 function openResultModal(result) {
@@ -792,6 +803,7 @@ async function refreshQueue() {
   state.profiles = result.profiles || [];
   updateStats(state.profiles);
   renderQueue();
+  setAuthenticatedUi(true);
   setStatus("success", copy().refreshTitle, copy().refreshMessage);
 }
 
@@ -810,6 +822,7 @@ authForm.addEventListener("submit", async (event) => {
   try {
     await refreshQueue();
   } catch (error) {
+    setAuthenticatedUi(false);
     setStatus("error", copy().loadErrorTitle, cleanText(error.message));
   }
 });
@@ -970,7 +983,8 @@ function init() {
   initFlagSelects();
   authForm.elements.admin_username.value = state.adminUsername;
   authForm.elements.admin_password.value = state.adminPassword;
-  syncProvisionDefaults();
+  setAuthenticatedUi(false);
+  syncProvisionDefaults(false);
   provisionForm.elements.client_phone.addEventListener("blur", () => {
     provisionForm.elements.client_phone.value = formatPhone(provisionForm.elements.client_phone.value);
   });
@@ -979,10 +993,9 @@ function init() {
 
   if (state.adminPassword) {
     refreshQueue().catch((error) => {
+      setAuthenticatedUi(false);
       setStatus("error", copy().loadErrorTitle, cleanText(error.message));
     });
-  } else {
-    setStatus("warning", copy().authMissingTitle, copy().authMissingMessage);
   }
 }
 

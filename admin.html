@@ -50,7 +50,7 @@
       </header>
 
       <main class="admin-main">
-        <section class="hero admin-hero">
+        <section class="hero admin-hero is-hidden" data-admin-protected>
           <div>
             <p class="eyebrow" data-i18n="heroKicker">Admin workflow</p>
             <h1 data-i18n="heroTitle">Create, send, reopen, and manage medical NFC profiles.</h1>
@@ -84,7 +84,7 @@
               <p data-admin-status-message>Save your administrator access to begin.</p>
             </div>
 
-            <section class="form-section">
+            <section class="form-section is-hidden" data-admin-protected>
               <div class="section-heading">
                 <p class="section-kicker" data-i18n="accessKicker">Access</p>
                 <h2 data-i18n="accessTitle">Administrator login</h2>
@@ -197,7 +197,7 @@
             </section>
           </section>
 
-          <aside class="preview-panel admin-queue-panel">
+          <aside class="preview-panel admin-queue-panel is-hidden" data-admin-protected>
             <div class="preview-sticky">
               <div class="preview-header">
                 <div>

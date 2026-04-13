@@ -756,7 +756,70 @@ const languageVisuals = {
   zh: { label: "Chinese", flagClass: "flag-zh" }
 };
 
-const staticUiLanguages = new Set(["en", "es"]);
+Object.assign(uiTranslations.en, {
+  pricingFutureChanges: "Future changes: $5 to reopen the profile link for remote online edits.",
+  serviceTitle: "Future changes: reopen the profile link later for $5",
+  serviceText: "If medical information changes later, online access can be reopened for remote edits for a $5 service fee.",
+  updateFeeNote: "Online profile reopening or remote changes cost $5 per link reopening. Physical NFC changes still require the tag in hand."
+});
+
+Object.assign(uiTranslations.es, {
+  pricingFutureChanges: "Cambios futuros: $5 por reapertura del link del perfil para ediciones en linea.",
+  serviceTitle: "Cambios futuros: reabre el link del perfil despues por $5",
+  serviceText: "Si la informacion medica cambia despues, el acceso en linea se puede reabrir para ediciones remotas con un costo de $5.",
+  updateFeeNote: "La reapertura del perfil en linea o los cambios remotos cuestan $5 por reapertura del link. Los cambios fisicos del NFC todavia requieren tener la pieza en mano."
+});
+
+Object.assign(uiTranslations.fr, {
+  pricingFutureChanges: "Modifications futures : 5 $ pour rouvrir le lien du profil pour des mises a jour en ligne.",
+  serviceTitle: "Modifications futures : rouvrir le lien du profil plus tard pour 5 $",
+  serviceText: "Si les informations medicales changent plus tard, l'acces en ligne peut etre rouvert pour des modifications a distance moyennant 5 $.",
+  updateFeeNote: "La reouverture du profil en ligne ou les modifications a distance coutent 5 $ par reouverture du lien. Les changements physiques du NFC exigent toujours d'avoir le tag en main."
+});
+
+Object.assign(uiTranslations.pt, {
+  pricingFutureChanges: "Alteracoes futuras: US$5 para reabrir o link do perfil para edicoes online remotas.",
+  serviceTitle: "Alteracoes futuras: reabra o link do perfil depois por US$5",
+  serviceText: "Se as informacoes medicas mudarem depois, o acesso online pode ser reaberto para edicoes remotas por US$5.",
+  updateFeeNote: "A reabertura do perfil online ou alteracoes remotas custam US$5 por reabertura do link. Alteracoes fisicas no NFC ainda exigem a peca em maos."
+});
+
+Object.assign(uiTranslations.de, {
+  pricingFutureChanges: "Spaetere Aenderungen: 5 $ zum erneuten Oeffnen des Profillinks fuer Online-Aenderungen.",
+  serviceTitle: "Spaetere Aenderungen: Profillink spaeter fuer 5 $ erneut oeffnen",
+  serviceText: "Wenn sich medizinische Informationen spaeter aendern, kann der Onlinezugang fuer 5 $ fuer Fernbearbeitungen erneut geoeffnet werden.",
+  updateFeeNote: "Das erneute Oeffnen des Onlineprofils oder Fernaenderungen kosten 5 $ pro Link-Reaktivierung. Physische NFC-Aenderungen erfordern weiterhin den Tag in der Hand."
+});
+
+Object.assign(uiTranslations.it, {
+  pricingFutureChanges: "Modifiche future: 5 $ per riaprire il link del profilo per modifiche online a distanza.",
+  serviceTitle: "Modifiche future: riapri il link del profilo in seguito per 5 $",
+  serviceText: "Se le informazioni mediche cambiano in seguito, l'accesso online puo essere riaperto per modifiche a distanza con un costo di 5 $.",
+  updateFeeNote: "La riapertura del profilo online o le modifiche remote costano 5 $ per ogni riapertura del link. Le modifiche fisiche all'NFC richiedono ancora il tag in mano."
+});
+
+Object.assign(uiTranslations.ja, {
+  pricingFutureChanges: "今後の変更: オンライン編集のためにプロフィールリンクを再開する費用は5ドルです。",
+  serviceTitle: "今後の変更: プロフィールリンクは後で5ドルで再開できます",
+  serviceText: "医療情報が後で変わった場合、オンラインアクセスは5ドルで再開して遠隔編集できます。",
+  updateFeeNote: "オンラインプロフィールの再開や遠隔変更は、リンク再開ごとに5ドルです。物理NFCの変更には引き続きタグ本体が必要です。"
+});
+
+Object.assign(uiTranslations.ko, {
+  pricingFutureChanges: "향후 변경: 온라인 수정을 위해 프로필 링크를 다시 여는 비용은 5달러입니다.",
+  serviceTitle: "향후 변경: 프로필 링크는 나중에 5달러로 다시 열 수 있습니다",
+  serviceText: "의료 정보가 나중에 바뀌면 온라인 접근을 5달러에 다시 열어 원격 수정할 수 있습니다.",
+  updateFeeNote: "온라인 프로필 재개 또는 원격 변경은 링크 재개당 5달러입니다. 물리 NFC 변경은 여전히 태그가 필요합니다."
+});
+
+Object.assign(uiTranslations.zh, {
+  pricingFutureChanges: "后续变更：重新开启档案链接以进行在线编辑的费用为5美元。",
+  serviceTitle: "后续变更：以后可支付5美元重新开启档案链接",
+  serviceText: "如果医疗信息之后发生变化，可支付5美元重新开启在线访问以进行远程编辑。",
+  updateFeeNote: "在线档案重新开启或远程修改每次链接重开收费5美元。实体NFC变更仍需拿到标签。"
+});
+
+const staticUiLanguages = new Set(Object.keys(uiTranslations));
 
 const demoProfile = {
   default_language: "en",
