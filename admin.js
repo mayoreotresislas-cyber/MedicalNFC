@@ -949,7 +949,7 @@ resultModal.addEventListener("click", async (event) => {
 });
 
 logoutButton?.addEventListener("click", () => {
-  resetAdminSession(true);
+  resetAdminSession(false);
   authForm.elements.admin_password.focus();
 });
 
