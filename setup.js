@@ -753,7 +753,6 @@ const state = {
   uiCopyPending: {},
   slugTouched: false,
   slugSeed: createSlugSeed(),
-  baseStatus: null,
   statusTimer: null,
   lastSavedUrl: "",
   pendingMode: "save",
@@ -772,6 +771,8 @@ const state = {
   },
   multiEntryControllers: {}
 };
+
+let statusPopup = null;
 
 const SETUP_COPY_CACHE_VERSION = "2026-04-13";
 const SETUP_COPY_CACHE_PREFIX = `nfc-medico-setup-ui:${SETUP_COPY_CACHE_VERSION}`;
@@ -1701,17 +1702,29 @@ function toggleActivationLayout(hasToken) {
   }
 }
 
-function renderStatus(status = state.baseStatus) {
-  if (!status) {
-    statusBanner.hidden = true;
-    return;
+function ensureStatusPopup() {
+  if (statusPopup) {
+    return statusPopup;
   }
 
-  const copy = getSetupCopy(state.uiLang);
-  statusBanner.hidden = false;
-  statusBanner.dataset.state = status.type;
-  statusTitle.textContent = formatString(copy[status.titleKey], status.values);
-  statusMessage.textContent = formatString(copy[status.messageKey], status.values);
+  statusPopup = document.createElement("div");
+  statusPopup.className = "status-popup";
+  statusPopup.hidden = true;
+  statusPopup.setAttribute("role", "status");
+  statusPopup.setAttribute("aria-live", "polite");
+  statusPopup.innerHTML = "<strong></strong><p></p>";
+  document.body.appendChild(statusPopup);
+  return statusPopup;
+}
+
+function hideStatusPopup() {
+  window.clearTimeout(state.statusTimer);
+  if (statusPopup) {
+    statusPopup.hidden = true;
+  }
+  if (statusBanner) {
+    statusBanner.hidden = true;
+  }
 }
 
 function extractErrorDetails(error) {
@@ -1730,14 +1743,36 @@ function extractErrorDetails(error) {
 }
 
 function showStatus(type, titleKey, messageKey, values = {}) {
-  state.baseStatus = { type, titleKey, messageKey, values };
-  renderStatus();
+  const copy = getSetupCopy(state.uiLang);
+  const popup = ensureStatusPopup();
+  const title = formatString(copy[titleKey] || setupTranslations.en[titleKey] || "", values);
+  const message = formatString(copy[messageKey] || setupTranslations.en[messageKey] || "", values);
+
+  popup.dataset.state = type;
+  popup.querySelector("strong").textContent = title;
+  popup.querySelector("p").textContent = message;
+  popup.hidden = false;
+
+  if (statusBanner) {
+    statusBanner.hidden = true;
+  }
+  if (statusTitle) {
+    statusTitle.textContent = title;
+  }
+  if (statusMessage) {
+    statusMessage.textContent = message;
+  }
+
+  window.clearTimeout(state.statusTimer);
+  if (type !== "loading") {
+    state.statusTimer = window.setTimeout(() => {
+      popup.hidden = true;
+    }, 4200);
+  }
 }
 
 function flashStatus(type, titleKey, messageKey, values = {}) {
-  window.clearTimeout(state.statusTimer);
-  renderStatus({ type, titleKey, messageKey, values });
-  state.statusTimer = window.setTimeout(() => renderStatus(), 4200);
+  showStatus(type, titleKey, messageKey, values);
 }
 
 async function invokeFunction(functionName, body) {
@@ -1771,7 +1806,6 @@ function applyInterfaceCopy(copy) {
   setOrganDonorOptions(copy);
   setGenderOptions(copy);
   refreshMultiEntryComponents();
-  renderStatus();
 }
 
 async function ensureSetupCopy(lang) {
@@ -2140,7 +2174,7 @@ function startFamilyProfile() {
   const template = getFamilyTemplate() || getFormState();
   clearDraftFields(true);
   applyFamilyTemplate(template);
-  showStatus("success", "statusReadyTitle", "statusReadyMessage");
+  hideStatusPopup();
   form.elements.first_name.focus();
   closeSuccessModal();
   renderPreview();
@@ -2573,11 +2607,10 @@ async function init() {
   clearDraftFields(false);
   bindEvents();
   setInterfaceLanguage(state.uiLang);
-  showStatus(
-    hasSupabaseConfig() ? "success" : "warning",
-    hasSupabaseConfig() ? "statusReadyTitle" : "statusConfigTitle",
-    hasSupabaseConfig() ? "statusReadyMessage" : "statusConfigMessage"
-  );
+  hideStatusPopup();
+  if (!hasSupabaseConfig()) {
+    showStatus("warning", "statusConfigTitle", "statusConfigMessage");
+  }
 
   if (isActivationMode()) {
     await loadActivationState().catch((error) => {

@@ -316,6 +316,7 @@ const authOnlySections = document.querySelectorAll("[data-admin-auth-only]");
 const provisionForm = document.querySelector("[data-provision-form]");
 const queueList = document.querySelector("[data-queue-list]");
 const protectedSections = document.querySelectorAll("[data-admin-protected]");
+const authOnlyNavItems = document.querySelectorAll("[data-admin-nav-auth]");
 const logoutButton = document.querySelector('[data-action="admin-logout"]');
 const statusBanner = document.querySelector("[data-admin-status]");
 const statusTitle = document.querySelector("[data-admin-status-title]");
@@ -357,6 +358,9 @@ const state = {
   filterStatus: "all",
   search: ""
 };
+
+let statusPopup = null;
+let statusPopupTimer = 0;
 
 function cleanText(value) {
   return String(value ?? "").replace(/\s+/g, " ").trim();
@@ -597,11 +601,54 @@ function initFlagSelects() {
   });
 }
 
+function ensureStatusPopup() {
+  if (statusPopup) {
+    return statusPopup;
+  }
+
+  statusPopup = document.createElement("div");
+  statusPopup.className = "status-popup";
+  statusPopup.hidden = true;
+  statusPopup.setAttribute("role", "status");
+  statusPopup.setAttribute("aria-live", "polite");
+  statusPopup.innerHTML = "<strong></strong><p></p>";
+  document.body.appendChild(statusPopup);
+  return statusPopup;
+}
+
+function hideStatusPopup() {
+  window.clearTimeout(statusPopupTimer);
+  if (statusPopup) {
+    statusPopup.hidden = true;
+  }
+  if (statusBanner) {
+    statusBanner.hidden = true;
+  }
+}
+
 function setStatus(type, title, message) {
-  statusBanner.hidden = false;
-  statusBanner.dataset.state = type;
-  statusTitle.textContent = title;
-  statusMessage.textContent = message;
+  const popup = ensureStatusPopup();
+  popup.dataset.state = type;
+  popup.querySelector("strong").textContent = title;
+  popup.querySelector("p").textContent = message;
+  popup.hidden = false;
+
+  if (statusBanner) {
+    statusBanner.hidden = true;
+  }
+  if (statusTitle) {
+    statusTitle.textContent = title;
+  }
+  if (statusMessage) {
+    statusMessage.textContent = message;
+  }
+
+  window.clearTimeout(statusPopupTimer);
+  if (type !== "loading") {
+    statusPopupTimer = window.setTimeout(() => {
+      popup.hidden = true;
+    }, 4200);
+  }
 }
 
 function setAuthenticatedUi(isAuthenticated) {
@@ -611,6 +658,9 @@ function setAuthenticatedUi(isAuthenticated) {
   });
   authOnlySections.forEach((section) => {
     section.hidden = isAuthenticated;
+  });
+  authOnlyNavItems.forEach((item) => {
+    item.hidden = !isAuthenticated;
   });
   if (logoutButton) {
     logoutButton.hidden = !isAuthenticated;
@@ -765,7 +815,7 @@ function resetAdminSession(showStatus = false) {
   if (showStatus) {
     setStatus("success", copy().loggedOutTitle, copy().loggedOutMessage);
   } else {
-    statusBanner.hidden = true;
+    hideStatusPopup();
   }
 }
 

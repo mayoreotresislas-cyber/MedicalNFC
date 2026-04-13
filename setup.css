@@ -415,6 +415,62 @@ button {
   background: rgba(239, 68, 68, 0.09);
 }
 
+.status-popup {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 1400;
+  width: min(420px, calc(100vw - 32px));
+  display: grid;
+  gap: 6px;
+  padding: 16px 18px;
+  border-radius: 22px;
+  border: 1px solid rgba(199, 59, 47, 0.18);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.86)),
+    rgba(255, 255, 255, 0.92);
+  box-shadow: 0 24px 60px rgba(24, 19, 16, 0.16);
+  backdrop-filter: blur(18px);
+}
+
+.status-popup strong {
+  font-size: 1rem;
+}
+
+.status-popup p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.status-popup[data-state="success"] {
+  border-color: rgba(34, 197, 94, 0.24);
+  background:
+    linear-gradient(180deg, rgba(240, 253, 244, 0.96), rgba(255, 255, 255, 0.9)),
+    rgba(240, 253, 244, 0.92);
+}
+
+.status-popup[data-state="warning"] {
+  border-color: rgba(234, 179, 8, 0.26);
+  background:
+    linear-gradient(180deg, rgba(254, 252, 232, 0.96), rgba(255, 255, 255, 0.9)),
+    rgba(254, 252, 232, 0.92);
+}
+
+.status-popup[data-state="loading"] {
+  border-color: rgba(96, 165, 250, 0.26);
+  background:
+    linear-gradient(180deg, rgba(239, 246, 255, 0.96), rgba(255, 255, 255, 0.9)),
+    rgba(239, 246, 255, 0.92);
+}
+
+.status-popup[data-state="error"] {
+  border-color: rgba(239, 68, 68, 0.22);
+  background:
+    linear-gradient(180deg, rgba(254, 242, 242, 0.96), rgba(255, 255, 255, 0.9)),
+    rgba(254, 242, 242, 0.92);
+}
+
 .step-row {
   display: flex;
   flex-wrap: wrap;

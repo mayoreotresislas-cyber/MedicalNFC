@@ -115,6 +115,9 @@ const state = {
   pendingCopy: {}
 };
 
+let statusPopup = null;
+let statusPopupTimer = 0;
+
 const ACTIVATION_COPY_CACHE_VERSION = "2026-04-13";
 const ACTIVATION_COPY_CACHE_PREFIX = `nfc-medico-activation-ui:${ACTIVATION_COPY_CACHE_VERSION}`;
 
@@ -370,13 +373,58 @@ function applyCopy() {
   }
 }
 
+function ensureStatusPopup() {
+  if (statusPopup) {
+    return statusPopup;
+  }
+
+  statusPopup = document.createElement("div");
+  statusPopup.className = "status-popup";
+  statusPopup.hidden = true;
+  statusPopup.setAttribute("role", "status");
+  statusPopup.setAttribute("aria-live", "polite");
+  statusPopup.innerHTML = "<strong></strong><p></p>";
+  document.body.appendChild(statusPopup);
+  return statusPopup;
+}
+
+function hideStatusPopup() {
+  window.clearTimeout(statusPopupTimer);
+  if (statusPopup) {
+    statusPopup.hidden = true;
+  }
+  if (statusBanner) {
+    statusBanner.hidden = true;
+  }
+}
+
 function setStatus(type, titleKey, messageKey, overrideMessage = "") {
   const current = getCopy();
-  statusBanner.hidden = false;
-  statusBanner.dataset.state = type;
-  statusTitle.textContent = current[titleKey] || activationTranslations.en[titleKey] || "";
-  statusMessage.textContent =
-    overrideMessage || current[messageKey] || activationTranslations.en[messageKey] || "";
+  const title = current[titleKey] || activationTranslations.en[titleKey] || "";
+  const message = overrideMessage || current[messageKey] || activationTranslations.en[messageKey] || "";
+  const popup = ensureStatusPopup();
+
+  popup.dataset.state = type;
+  popup.querySelector("strong").textContent = title;
+  popup.querySelector("p").textContent = message;
+  popup.hidden = false;
+
+  if (statusBanner) {
+    statusBanner.hidden = true;
+  }
+  if (statusTitle) {
+    statusTitle.textContent = title;
+  }
+  if (statusMessage) {
+    statusMessage.textContent = message;
+  }
+
+  window.clearTimeout(statusPopupTimer);
+  if (type !== "loading") {
+    statusPopupTimer = window.setTimeout(() => {
+      popup.hidden = true;
+    }, 4200);
+  }
 }
 
 function extractActivationToken(value) {
@@ -471,7 +519,7 @@ form.addEventListener("submit", async (event) => {
 
 initFlagSelects();
 applyCopy();
-setStatus("success", "statusReadyTitle", "statusReadyMessage");
+hideStatusPopup();
 
 const initialToken = getInitialToken();
 if (initialToken) {

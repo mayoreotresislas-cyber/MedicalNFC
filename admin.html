@@ -29,9 +29,9 @@
         </a>
 
         <div class="topbar-actions">
-          <a class="nav-link" href="/setup.html" data-i18n="directSetupLink">Direct setup</a>
-          <a class="nav-link" href="/activate" data-i18n="activationLink">Private activation</a>
-          <button class="nav-link" type="button" data-action="admin-logout" data-i18n="logoutButton" hidden>Logout</button>
+          <a class="nav-link" href="/setup.html" data-admin-nav-auth data-i18n="directSetupLink" hidden>Direct setup</a>
+          <a class="nav-link" href="/activate" data-admin-nav-auth data-i18n="activationLink" hidden>Private activation</a>
+          <button class="nav-link" type="button" data-admin-nav-auth data-action="admin-logout" data-i18n="logoutButton" hidden>Logout</button>
           <a class="nav-link nav-link-primary" href="/" data-i18n="publicLandingLink">Public landing</a>
           <label class="language-dropdown">
             <span data-i18n="interfaceLanguage">Interface language</span>
@@ -51,11 +51,6 @@
       </header>
 
       <main class="admin-main">
-        <div class="status-banner admin-status-banner" data-admin-status hidden>
-          <strong data-admin-status-title>Workspace ready</strong>
-          <p data-admin-status-message>Save your administrator access to begin.</p>
-        </div>
-
         <section class="admin-auth-view" data-admin-auth-only>
           <section class="form-section admin-login-card admin-login-panel">
             <div class="section-heading">

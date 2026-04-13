@@ -893,10 +893,11 @@ const state = {
   },
   uiCopyPending: {},
   translationCache: {},
-  baseStatus: null,
   statusTimer: null,
   requestSubmitting: false
 };
+
+let statusPopup = null;
 
 function detectInitialLanguage() {
   const requested = new URLSearchParams(window.location.search).get("lang");
@@ -1078,26 +1079,70 @@ function updateRequestReasonOptions(copy = getCopy()) {
   });
 }
 
-function setRequestStatus(type, title, message) {
-  if (!requestStatus || !requestStatusTitle || !requestStatusMessage) {
-    return;
+function ensureStatusPopup() {
+  if (statusPopup) {
+    return statusPopup;
   }
 
-  requestStatus.hidden = false;
-  requestStatus.classList.remove("is-hidden");
-  requestStatus.dataset.state = type;
-  requestStatusTitle.textContent = title;
-  requestStatusMessage.textContent = message;
+  statusPopup = document.createElement("div");
+  statusPopup.className = "status-popup";
+  statusPopup.hidden = true;
+  statusPopup.setAttribute("role", "status");
+  statusPopup.setAttribute("aria-live", "polite");
+  statusPopup.innerHTML = "<strong></strong><p></p>";
+  document.body.appendChild(statusPopup);
+  return statusPopup;
+}
+
+function hideStatusPopup() {
+  window.clearTimeout(state.statusTimer);
+  if (statusPopup) {
+    statusPopup.hidden = true;
+  }
+  if (runtimeStatus) {
+    runtimeStatus.hidden = true;
+  }
+  if (requestStatus) {
+    requestStatus.hidden = true;
+    requestStatus.classList.add("is-hidden");
+    requestStatus.dataset.state = "";
+  }
+}
+
+function showPopup(type, title, message) {
+  const popup = ensureStatusPopup();
+  popup.dataset.state = type;
+  popup.querySelector("strong").textContent = title;
+  popup.querySelector("p").textContent = message;
+  popup.hidden = false;
+
+  if (runtimeStatus && runtimeTitle && runtimeMessage) {
+    runtimeStatus.hidden = true;
+    runtimeStatus.dataset.state = type;
+    runtimeTitle.textContent = title;
+    runtimeMessage.textContent = message;
+  }
+
+  if (requestStatus && requestStatusTitle && requestStatusMessage) {
+    requestStatus.hidden = true;
+    requestStatus.classList.add("is-hidden");
+    requestStatus.dataset.state = type;
+    requestStatusTitle.textContent = title;
+    requestStatusMessage.textContent = message;
+  }
+
+  window.clearTimeout(state.statusTimer);
+  state.statusTimer = window.setTimeout(() => {
+    popup.hidden = true;
+  }, 4200);
+}
+
+function setRequestStatus(type, title, message) {
+  showPopup(type, title, message);
 }
 
 function resetRequestStatus() {
-  if (!requestStatus) {
-    return;
-  }
-
-  requestStatus.hidden = true;
-  requestStatus.classList.add("is-hidden");
-  requestStatus.dataset.state = "";
+  hideStatusPopup();
 }
 
 function setRequestSubmitting(isSubmitting) {
@@ -1340,32 +1385,13 @@ function detectIdentifier() {
   return cleanText(config.defaultSlug);
 }
 
-function renderStatus(status = state.baseStatus) {
-  if (!runtimeStatus || !runtimeTitle || !runtimeMessage) {
-    return;
-  }
-
-  if (!status || status.type === "loading") {
-    runtimeStatus.hidden = true;
-    return;
-  }
-
-  const copy = getCopy();
-  runtimeStatus.hidden = false;
-  runtimeStatus.dataset.state = status.type;
-  runtimeTitle.textContent = copy[status.titleKey] || uiTranslations.en[status.titleKey];
-  runtimeMessage.textContent = copy[status.messageKey] || uiTranslations.en[status.messageKey];
-}
-
 function showStatus(type, titleKey, messageKey) {
-  state.baseStatus = { type, titleKey, messageKey };
-  renderStatus();
+  const copy = getCopy();
+  showPopup(type, copy[titleKey] || uiTranslations.en[titleKey] || "", copy[messageKey] || uiTranslations.en[messageKey] || "");
 }
 
 function flashStatus(type, titleKey, messageKey) {
-  window.clearTimeout(state.statusTimer);
-  renderStatus({ type, titleKey, messageKey });
-  state.statusTimer = window.setTimeout(() => renderStatus(), 4200);
+  showStatus(type, titleKey, messageKey);
 }
 
 function applyCopy() {
@@ -1386,7 +1412,6 @@ function applyCopy() {
   syncFlagSelect(languageSelect);
   updateRequestReasonOptions(copy);
   setRequestSubmitting(state.requestSubmitting);
-  renderStatus();
 
   if (!staticUiLanguages.has(state.lang) && !state.uiCopyCache[state.lang]) {
     const activeLang = state.lang;
@@ -1524,8 +1549,7 @@ async function loadProfile() {
     overviewView.classList.remove("is-hidden");
     profileView.classList.add("is-hidden");
     requestChangesLink?.classList.add("is-hidden");
-    state.baseStatus = null;
-    renderStatus();
+    hideStatusPopup();
     return;
   }
 
@@ -1562,8 +1586,7 @@ async function loadProfile() {
         applyCopy();
       }
     }
-    state.baseStatus = null;
-    renderStatus();
+    hideStatusPopup();
     await renderProfile();
     profileView.classList.remove("is-hidden");
   } catch (error) {
