@@ -51,6 +51,49 @@
       </header>
 
       <main class="admin-main">
+        <div class="status-banner admin-status-banner" data-admin-status hidden>
+          <strong data-admin-status-title>Workspace ready</strong>
+          <p data-admin-status-message>Save your administrator access to begin.</p>
+        </div>
+
+        <section class="admin-auth-view" data-admin-auth-only>
+          <section class="form-section admin-login-card admin-login-panel">
+            <div class="section-heading">
+              <p class="section-kicker" data-i18n="accessKicker">Access</p>
+              <h1 data-i18n="accessTitle">Administrator sign in</h1>
+              <p class="section-copy" data-i18n="accessText">
+                Use your administrator username and password to open the workspace.
+              </p>
+            </div>
+
+            <form class="field-grid two-up" data-admin-auth-form>
+              <label class="field">
+                <span data-i18n="fieldUsername">Username</span>
+                <input
+                  name="admin_username"
+                  type="text"
+                  placeholder="admin"
+                  autocomplete="username"
+                  data-i18n-placeholder="usernamePlaceholder"
+                />
+              </label>
+              <label class="field">
+                <span data-i18n="fieldPassword">Password</span>
+                <input
+                  name="admin_password"
+                  type="password"
+                  placeholder="Enter your private admin access"
+                  autocomplete="current-password"
+                  data-i18n-placeholder="passwordPlaceholder"
+                />
+              </label>
+              <button class="button button-primary admin-auth-button" type="submit" data-i18n="saveAccessButton">
+                Sign in
+              </button>
+            </form>
+          </section>
+        </section>
+
         <section class="hero admin-hero" data-admin-protected hidden>
           <div>
             <p class="eyebrow" data-i18n="heroKicker">Admin workflow</p>
@@ -78,50 +121,9 @@
           </div>
         </section>
 
-        <div class="admin-grid">
+        <div class="admin-grid" data-admin-protected hidden>
           <section class="form-panel">
-            <div class="status-banner" data-admin-status hidden>
-              <strong data-admin-status-title>Workspace ready</strong>
-              <p data-admin-status-message>Save your administrator access to begin.</p>
-            </div>
-
-            <section class="form-section admin-login-card" data-admin-auth-only>
-              <div class="section-heading">
-                <p class="section-kicker" data-i18n="accessKicker">Access</p>
-                <h2 data-i18n="accessTitle">Administrator login</h2>
-                <p class="section-copy" data-i18n="accessText">
-                  Enter the administrator credentials to open provisioning, management, and profile actions.
-                </p>
-              </div>
-
-              <form class="field-grid two-up" data-admin-auth-form>
-                <label class="field">
-                  <span data-i18n="fieldUsername">Username</span>
-                  <input
-                    name="admin_username"
-                    type="text"
-                    placeholder="admin"
-                    autocomplete="username"
-                    data-i18n-placeholder="usernamePlaceholder"
-                  />
-                </label>
-                <label class="field">
-                  <span data-i18n="fieldPassword">Password</span>
-                  <input
-                    name="admin_password"
-                    type="password"
-                    placeholder="Enter your private admin access"
-                    autocomplete="current-password"
-                    data-i18n-placeholder="passwordPlaceholder"
-                  />
-                </label>
-                <button class="button button-primary admin-auth-button" type="submit" data-i18n="saveAccessButton">
-                  Save access and load workspace
-                </button>
-              </form>
-            </section>
-
-            <section class="form-section" data-admin-protected hidden>
+            <section class="form-section">
               <div class="section-heading">
                 <p class="section-kicker" data-i18n="provisionKicker">Provision</p>
                 <h2 data-i18n="provisionTitle">Create a private activation link for a new client</h2>
@@ -201,7 +203,7 @@
             </section>
           </section>
 
-          <aside class="preview-panel admin-queue-panel" data-admin-protected hidden>
+          <aside class="preview-panel admin-queue-panel">
             <div class="preview-sticky">
               <div class="preview-header">
                 <div>

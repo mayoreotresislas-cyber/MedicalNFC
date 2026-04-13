@@ -7,6 +7,16 @@
   gap: 24px;
 }
 
+.admin-status-banner {
+  width: min(760px, 100%);
+  justify-self: center;
+}
+
+.admin-auth-view {
+  display: grid;
+  justify-items: center;
+}
+
 .admin-hero {
   grid-template-columns: 1.1fr 0.9fr;
 }
@@ -21,6 +31,10 @@
 .admin-auth-button {
   align-self: end;
   grid-column: 1 / -1;
+}
+
+.admin-login-panel {
+  width: min(760px, 100%);
 }
 
 .admin-login-card .section-copy {
@@ -361,6 +375,12 @@
 
 @media (max-width: 920px) {
   .admin-two-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  .admin-login-panel .field-grid.two-up {
     grid-template-columns: 1fr;
   }
 }
