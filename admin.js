@@ -33,6 +33,7 @@ const copyMap = {
     flowStep4: "Record the public URL into the NFC tag once the profile is ready.",
     accessKicker: "Access",
     accessTitle: "Administrator login",
+    accessText: "Enter the administrator credentials to open provisioning, management, and profile actions.",
     fieldUsername: "Username",
     fieldPassword: "Password",
     saveAccessButton: "Save access and load workspace",
@@ -157,6 +158,7 @@ const copyMap = {
     flowStep4: "Graba la URL publica en el NFC cuando el perfil quede listo.",
     accessKicker: "Acceso",
     accessTitle: "Ingreso administrativo",
+    accessText: "Ingresa las credenciales del administrador para abrir provision, management y las acciones del perfil.",
     fieldUsername: "Usuario",
     fieldPassword: "Contrasena",
     saveAccessButton: "Guardar acceso y cargar workspace",
@@ -312,6 +314,7 @@ const textNodes = document.querySelectorAll("[data-i18n]");
 const placeholderNodes = document.querySelectorAll("[data-i18n-placeholder]");
 
 const authForm = document.querySelector("[data-admin-auth-form]");
+const authOnlySections = document.querySelectorAll("[data-admin-auth-only]");
 const provisionForm = document.querySelector("[data-provision-form]");
 const queueList = document.querySelector("[data-queue-list]");
 const protectedSections = document.querySelectorAll("[data-admin-protected]");
@@ -607,6 +610,9 @@ function setAuthenticatedUi(isAuthenticated) {
   state.isAuthenticated = isAuthenticated;
   protectedSections.forEach((section) => {
     section.hidden = !isAuthenticated;
+  });
+  authOnlySections.forEach((section) => {
+    section.hidden = isAuthenticated;
   });
   if (logoutButton) {
     logoutButton.hidden = !isAuthenticated;

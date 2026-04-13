@@ -85,10 +85,13 @@
               <p data-admin-status-message>Save your administrator access to begin.</p>
             </div>
 
-            <section class="form-section" data-admin-protected hidden>
+            <section class="form-section admin-login-card" data-admin-auth-only>
               <div class="section-heading">
                 <p class="section-kicker" data-i18n="accessKicker">Access</p>
                 <h2 data-i18n="accessTitle">Administrator login</h2>
+                <p class="section-copy" data-i18n="accessText">
+                  Enter the administrator credentials to open provisioning, management, and profile actions.
+                </p>
               </div>
 
               <form class="field-grid two-up" data-admin-auth-form>
@@ -118,7 +121,7 @@
               </form>
             </section>
 
-            <section class="form-section">
+            <section class="form-section" data-admin-protected hidden>
               <div class="section-heading">
                 <p class="section-kicker" data-i18n="provisionKicker">Provision</p>
                 <h2 data-i18n="provisionTitle">Create a private activation link for a new client</h2>
